@@ -2,6 +2,7 @@
 let config = {
     minZoom: 5,
     maxZoom: 13,
+    zoomSnap: 0.25,
   };
 // magnification with which the map will start
 const zoom = 7.3;
@@ -14,7 +15,7 @@ const seva = new L.Marker([38,-76]);
 const swva = new L.Marker([38,-80]);
 const cva = new L.Marker([38,-78]);
   
-const map = L.map('map', config).setView([lat,lng],zoom);
+const map = L.map('map', config).fitBounds([[40.616,-95.824],[35.873, -89.331]], { padding: [0, 0] });
 const geojsonLayer = new L.GeoJSON.AJAX("county.geojson", {style: style, onEachFeature: onEachFeature2}).addTo(map);
 const clusterGroup = L.markerClusterGroup().addTo(map);
 const qsoparty = L.featureGroup.subGroup(clusterGroup);
@@ -39,7 +40,7 @@ const homeControl = L.Control.extend({
     onAdd: function (map) {
         const btn = L.DomUtil.create("button");
         btn.title = "Show all MO";
-        btn.innerHTML = homeTemplate;
+        btn.innerHTML = "All<BR>MO";
         btn.className += "leaflet-bar back-to-home";
         return btn;
     },
@@ -53,7 +54,7 @@ const nvaControl = L.Control.extend({
     onAdd: function (map) {
         const btn = L.DomUtil.create("button");
         btn.title = "Zoom NW MO";
-        btn.innerHTML = "NW MO";
+        btn.innerHTML = "NW<BR>MO";
         btn.className += "leaflet-bar to-nva";
         return btn;
     },
@@ -67,7 +68,7 @@ const cvaControl = L.Control.extend({
     onAdd: function (map) {
         const btn = L.DomUtil.create("button");
         btn.title = "Zoom NE MO";
-        btn.innerHTML = "NE MO";
+        btn.innerHTML = "NE<BR>MO";
         btn.className += "leaflet-bar to-cva";
         return btn;
     },
@@ -81,7 +82,7 @@ const sevaControl = L.Control.extend({
     onAdd: function (map) {
         const btn = L.DomUtil.create("button");
         btn.title = "Zoom S.E. MO";
-        btn.innerHTML = "SE MO";
+        btn.innerHTML = "SE<BR>MO";
         btn.className += "leaflet-bar to-seva";
         return btn;
     },
@@ -95,7 +96,7 @@ const swvaControl = L.Control.extend({
     onAdd: function (map) {
         const btn = L.DomUtil.create("button");
         btn.title = "Zoom SW MO";
-        btn.innerHTML = "SW MO";
+        btn.innerHTML = "SW<BR>MO";
         btn.className += "leaflet-bar to-swva";
         return btn;
     },
@@ -211,7 +212,9 @@ function style(feature) {
 /* Set up County Name */
 function onEachFeature2(feature, layer) {
     if (feature.properties && feature.properties.name) {
-        layer.bindPopup('<h1>' + feature.properties.name + '</h1>');
+        const [ countyName, countyCode ] = feature.properties.name.split("=");
+        const countyCodeAlpha = countyCode.split(" ")[0]
+        layer.bindPopup('<h1>' + countyName  + ' (' + countyCodeAlpha + ') </h1>');
     }
 }
   
@@ -220,14 +223,12 @@ function createRealtimeLayer(url, container) {
     return L.realtime(url, {
         interval: 30 * 1000,
         getFeatureId: function(f) {
-            // console.log(f.properties.call);
             return f.properties.call;
         },
         cache: false,
         container: container,
 
         onEachFeature(f, l) {
-            console.log(f.properties);
             l.bindTooltip( f.properties.call, {
                 permanent: true,
                 direction: 'auto'
@@ -249,9 +250,10 @@ function clickZoom(e) {
     setActive(e.sourceTarget.feature.properties.id);
 }
   
-window["qso-party"].on('click', function() {
-    map.fitBounds(window["qso-party"].getBounds() );
-});
+// window["qso-party"].on('click', function() {
+//     console.log("QSO Party clicked");
+//     map.fitBounds(window["qso-party"].getBounds() );
+// });
 // window["non-qso-party"].on('click', function() {
 //     map.fitBounds(window["non-qso-party"].getBounds() );
 // });

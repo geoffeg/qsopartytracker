@@ -5,6 +5,13 @@ const fs = require('fs');
 const DOMParser = require('xmldom').DOMParser;
 const turf = require("@turf/turf");
 
+const aprsServer = "167.114.2.176";
+// const aprsServer = "noam.aprs2.net";
+const aprsPort = 14580;
+const aprsFilter = "a/40.616251/-95.824438/35.873701/-89.331518"; // r/38.3566/-92.458/500
+const aprsCall = "NOCALL";
+
+
 const db = new Database("aprs.db");
 const createTable = db.prepare(`CREATE TABLE IF NOT EXISTS aprsPackets (
     id INTEGER PRIMARY KEY,
@@ -25,17 +32,17 @@ const createTable = db.prepare(`CREATE TABLE IF NOT EXISTS aprsPackets (
     grid TEXT
 )`);
 createTable.run();
+const cleanupTrigger = db.prepare(`CREATE TRIGGER IF NOT EXISTS cleanupTrigger AFTER INSERT ON aprsPackets
+    BEGIN
+        DELETE FROM aprsPackets WHERE tsEpochMillis < unixepoch('now', '-24 hour', 'subsec');
+    END`);
+cleanupTrigger.run();
 
 const kmlFile = fs.readFileSync('OverlayMissouriRev3.kml', 'utf8');
 const kml = new DOMParser().parseFromString(kmlFile);
 const geoJson = tj.kml(kml, { styles: true });
 
 const parser = new aprs.APRSParser();
-const aprsServer = "167.114.2.176";
-// const aprsServer = "noam.aprs2.net";
-const aprsPort = 14580;
-const aprsFilter = "a/40.616251/-95.824438/35.873701/-89.331518"; // r/38.3566/-92.458/500
-const aprsCall = "NOCALL";
 
 const findCounty = (lat, lon) => {
     const point = turf.point([lon, lat]);
@@ -96,7 +103,6 @@ function gridForLatLon(latitude, longitude) {
 }
 
 const connect = async () =>{
-    // TODO: Implement timeout logic
     const socket = await Bun.connect({
         hostname: aprsServer,
         port: aprsPort,
@@ -111,8 +117,8 @@ const connect = async () =>{
                         return;
                     }
                     console.log(packet.raw)
-                    const county = findCounty(packet?.data?.latitude, packet?.data?.longitude);
-                    const grid = gridForLatLon(packet?.data?.latitude, packet?.data?.longitude);
+                    const county = findCounty(packet.data.latitude, packet.data.longitude);
+                    const grid = gridForLatLon(packet.data.latitude, packet.data.longitude);
                     const insert = db.prepare(`INSERT INTO aprsPackets (
                         packet, fromCallsign, toCallsign, 
                         latitude, longitude, comment, 
@@ -139,11 +145,21 @@ const connect = async () =>{
             },
             error(socket, error) {
                 console.log('Error: ' + error);
-            }
+            },
+            close(socket) {
+                // Attempt to reconnect with an exponential backoff
+                let attempt = 1;
+                const reconnectDelay = Math.min(1000 * 2 ** (attempt - 1), 30000);
+                console.log(`Connection closed, reconnecting in ${reconnectDelay} ms...`);
+                setTimeout(() => {
+                    console.log('Reconnecting...');
+                    connect();
+                }, reconnectDelay);
+            },
         }
     });
     socket.write(`user ${aprsCall} pass -1 vers mo-qso-tracker 1 filter ${aprsFilter}\r\n`);
-    socket.write(`filter ${aprsFilter}\r\n`);
+    // socket.write(`filter ${aprsFilter}\r\n`);
     return socket;
 }
 

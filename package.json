@@ -5,7 +5,8 @@
   "scripts": {
     "listenAndServe": "concurrently --names aprs,serve -c blue,yellow \"bun run aprs-daemon\" \"bun run serve\"",
     "aprs-daemon": "bun run aprs.js",
-    "serve": "bun run index.js"
+    "serve": "bun run index.js",
+    "dev": "bun run --hot index.js"
   },
   "devDependencies": {
     "@types/bun": "latest"
@@ -16,7 +17,7 @@
   "dependencies": {
     "@mapbox/togeojson": "^0.16.2",
     "@turf/turf": "^7.2.0",
-    "aprs-parser": "^1.0.9",
+    "aprs-parser": "git+https://github.com/geoffeg/npm-aprs-parser.git",
     "concurrently": "^9.1.2",
     "js-aprs-is": "^2.0.1",
     "xmldom": "^0.6.0"

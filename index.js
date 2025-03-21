@@ -1,12 +1,16 @@
 const { Database } = require("bun:sqlite");
-const db = new Database("aprs.db", { readonly: true, create: true });
 const turf = require("@turf/turf");
-
 const tj = require('@mapbox/togeojson');
 const fs = require('fs');
+const path = require('path');
+const os = require('os');
 const DOMParser = require('xmldom').DOMParser;
 
 const table = require("./partials/table.js");
+
+const db = new Database("aprs.db", { readonly: true, create: true });
+const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'qsopartytracker'));
+fs.mkdirSync(tmpDir, { recursive: true });
 
 const server = Bun.serve({
     port: 3000,
@@ -14,14 +18,23 @@ const server = Bun.serve({
         "/" : req => {
             return new Response(Bun.file('./index.html'))
         },
-        "/county.geojson" : req => {// Returns the county GeoJson overlay
+        "/county.geojson" : req => { // Returns the county GeoJson overlay
+            if (fs.existsSync(path.join(tmpDir, 'county.json'))) {
+                const file = Bun.file(path.join(tmpDir, 'county.json'));
+                return Response(file);
+            }
             const kml = new DOMParser().parseFromString(fs.readFileSync('./OverlayMissouriRev3.kml', 'utf8'));
             const convertedWithStyles = tj.kml(kml, { styles: true });
+            fs.writeFileSync(path.join(tmpDir, 'county.json'), JSON.stringify(convertedWithStyles));
             return Response.json(convertedWithStyles);
         },
-        '/qso-party.json': async (req) => { // returns GeoJSON for leaflet map layer
+        '/qso-party.json': async (req) => { // returns GeoJSON of station positions for leaflet map layer
             const ts = new URL(req.url).searchParams.get("_");
-            const rows = await db.query("SELECT longitude, latitude, id, symbolIcon, fromCallsign, MAX(tsEpochMillis) as tsEpochMillis, county, grid, comment FROM aprsPackets where tsEpochMillis < ?1 GROUP BY fromCallsign ORDER BY tsEpochMillis DESC");
+            const sql = `SELECT 
+            longitude, latitude, id, symbolIcon, fromCallsign, MAX(tsEpochMillis) as tsEpochMillis, county, grid, comment 
+            FROM aprsPackets WHERE tsEpochMillis < ?1 AND tsEpochMillis > unixepoch('now', '-4 hour', 'subsec') AND county is not null
+            GROUP BY fromCallsign ORDER BY tsEpochMillis DESC`;
+            const rows = await db.query(sql);
             const geoFeatures = rows.all(ts).map((row) => {
                 const geometry = {
                     type: "Point",
@@ -42,11 +55,17 @@ const server = Bun.serve({
                 features: geoFeatures
             });
         },
-        "/table.html": async (req) => { // returns HTML for the table version of the callsigns
-            // Now minus 30 minutes in epoch seconds
-            const thirtyMinutesAgo = Math.floor(Date.now() / 1000) - (30 * 60);
-            const rows = await db.query("SELECT fromCallsign, MAX(tsEpochMillis) as tsEpochMillis, county, comment FROM aprsPackets where tsEpochMillis > ?1 GROUP BY fromCallsign ORDER BY tsEpochMillis DESC");
-            const dbRows = rows.all(thirtyMinutesAgo).map((row) => {
+        "/table.html": async (req) => {
+            const sql = `SELECT 
+            fromCallsign,
+            MAX(tsEpochMillis) as tsEpochMillis, 
+	        MAX(tsEpochMillis) - (SELECT MIN(a.tsEpochMillis) FROM aprsPackets a WHERE a.county = aprsPackets.county AND a.fromCallsign = aprsPackets.fromCallsign) as countyDwellTime,
+            county, 
+            comment 
+            FROM aprsPackets WHERE tsEpochMillis > unixepoch('now', '-4 hour', 'subsec') AND county is not null
+            GROUP BY fromCallsign ORDER BY tsEpochMillis DESC`;
+            const rows = await db.query(sql);
+            const dbRows = rows.all().map((row) => {
                 if (!row.county) {
                     return row;
                 }
@@ -58,15 +77,18 @@ const server = Bun.serve({
             return Response(tableRows)
         },
     },
-    fetch(req) {
-        // Handle static files
+    fetch(req) { // Handle static files
         const filePath = './static' + new URL(req.url).pathname;
-        const file = Bun.file(filePath);
-        if (file.exists()) {
+        if (fs.existsSync(filePath)) {
+            const file = Bun.file(filePath);
             return new Response(file);
         }
         return new Response("Not Found", { status: 404 });
     },
+    error(error) {
+        console.error("Error:", error);
+        return new Response(`Internal Server Error: ${error.message}`, { status: 500 });
+    }
   });
   
   console.log(`Listening on http://localhost:${server.port} ...`);
