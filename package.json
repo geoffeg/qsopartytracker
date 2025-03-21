@@ -1,0 +1,24 @@
+{
+  "name": "qsopartytracker",
+  "module": "index.js",
+  "type": "module",
+  "scripts": {
+    "listenAndServe": "concurrently --names aprs,serve -c blue,yellow \"bun run aprs-daemon\" \"bun run serve\"",
+    "aprs-daemon": "bun run aprs.js",
+    "serve": "bun run index.js"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@mapbox/togeojson": "^0.16.2",
+    "@turf/turf": "^7.2.0",
+    "aprs-parser": "^1.0.9",
+    "concurrently": "^9.1.2",
+    "js-aprs-is": "^2.0.1",
+    "xmldom": "^0.6.0"
+  }
+}

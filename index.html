@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MO QP APRS Tracker</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="refresh" content="1800">
+    
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
+    <script src="https://unpkg.com/leaflet@1.9.2/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet-src.js"></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.0.6/dist/leaflet.markercluster-src.js"></script>
+    <script src="https://unpkg.com/leaflet.featuregroup.subgroup@1.0.2/dist/leaflet.featuregroup.subgroup.js"></script>
+    <script src='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-omnivore/v0.3.1/leaflet-omnivore.min.js'></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-realtime/2.2.0/leaflet-realtime.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.min.js"></script>
+    <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.0.6/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.0.6/dist/MarkerCluster.Default.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.2/dist/leaflet.css" />
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Live MO QP APRS Tracker </h1>
+        <p>To be listed on this map put "MOQP XX.XXX" in your APRS comment. (XX.XXX being your current FREQ) Eg. "MOQP 14.230" if you are on 20mtrs at 14.230</p>
+    </header>
+    <main>
+              <div id="map"></div>
+        <div id="tableContainer" hx-trigger="load" hx-get="/table.html"></div>
+    </main>
+    <footer>
+        <p>Originally based on <a href="https://github.com/azwirko/QP-APRS-Tracker">QP-APRS-Tracker</a> by <a href="https://github.com/azwirko">Andy Zwirko</a></a></p>
+    </footer>
+    <script src="mapInit.js"></script>
+</body>
