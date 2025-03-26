@@ -33,7 +33,7 @@ const table = (positions) => {
     })
 
     const table = `
-    Refreshes every 10 seconds. Loaded: ${new Date().toLocaleString()}
+    Refreshes every 30 seconds. Loaded: ${new Date().toLocaleString()}
     <table class="table">
         <thead>
             <tr>

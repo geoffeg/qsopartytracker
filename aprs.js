@@ -11,8 +11,9 @@ const aprsPort = 14580;
 const aprsFilter = "a/40.616251/-95.824438/35.873701/-89.331518"; // r/38.3566/-92.458/500
 const aprsCall = "NOCALL";
 
+console.log("aprs DB Path: ", process.env.DB_PATH || "aprs.db");
 
-const db = new Database("aprs.db");
+const db = new Database(process.env.DB_PATH || "aprs.db", { readonly: false, create: true });
 const createTable = db.prepare(`CREATE TABLE IF NOT EXISTS aprsPackets (
     id INTEGER PRIMARY KEY,
     ts TIMESTAMP DATETIME DEFAULT(datetime('subsec')),

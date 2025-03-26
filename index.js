@@ -8,9 +8,12 @@ const DOMParser = require('xmldom').DOMParser;
 
 const table = require("./partials/table.js");
 
-const db = new Database("aprs.db", { readonly: true, create: true });
+console.log("index DB Path: ", process.env.DB_PATH || "aprs.db");
+const db = new Database(process.env.DB_PATH || "aprs.db", { readonly: false, create: true });
 const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'qsopartytracker'));
 fs.mkdirSync(tmpDir, { recursive: true });
+
+const defaultCommentFilter = "MOQP ";
 
 const server = Bun.serve({
     port: 3000,
@@ -29,13 +32,18 @@ const server = Bun.serve({
             return Response.json(convertedWithStyles);
         },
         '/qso-party.json': async (req) => { // returns GeoJSON of station positions for leaflet map layer
-            const ts = new URL(req.url).searchParams.get("_");
+            const urlParams = new URL(req.url).searchParams;
+            const ts = urlParams.get("_");
+            const commentFilter = '%' + (urlParams.get("f") || defaultCommentFilter) + '%';
             const sql = `SELECT 
             comment, longitude, latitude, id, symbolIcon, fromCallsign, fromCallsignSsId, MAX(tsEpochMillis) as tsEpochMillis, county, grid, comment 
-            FROM aprsPackets WHERE tsEpochMillis < ?1 AND tsEpochMillis > unixepoch('now', '-4 hour', 'subsec') AND county is not null
+            FROM aprsPackets 
+            WHERE tsEpochMillis < ?1 AND tsEpochMillis > unixepoch('now', '-4 hour', 'subsec') 
+            AND county is not null
+            AND comment LIKE ?2
             GROUP BY fromCallsign ORDER BY tsEpochMillis DESC`;
             const rows = await db.query(sql);
-            const geoFeatures = rows.all(ts).map((row) => {
+            const geoFeatures = rows.all(ts, commentFilter).map((row) => {
                 // If the string contains "MOQP", parse out the frequency part with a regex: MOQP ([0-9\.]+)
                 // console.log(row.comment.match(/MOQP ([0-9\.]+)/)[1])
                 const frequency = row.comment ? row.comment.match(/MOQP ([0-9\.]+)/) : '';
@@ -60,6 +68,8 @@ const server = Bun.serve({
             });
         },
         "/table.html": async (req) => {
+            const urlParams = new URL(req.url).searchParams;
+            const commentFilter = '%' + (urlParams.get("f") || defaultCommentFilter) + '%';
             const sql = `SELECT 
             fromCallsign,
             fromCallsignSsId,
@@ -70,14 +80,17 @@ const server = Bun.serve({
                 LAG(county) OVER (PARTITION BY fromCallsign ORDER BY ts ASC) previousCounty
                 FROM aprsPackets iap
                 WHERE iap.fromCallsign = ap.fromCallsign
-            ) AS subsel WHERE subsel.county = ap.county AND (subsel.previousCounty == ap.county OR subsel.previousCounty IS NULL) LIMIT 1
+            ) AS subsel WHERE subsel.county = ap.county AND (subsel.previousCounty != ap.county OR subsel.previousCounty IS NULL) LIMIT 1
             ) as countyDwellTime,
             county, 
             comment 
-            FROM aprsPackets ap WHERE tsEpochMillis > unixepoch('now', '-4 hour', 'subsec') AND county is not null
+            FROM aprsPackets ap 
+            WHERE tsEpochMillis > unixepoch('now', '-4 hour', 'subsec') 
+            AND county is not null
+            AND comment LIKE ?1
             GROUP BY fromCallsign ORDER BY tsEpochMillis DESC`;
             const rows = await db.query(sql);
-            const dbRows = rows.all().map((row) => {
+            const dbRows = rows.all(commentFilter).map((row) => {
                 if (!row.county) {
                     return row;
                 }
@@ -92,10 +105,14 @@ const server = Bun.serve({
             const health = {
                 status: "OK",
                 gitSha: process.env.GIT_SHA || "unknown",
-                uptime: process.uptime(),
+                uptimeSeconds: process.uptime(),
                 memoryUsage: process.memoryUsage(),
                 cpuUsage: process.cpuUsage(),
-                dbSize: fs.statSync("aprs.db").size,
+                db: { 
+                    latestRecordTs: db.prepare("SELECT MAX(ts) as ts FROM aprsPackets").get().ts,
+                    recordCount: db.prepare("SELECT COUNT(*) as count FROM aprsPackets").get().count,
+                    dbSizeBytes: fs.statSync("aprs.db").size,
+                }
             }
             return Response.json(health);
         },
