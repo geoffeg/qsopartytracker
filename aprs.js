@@ -19,6 +19,7 @@ const createTable = db.prepare(`CREATE TABLE IF NOT EXISTS aprsPackets (
     tsEpochMillis INTEGER DEFAULT(unixepoch('subsec')),
     packet TEXT,
     fromCallsign TEXT,
+    fromCallsignSsId TEXT,
     toCallsign TEXT,
     latitude REAL,
     longitude REAL,
@@ -112,6 +113,7 @@ const connect = async () =>{
                 const aprsLines = aprsLine.split("\r\n").filter(packet => packet !== "").filter(packet => packet[0] !== "#");
                 const decodedPackets = aprsLines.map(packet => parser.parse(packet));
                 decodedPackets.forEach(packet => {
+                    // console.dir(packet, { depth: null, colors: true });
                     // discard packets with no location
                     if (!packet?.data?.latitude || !packet?.data?.longitude) {
                         return;
@@ -120,15 +122,16 @@ const connect = async () =>{
                     const county = findCounty(packet.data.latitude, packet.data.longitude);
                     const grid = gridForLatLon(packet.data.latitude, packet.data.longitude);
                     const insert = db.prepare(`INSERT INTO aprsPackets (
-                        packet, fromCallsign, toCallsign, 
+                        packet, fromCallsign, fromCallsignSsId, toCallsign, 
                         latitude, longitude, comment, 
                         symbol, symbolIcon, speed, 
                         course, altitude, county, grid) 
                         VALUES 
-                        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`);
+                        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`);
                     insert.run(
                         packet.raw,
                         packet?.from?.call,
+                        packet?.from?.ssid,
                         packet?.to?.call,
                         packet?.data?.latitude,
                         packet?.data?.longitude,

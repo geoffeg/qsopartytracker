@@ -15,7 +15,7 @@ const table = (positions) => {
     const rows = positions.map((position) => {
         return `
         <tr class="${getRowClass(position.tsEpochMillis)}">
-            <td scope="row">${position.fromCallsign}</td>
+            <td scope="row">${position.fromCallsign}${position.fromCallsignSsId ? '-' + position.fromCallsignSsId : ''}</td>
             <td data-label="Age">${Math.floor((Date.now() - (position.tsEpochMillis * 1000)) / 1000 / 60)}</td>
             <td data-label="County">${position.county ? position.countyName + " (" + position.countyCode + ")" : ''}</td>
             <td data-label="County Time">${Math.floor(position.countyDwellTime / 60)}</td>
@@ -25,7 +25,7 @@ const table = (positions) => {
 
     const cards = positions.map((position) => {
         return `
-        <tr class="${getRowClass(position.tsEpochMillis)}"><td colspan="2">${position.fromCallsign}</td></tr>
+        <tr class="${getRowClass(position.tsEpochMillis)}"><td colspan="2">${position.fromCallsign}${position.fromCallsignSsId ? '-' + position.fromCallsignSsId : ''}</td></tr>
         <tr><td>Age (mins)</td><td>${Math.floor((Date.now() - (position.tsEpochMillis * 1000)) / 1000 / 60)}</td></tr>
         <tr><td>County (code)</td><td>${position.county ? position.countyName + " (" + position.countyCode + ")" : ''}</td></tr>
         <tr><td>County Dwell Time (mins)</td><td>${Math.floor(position.countyDwellTime / 60)}</td></tr>

@@ -31,11 +31,14 @@ const server = Bun.serve({
         '/qso-party.json': async (req) => { // returns GeoJSON of station positions for leaflet map layer
             const ts = new URL(req.url).searchParams.get("_");
             const sql = `SELECT 
-            longitude, latitude, id, symbolIcon, fromCallsign, MAX(tsEpochMillis) as tsEpochMillis, county, grid, comment 
+            comment, longitude, latitude, id, symbolIcon, fromCallsign, fromCallsignSsId, MAX(tsEpochMillis) as tsEpochMillis, county, grid, comment 
             FROM aprsPackets WHERE tsEpochMillis < ?1 AND tsEpochMillis > unixepoch('now', '-4 hour', 'subsec') AND county is not null
             GROUP BY fromCallsign ORDER BY tsEpochMillis DESC`;
             const rows = await db.query(sql);
             const geoFeatures = rows.all(ts).map((row) => {
+                // If the string contains "MOQP", parse out the frequency part with a regex: MOQP ([0-9\.]+)
+                // console.log(row.comment.match(/MOQP ([0-9\.]+)/)[1])
+                const frequency = row.comment ? row.comment.match(/MOQP ([0-9\.]+)/) : '';
                 const geometry = {
                     type: "Point",
                     coordinates: [row.longitude, row.latitude]
@@ -43,7 +46,8 @@ const server = Bun.serve({
                 const feature = turf.feature(geometry, {
                     id: row.id,
                     icon: row.symbolIcon,
-                    call: row.fromCallsign,
+                    frequency: Array.isArray(frequency) ? frequency[1] : '',
+                    call: row.fromCallsign + (row.fromCallsignSsId ? '-' + row.fromCallsignSsId : ''),
                     text: row.comment,
                     county: row.county,
                     grid: row.grid
@@ -58,11 +62,19 @@ const server = Bun.serve({
         "/table.html": async (req) => {
             const sql = `SELECT 
             fromCallsign,
+            fromCallsignSsId,
             MAX(tsEpochMillis) as tsEpochMillis, 
-	        MAX(tsEpochMillis) - (SELECT MIN(a.tsEpochMillis) FROM aprsPackets a WHERE a.county = aprsPackets.county AND a.fromCallsign = aprsPackets.fromCallsign) as countyDwellTime,
+	        MAX(tsEpochMillis) - (
+              SELECT tsEpochMillis FROM (
+                SELECT tsEpochMillis, county,
+                LAG(county) OVER (PARTITION BY fromCallsign ORDER BY ts ASC) previousCounty
+                FROM aprsPackets iap
+                WHERE iap.fromCallsign = ap.fromCallsign
+            ) AS subsel WHERE subsel.county = ap.county AND (subsel.previousCounty == ap.county OR subsel.previousCounty IS NULL) LIMIT 1
+            ) as countyDwellTime,
             county, 
             comment 
-            FROM aprsPackets WHERE tsEpochMillis > unixepoch('now', '-4 hour', 'subsec') AND county is not null
+            FROM aprsPackets ap WHERE tsEpochMillis > unixepoch('now', '-4 hour', 'subsec') AND county is not null
             GROUP BY fromCallsign ORDER BY tsEpochMillis DESC`;
             const rows = await db.query(sql);
             const dbRows = rows.all().map((row) => {
@@ -75,6 +87,17 @@ const server = Bun.serve({
             })
             const tableRows = table(dbRows);
             return Response(tableRows)
+        },
+        "/health": (req) => {
+            const health = {
+                status: "OK",
+                gitSha: process.env.GIT_SHA || "unknown",
+                uptime: process.uptime(),
+                memoryUsage: process.memoryUsage(),
+                cpuUsage: process.cpuUsage(),
+                dbSize: fs.statSync("aprs.db").size,
+            }
+            return Response.json(health);
         },
     },
     fetch(req) { // Handle static files

@@ -16,7 +16,7 @@ main {
 }
 
 #map {
-    flex: 1 1 400px;
+    flex: 1 1 500px;
     min-width: 200px;
     height: 85dvh;
 }
@@ -34,7 +34,7 @@ main {
 }
 
 #tableContainer {
-    flex: 1 1 100px;
+    flex: 1 1;
     display: grid;
     align-self: flex-start;
     margin: 0 auto;

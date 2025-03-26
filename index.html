@@ -29,11 +29,11 @@
 <body>
     <header>
         <h1>Live MO QP APRS Tracker</h1>
-        <p>To be listed on this map put "MOQP XX.XXX" in your APRS comment. (XX.XXX being your current FREQ) Eg. "MOQP 14.230" if you are on 20mtrs at 14.230</p>
+        <p>To be listed on this map, put "MOQP XX.XXX" in your APRS comment. (XX.XXX being your current frequency) Eg: "MOQP 14.230" if you are on 20mtrs at 14.230</p>
     </header>
     <main>
         <div id="map"></div>
-        <div id="tableContainer" hx-trigger="load, every 10s" hx-get="/table.html"></div>
+        <div id="tableContainer" hx-trigger="load, every 30s" hx-get="/table.html"></div>
     </main>
     <footer>
         <p>Originally based on <a href="https://github.com/azwirko/QP-APRS-Tracker">QP-APRS-Tracker</a> by <a href="https://github.com/azwirko">Andy Zwirko</a></a></p>
