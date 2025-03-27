@@ -31,4 +31,3 @@ To run in the background:
 * CICD
 * Config for things like filters?
 * Highlight row?
-* Fix dwell time. If station moves back into a county it shouldn't show

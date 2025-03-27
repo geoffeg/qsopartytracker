@@ -13,7 +13,7 @@ const db = new Database(process.env.DB_PATH || "aprs.db", { readonly: false, cre
 const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'qsopartytracker'));
 fs.mkdirSync(tmpDir, { recursive: true });
 
-const defaultCommentFilter = "MOQP ";
+const defaultCommentFilter = "MOQP";
 
 const server = Bun.serve({
     port: 3000,
@@ -33,20 +33,17 @@ const server = Bun.serve({
         },
         '/qso-party.json': async (req) => { // returns GeoJSON of station positions for leaflet map layer
             const urlParams = new URL(req.url).searchParams;
-            const ts = urlParams.get("_");
             const commentFilter = '%' + (urlParams.get("f") || defaultCommentFilter) + '%';
             const sql = `SELECT 
             comment, longitude, latitude, id, symbolIcon, fromCallsign, fromCallsignSsId, MAX(tsEpochMillis) as tsEpochMillis, county, grid, comment 
             FROM aprsPackets 
-            WHERE tsEpochMillis < ?1 AND tsEpochMillis > unixepoch('now', '-4 hour', 'subsec') 
+            WHERE tsEpochMillis > unixepoch('now', '-4 hour', 'subsec') 
             AND county is not null
-            AND comment LIKE ?2
+            AND comment LIKE ?1
             GROUP BY fromCallsign ORDER BY tsEpochMillis DESC`;
             const rows = await db.query(sql);
-            const geoFeatures = rows.all(ts, commentFilter).map((row) => {
-                // If the string contains "MOQP", parse out the frequency part with a regex: MOQP ([0-9\.]+)
-                // console.log(row.comment.match(/MOQP ([0-9\.]+)/)[1])
-                const frequency = row.comment ? row.comment.match(/MOQP ([0-9\.]+)/i) : '';
+            const geoFeatures = rows.all(commentFilter).map((row) => {
+                const frequency = row.comment ? row.comment.match(/MOQP\s+([0-9\.]+)/i) : '';
                 const geometry = {
                     type: "Point",
                     coordinates: [row.longitude, row.latitude]
@@ -60,6 +57,7 @@ const server = Bun.serve({
                     call: row.fromCallsign + (row.fromCallsignSsId ? '-' + row.fromCallsignSsId : ''),
                     text: row.comment,
                     county: countyName + " (" + countyCodeAlpha + ")",
+                    countyCode: countyCodeAlpha,
                     grid: row.grid
                 });
                 return feature;

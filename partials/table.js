@@ -1,3 +1,5 @@
+const sanitizeHtml = require('sanitize-html');
+
 const getRowClass = (positionEpochMillis) => {
     const ageInHours = Math.floor((Date.now() - (positionEpochMillis * 1000)) / 1000 / 60 / 60);
     if (ageInHours < 1) {
@@ -12,6 +14,13 @@ const getRowClass = (positionEpochMillis) => {
 }
 
 const table = (positions) => {
+    // sanitize every field of the position object
+    positions = positions.map((position) => {
+        for (const key in position) {
+            position[key] = sanitizeHtml(position[key], { allowedTags: [], allowedAttributes: [] });
+        }
+        return position;
+    });
     const rows = positions.map((position) => {
         return `
         <tr class="${getRowClass(position.tsEpochMillis)}">

@@ -229,7 +229,7 @@ function createRealtimeLayer(url, container) {
         container: container,
 
         onEachFeature(f, l) {
-            l.bindTooltip( f.properties.call + "<BR>" + f.properties.frequency, {
+            l.bindTooltip( f.properties.call + "<BR>" + f.properties.frequency + "<BR>" + f.properties.countyCode, {
                 permanent: true,
                 direction: 'auto'
             });

@@ -20,6 +20,7 @@
     "aprs-parser": "git+https://github.com/geoffeg/npm-aprs-parser.git",
     "concurrently": "^9.1.2",
     "js-aprs-is": "^2.0.1",
+    "sanitize-html": "^2.15.0",
     "xmldom": "^0.6.0"
   }
 }
