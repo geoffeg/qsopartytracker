@@ -236,6 +236,7 @@ function createRealtimeLayer(url, container) {
             l.bindPopup(function() {
                 return '<h1>' + f.properties.call + '</h1>' +
                     '<p><h3>' + f.properties.text + '</h3></p>' +
+                    '<p><h3>County: ' + f.properties.county + '</h3></p>' +
                     '<p><h3>Grid: ' + f.properties.grid + '</h3></p>';
             });
 

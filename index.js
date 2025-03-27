@@ -46,18 +46,20 @@ const server = Bun.serve({
             const geoFeatures = rows.all(ts, commentFilter).map((row) => {
                 // If the string contains "MOQP", parse out the frequency part with a regex: MOQP ([0-9\.]+)
                 // console.log(row.comment.match(/MOQP ([0-9\.]+)/)[1])
-                const frequency = row.comment ? row.comment.match(/MOQP ([0-9\.]+)/) : '';
+                const frequency = row.comment ? row.comment.match(/MOQP ([0-9\.]+)/i) : '';
                 const geometry = {
                     type: "Point",
                     coordinates: [row.longitude, row.latitude]
                 }
+                const [ countyName, countyCode ] = row.county.split("=");
+                const countyCodeAlpha = countyCode.split(" ")[0]
                 const feature = turf.feature(geometry, {
                     id: row.id,
                     icon: row.symbolIcon,
                     frequency: Array.isArray(frequency) ? frequency[1] : '',
                     call: row.fromCallsign + (row.fromCallsignSsId ? '-' + row.fromCallsignSsId : ''),
                     text: row.comment,
-                    county: row.county,
+                    county: countyName + " (" + countyCodeAlpha + ")",
                     grid: row.grid
                 });
                 return feature;
