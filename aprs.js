@@ -39,6 +39,14 @@ const cleanupTrigger = db.prepare(`CREATE TRIGGER IF NOT EXISTS cleanupTrigger A
         DELETE FROM aprsPackets WHERE tsEpochMillis < unixepoch('now', '-24 hour', 'subsec');
     END`);
 cleanupTrigger.run();
+const tsEpochMillisIndex = db.prepare(`CREATE INDEX IF NOT EXISTS idx_aprsPackets_tsEpochMillis ON aprsPackets(tsEpochMillis)`);
+tsEpochMillisIndex.run();
+const countyIndex = db.prepare(`CREATE INDEX IF NOT EXISTS idx_aprsPackets_county ON aprsPackets(county)`);
+countyIndex.run();
+const fromCallsignIndex = db.prepare(`CREATE INDEX IF NOT EXISTS idx_aprsPackets_fromCallsign ON aprsPackets(fromCallsign)`);
+fromCallsignIndex.run();
+const tsCountyIndex = db.prepare(`CREATE INDEX IF NOT EXISTS idx_aprsPackets_fromCallsign_ts ON aprsPackets(fromCallsign, ts)`);
+tsCountyIndex.run();
 
 const kmlFile = fs.readFileSync('OverlayMissouriRev3.kml', 'utf8');
 const kml = new DOMParser().parseFromString(kmlFile);
@@ -115,7 +123,6 @@ const connect = async () =>{
                 const decodedPackets = aprsLines.map(packet => parser.parse(packet));
                 decodedPackets.forEach(packet => {
                     // console.dir(packet, { depth: null, colors: true });
-                    // discard packets with no location
                     if (!packet?.data?.latitude || !packet?.data?.longitude) {
                         return;
                     }
@@ -163,7 +170,6 @@ const connect = async () =>{
         }
     });
     socket.write(`user ${aprsCall} pass -1 vers mo-qso-tracker 1 filter ${aprsFilter}\r\n`);
-    // socket.write(`filter ${aprsFilter}\r\n`);
     return socket;
 }
 

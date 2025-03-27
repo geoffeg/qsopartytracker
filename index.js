@@ -38,11 +38,14 @@ const server = Bun.serve({
             comment, longitude, latitude, id, symbolIcon, fromCallsign, fromCallsignSsId, MAX(tsEpochMillis) as tsEpochMillis, county, grid, comment 
             FROM aprsPackets 
             WHERE tsEpochMillis > unixepoch('now', '-4 hour', 'subsec') 
-            AND county is not null
             AND comment LIKE ?1
-            GROUP BY fromCallsign ORDER BY tsEpochMillis DESC`;
+            GROUP BY fromCallsign 
+            ORDER BY tsEpochMillis DESC`;
             const rows = await db.query(sql);
             const geoFeatures = rows.all(commentFilter).map((row) => {
+                if (row.county === null) {
+                    return;
+                }
                 const frequency = row.comment ? row.comment.match(/MOQP\s+([0-9\.]+)/i) : '';
                 const geometry = {
                     type: "Point",
@@ -61,7 +64,7 @@ const server = Bun.serve({
                     grid: row.grid
                 });
                 return feature;
-            });
+            }).filter((feature) => feature !== undefined);
             return Response.json({
                 type: "FeatureCollection",
                 features: geoFeatures
@@ -69,7 +72,7 @@ const server = Bun.serve({
         },
         "/table.html": async (req) => {
             const urlParams = new URL(req.url).searchParams;
-            const commentFilter = '%' + (urlParams.get("f") || defaultCommentFilter) + '%';
+            const commentFilter = '%' + (urlParams.has("f") ? urlParams.get("f") : defaultCommentFilter) + '%';
             const sql = `SELECT 
             fromCallsign,
             fromCallsignSsId,
@@ -80,24 +83,27 @@ const server = Bun.serve({
                 LAG(county) OVER (PARTITION BY fromCallsign ORDER BY ts ASC) previousCounty
                 FROM aprsPackets iap
                 WHERE iap.fromCallsign = ap.fromCallsign
-            ) AS subsel WHERE subsel.county = ap.county AND (subsel.previousCounty != ap.county OR subsel.previousCounty IS NULL) LIMIT 1
+            ) AS subsel
+              WHERE subsel.county = ap.county
+              AND (subsel.previousCounty != ap.county OR subsel.previousCounty IS NULL)
+              ORDER BY tsEpochMillis DESC
+              LIMIT 1
             ) as countyDwellTime,
             county, 
             comment 
             FROM aprsPackets ap 
             WHERE tsEpochMillis > unixepoch('now', '-4 hour', 'subsec') 
-            AND county is not null
             AND comment LIKE ?1
             GROUP BY fromCallsign ORDER BY tsEpochMillis DESC`;
             const rows = await db.query(sql);
             const dbRows = rows.all(commentFilter).map((row) => {
                 if (!row.county) {
-                    return row;
+                    return;
                 }
                 const [ countyName, countyCode ] = row.county.split("=");
                 const countyCodeAlpha = countyCode.split(" ")[0]
                 return {...row, countyName, countyCode: countyCodeAlpha};
-            })
+            }).filter((row) => row !== undefined);
             const tableRows = table(dbRows);
             return Response(tableRows)
         },
