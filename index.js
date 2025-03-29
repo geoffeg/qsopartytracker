@@ -21,6 +21,11 @@ const server = Bun.serve({
         "/" : req => {
             return new Response(Bun.file('./index.html'))
         },
+        "/mapInit.js" : async (req) => {
+            const file = Bun.file('./static/mapInit.js');
+            const template = (await file.text()).replace(/{{BASE_URL}}/g, process.env.NODE_ENV === 'production' ? 'https://moqp.b-cdn.net' : '');
+            return new Response(template, { headers: { "Content-Type": "text/javascript" } });
+        },
         "/county.geojson" : req => { // Returns the county GeoJson overlay
             if (fs.existsSync(path.join(tmpDir, 'county.json'))) {
                 const file = Bun.file(path.join(tmpDir, 'county.json'));

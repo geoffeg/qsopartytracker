@@ -16,7 +16,7 @@ const swva = new L.Marker([38,-80]);
 const cva = new L.Marker([38,-78]);
   
 const map = L.map('map', config).fitBounds([[40.616,-95.824],[35.873, -89.331]], { padding: [0, 0] });
-const geojsonLayer = new L.GeoJSON.AJAX("county.geojson", {style: style, onEachFeature: onEachFeature2}).addTo(map);
+const geojsonLayer = new L.GeoJSON.AJAX("{{BASE_URL}}/county.geojson", {style: style, onEachFeature: onEachFeature2}).addTo(map);
 const clusterGroup = L.markerClusterGroup().addTo(map);
 const qsoparty = L.featureGroup.subGroup(clusterGroup);
 const nonqsoparty = L.featureGroup.subGroup(clusterGroup);

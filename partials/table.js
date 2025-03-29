@@ -57,7 +57,7 @@ const table = (positions) => {
     })
 
     const table = `
-    Refreshes every 30 seconds. Loaded: ${new Date().toUTCString()}
+    Refreshes every 30 seconds. Loaded: ${new Date().toUTCString().replace("GMT", "Zulu")}
     <table class="table">
         <thead>
             <tr>
