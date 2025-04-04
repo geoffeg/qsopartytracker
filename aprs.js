@@ -112,12 +112,28 @@ function gridForLatLon(latitude, longitude) {
   	return fieldLon + fieldLat + squareLon + squareLat + subLon + subLat;
 }
 
-const connect = async () =>{
+const connect = async () => {
+    const timeout = 30000; // 30 seconds timeout for connection
+    const resetTimeout = (socket) => {
+        if (socket.data) {
+            clearTimeout(socket.data);
+        }
+        socket.data = setTimeout(() => {
+            console.log(`Connection timed out.`);
+            socket.end();
+        }, timeout); // 30 seconds timeout for data
+    }
     const socket = await Bun.connect({
         hostname: aprsServer,
         port: aprsPort,
         socket: { 
+            open(socket) {
+                console.log('Connected to APRS server.');
+                resetTimeout(socket);
+            },
             data(socket, data) {
+                // Clear the timeout if we receive data
+                resetTimeout(socket);
                 const aprsLine = new TextDecoder().decode(data);
                 const aprsLines = aprsLine.split("\r\n").filter(packet => packet !== "").filter(packet => packet[0] !== "#");
                 const decodedPackets = aprsLines.map(packet => parser.parse(packet));

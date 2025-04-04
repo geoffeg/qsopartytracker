@@ -17,9 +17,8 @@ const cva = new L.Marker([38,-78]);
   
 const map = L.map('map', config).fitBounds([[40.616,-95.824],[35.873, -89.331]], { padding: [0, 0] });
 const geojsonLayer = new L.GeoJSON.AJAX("{{BASE_URL}}/county.geojson", {style: style, onEachFeature: onEachFeature2}).addTo(map);
-const clusterGroup = L.markerClusterGroup().addTo(map);
-const qsoparty = L.featureGroup.subGroup(clusterGroup);
-const nonqsoparty = L.featureGroup.subGroup(clusterGroup);
+const qsoparty = L.featureGroup().addTo(map);
+// const nonqsoparty = L.featureGroup().addTo(map);
   
 window["qso-party"] = createRealtimeLayer('./qso-party.json', qsoparty).addTo(map);
     //   window["non-qso-party"] = createRealtimeLayer( './non-qso-party.json', nonqsoparty);
@@ -220,7 +219,7 @@ function onEachFeature2(feature, layer) {
   
 /* Create APRS Callsign Layer */
 function createRealtimeLayer(url, container) {
-    return L.realtime(url, {
+    const realtime = L.realtime(url, {
         interval: 30 * 1000,
         getFeatureId: function(f) {
             return f.properties.call;
@@ -243,25 +242,26 @@ function createRealtimeLayer(url, container) {
             l.on("click", clickZoom);
         }
     });
+    realtime.on('update', (f) => {
+        Object.keys(f.update).forEach((callsign) => {
+            const layer = realtime.getLayer(callsign);
+            const feature = f.update[callsign]
+            layer.id = feature.id;
+
+            layer.setTooltipContent(feature.properties.call + "<BR>" + feature.properties.frequency + "<BR>" + feature.properties.countyCode);
+            layer.setPopupContent(() => {
+                return '<h1>' + feature.properties.call + '</h1>' +
+                    '<p><h3>' + feature.properties.text + '</h3></p>' +
+                    '<p><h3>County: ' + feature.properties.county + '</h3></p>' +
+                    '<p><h3>Grid: ' + feature.properties.grid + '</h3></p>';
+            });
+        })
+        return realtime;
+    });
+    return realtime;
 }
-  
-  
+    
 function clickZoom(e) {
     map.setView(e.target.getLatLng(), 13)
-    setActive(e.sourceTarget.feature.properties.id);
+    // setActive(e.sourceTarget.feature.properties.id);
 }
-  
-// window["qso-party"].on('click', function() {
-//     console.log("QSO Party clicked");
-//     map.fitBounds(window["qso-party"].getBounds() );
-// });
-// window["non-qso-party"].on('click', function() {
-//     map.fitBounds(window["non-qso-party"].getBounds() );
-// });
-  
-  
-  
-  
-  
-  
-  

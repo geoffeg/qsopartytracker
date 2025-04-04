@@ -40,7 +40,7 @@ const server = Bun.serve({
             const urlParams = new URL(req.url).searchParams;
             const commentFilter = '%' + (urlParams.get("f") || defaultCommentFilter) + '%';
             const sql = `SELECT 
-            comment, longitude, latitude, id, symbolIcon, fromCallsign, fromCallsignSsId, MAX(tsEpochMillis) as tsEpochMillis, county, grid, comment 
+            comment, longitude, latitude, id, symbolIcon, fromCallsign, fromCallsignSsId, MAX(tsEpochMillis) as tsEpochMillis, county, grid 
             FROM aprsPackets 
             WHERE tsEpochMillis > unixepoch('now', '-4 hour', 'subsec') 
             AND comment LIKE ?1
