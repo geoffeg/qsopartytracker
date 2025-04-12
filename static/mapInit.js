@@ -6,7 +6,7 @@ let config = {
   };
 // magnification with which the map will start
 const zoom = 7.3;
-// co-ordinates
+// coordinates
 const lat = 38.3;
 const lng = -92.5;
   
@@ -16,12 +16,10 @@ const swva = new L.Marker([38,-80]);
 const cva = new L.Marker([38,-78]);
   
 const map = L.map('map', config).fitBounds([[40.616,-95.824],[35.873, -89.331]], { padding: [0, 0] });
-const geojsonLayer = new L.GeoJSON.AJAX("{{BASE_URL}}/county.geojson", {style: style, onEachFeature: onEachFeature2}).addTo(map);
+const geojsonLayer = new L.GeoJSON.AJAX("/counties.geojson", {style: style, onEachFeature: onEachFeature2}).addTo(map);
 const qsoparty = L.featureGroup().addTo(map);
-// const nonqsoparty = L.featureGroup().addTo(map);
   
-window["qso-party"] = createRealtimeLayer('./qso-party.json', qsoparty).addTo(map);
-    //   window["non-qso-party"] = createRealtimeLayer( './non-qso-party.json', nonqsoparty);
+window["qso-party"] = createRealtimeLayer('/stations.geojson', qsoparty).addTo(map);
   
 // Used to load and display tile layers on the map
 // Most tile servers require attribution, which you can set under `Layer`
@@ -101,7 +99,6 @@ const swvaControl = L.Control.extend({
     },
 });
   
-
 map.addControl(new homeControl());
 map.addControl(new nvaControl());
 map.addControl(new cvaControl());
@@ -133,27 +130,10 @@ buttonSWVa.addEventListener("click", () => {
     map.flyTo([37.30,-92.49], 8.5);
 });
   
-/* Layers Checkboxes */
-// const layersContainer = document.querySelector(".layers");
-
-// const layersButton = "all stations";
-
-// function generateButton(name) {
-//     const id = name === layersButton ? "all-layers" : name;
-
-//     const templateLayer = `<li class="layer-element"><label for="${id}"> <input type="checkbox" id="${id}" name="item" class="item" value="${name}" checked><span>${name}</span></label></li>`;
-//     layersContainer.insertAdjacentHTML("beforeend", templateLayer);
-// }
-  
-
 // add data to geoJSON layer and add to LayerGroup
 // const arrayLayers = ["qso-party", "non-qso-party"];
 const arrayLayers = ["qso-party"];
 
-// arrayLayers.map((json) => {
-//     generateButton(json);
-// });
-  
 document.addEventListener("click", (e) => {
     const target = e.target;
     const itemInput = target.closest(".item");
@@ -210,10 +190,8 @@ function style(feature) {
   
 /* Set up County Name */
 function onEachFeature2(feature, layer) {
-    if (feature.properties && feature.properties.name) {
-        const [ countyName, countyCode ] = feature.properties.name.split("=");
-        const countyCodeAlpha = countyCode.split(" ")[0]
-        layer.bindPopup('<h1>' + countyName  + ' (' + countyCodeAlpha + ') </h1>');
+    if (feature.properties && feature.properties.name && feature.properties.code) {
+        layer.bindPopup('<h1>' + feature.properties.name  + ' (' + feature.properties.code + ') </h1>');
     }
 }
   
@@ -263,5 +241,4 @@ function createRealtimeLayer(url, container) {
     
 function clickZoom(e) {
     map.setView(e.target.getLatLng(), 13)
-    // setActive(e.sourceTarget.feature.properties.id);
 }

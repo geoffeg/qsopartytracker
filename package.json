@@ -6,7 +6,7 @@
     "listenAndServe": "concurrently --names aprs,serve -c blue,yellow \"bun run aprs-daemon\" \"bun run serve\"",
     "aprs-daemon": "bun run aprs.js",
     "serve": "bun run index.js",
-    "dev": "bun run --hot index.js"
+    "dev": "bun run --hot server.js"
   },
   "devDependencies": {
     "@types/bun": "latest"
@@ -19,9 +19,11 @@
     "@turf/turf": "^7.2.0",
     "aprs-parser": "git+https://github.com/geoffeg/npm-aprs-parser.git",
     "concurrently": "^9.1.2",
+    "hono": "^4.7.6",
     "humanize-duration": "^3.32.1",
     "js-aprs-is": "^2.0.1",
-    "sanitize-html": "^2.15.0",
+    "pino": "^9.6.0",
+    "react": "^19.1.0",
     "xmldom": "^0.6.0"
   }
 }

@@ -27,7 +27,7 @@ To run in the background:
 ```docker run -d -p 3000:3000 --name=qsopartytracker --volume=/path/to/directory/qsopartytracker:/opt/ -e DB_PATH=/opt/aprs.db qsopartytracker```
 
 # Todo
-* Don't hardcode the counties KML file, move to config
 * CICD
 * Config for things like filters?
 * Highlight row?
+* Switch to https://www.jsdelivr.com/unpkg since unpkg seems to go down sometimes

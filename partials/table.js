@@ -1,5 +1,5 @@
-const sanitizeHtml = require('sanitize-html');
 const humanizeDuration = require("humanize-duration");
+import { html, raw } from 'hono/html'
 
 const shortEnglishHumanizer = humanizeDuration.humanizer({
     "delimiter": " ",
@@ -29,34 +29,29 @@ const getRowClass = (positionEpochMillis) => {
 }
 
 const table = (positions) => {
-    // sanitize every field of the position object
-    positions = positions.map((position) => {
-        for (const key in position) {
-            position[key] = sanitizeHtml(position[key], { allowedTags: [], allowedAttributes: [] });
-        }
-        return position;
-    });
     const rows = positions.map((position) => {
-        return `
-        <tr class="${getRowClass(position.tsEpochMillis)}">
-            <td scope="row">${position.fromCallsign}${position.fromCallsignSsId ? '-' + position.fromCallsignSsId : ''}</td>
-            <td data-label="Age">${shortEnglishHumanizer((Date.now() - (position.tsEpochMillis * 1000)))}</td>
-            <td data-label="County">${position.county ? position.countyName + " (" + position.countyCode + ")" : ''}</td>
-            <td data-label="County Time">${shortEnglishHumanizer(position.countyDwellTime * 1000)}</td>
-            <td data-label="Comment">${position.comment || ''}</td>
-        </tr>`
+        return html`
+            <tr class="${getRowClass(position.tsEpochMillis)}">
+                <td scope="row">${position.fromCallsign}${position.fromCallsignSsId ? '-' + position.fromCallsignSsId : ''}</td>
+                <td data-label="Age">${shortEnglishHumanizer((Date.now() - (position.tsEpochMillis * 1000)))}</td>
+                <td data-label="County">${position.county ? position.countyName + " (" + position.countyCode + ")" : ''}</td>
+                <td data-label="County Time">${shortEnglishHumanizer(position.countyDwellTime * 1000)}</td>
+                <td data-label="Comment">${position.comment || ''}</td>
+            </tr>
+        `
     });
 
     const cards = positions.map((position) => {
-        return `
-        <tr class="${getRowClass(position.tsEpochMillis)}"><td colspan="2">${position.fromCallsign}${position.fromCallsignSsId ? '-' + position.fromCallsignSsId : ''}</td></tr>
-        <tr><td>Age</td><td>${shortEnglishHumanizer((Date.now() - (position.tsEpochMillis * 1000)))}</td></tr>
-        <tr><td>County (code)</td><td>${position.county ? position.countyName + " (" + position.countyCode + ")" : ''}</td></tr>
-        <tr><td>County Dwell Time</td><td>${shortEnglishHumanizer(position.countyDwellTime * 1000)}</td></tr>
-        <tr><td>Comment</td><td>${position.comment || ''}</td>`
+        return html`
+                <tr class="${getRowClass(position.tsEpochMillis)}"><td colspan="2">${position.fromCallsign}${position.fromCallsignSsId ? '-' + position.fromCallsignSsId : ''}</td></tr>
+                <tr><td>Age</td><td>${shortEnglishHumanizer((Date.now() - (position.tsEpochMillis * 1000)))}</td></tr>
+                <tr><td>County (code)</td><td>${position.county ? position.countyName + " (" + position.countyCode + ")" : ''}</td></tr>
+                <tr><td>County Dwell Time</td><td>${shortEnglishHumanizer(position.countyDwellTime * 1000)}</td></tr>
+                <tr><td>Comment</td><td>${position.comment || ''}</td></tr>
+        `
     })
 
-    const table = `
+   return `
     Refreshes every 30 seconds. Loaded: ${new Date().toUTCString().replace("GMT", "Zulu")}
     <table class="table">
         <thead>
@@ -78,7 +73,7 @@ const table = (positions) => {
             ${cards.join("")}
         </tbody>
     </table>`
-    return table;
 }
 
-module.exports = table;
+export default table;
+

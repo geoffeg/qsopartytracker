@@ -11,6 +11,7 @@ const table = require("./partials/table.js");
 console.log("index DB Path: ", process.env.DB_PATH || "aprs.db");
 const db = new Database(process.env.DB_PATH || "aprs.db", { readonly: false, create: true });
 const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'qsopartytracker'));
+
 fs.mkdirSync(tmpDir, { recursive: true });
 
 const defaultCommentFilter = "MOQP";

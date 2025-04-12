@@ -1,117 +1,22 @@
+const fs = require('fs');
 const aprs = require("aprs-parser");
 const { Database } = require("bun:sqlite");
-const tj = require('@mapbox/togeojson');
-const fs = require('fs');
-const DOMParser = require('xmldom').DOMParser;
-const turf = require("@turf/turf");
 
-const aprsServer = "167.114.2.176";
-// const aprsServer = "noam.aprs2.net";
-const aprsPort = 14580;
-const aprsFilter = "a/40.616251/-95.824438/35.873701/-89.331518"; // r/38.3566/-92.458/500
-const aprsCall = "NOCALL";
+const { loadCountyBoundaries, findStateCorners, findCounty, gridForLatLon } = require('./geoutils.js');
+const config = require('./config.js').default;
+const logger = require("pino")({ level: config.logLevel });
 
-console.log("aprs DB Path: ", process.env.DB_PATH || "aprs.db");
+const db = new Database(config.databasePath, { readonly: false, create: true });
+const schema = fs.readFileSync('schema.sql', 'utf8');
+db.exec(schema);
 
-const db = new Database(process.env.DB_PATH || "aprs.db", { readonly: false, create: true });
-const createTable = db.prepare(`CREATE TABLE IF NOT EXISTS aprsPackets (
-    id INTEGER PRIMARY KEY,
-    ts TIMESTAMP DATETIME DEFAULT(datetime('subsec')),
-    tsEpochMillis INTEGER DEFAULT(unixepoch('subsec')),
-    packet TEXT,
-    fromCallsign TEXT,
-    fromCallsignSsId TEXT,
-    toCallsign TEXT,
-    latitude REAL,
-    longitude REAL,
-    comment TEXT,
-    symbol TEXT,
-    symbolIcon TEXT,
-    speed REAL,
-    course REAL,
-    altitude REAL,
-    county TEXT,
-    grid TEXT
-)`);
-createTable.run();
-const cleanupTrigger = db.prepare(`CREATE TRIGGER IF NOT EXISTS cleanupTrigger AFTER INSERT ON aprsPackets
-    BEGIN
-        DELETE FROM aprsPackets WHERE tsEpochMillis < unixepoch('now', '-24 hour', 'subsec');
-    END`);
-cleanupTrigger.run();
-const tsEpochMillisIndex = db.prepare(`CREATE INDEX IF NOT EXISTS idx_aprsPackets_tsEpochMillis ON aprsPackets(tsEpochMillis)`);
-tsEpochMillisIndex.run();
-const countyIndex = db.prepare(`CREATE INDEX IF NOT EXISTS idx_aprsPackets_county ON aprsPackets(county)`);
-countyIndex.run();
-const fromCallsignIndex = db.prepare(`CREATE INDEX IF NOT EXISTS idx_aprsPackets_fromCallsign ON aprsPackets(fromCallsign)`);
-fromCallsignIndex.run();
-const tsCountyIndex = db.prepare(`CREATE INDEX IF NOT EXISTS idx_aprsPackets_fromCallsign_ts ON aprsPackets(fromCallsign, ts)`);
-tsCountyIndex.run();
+const countyBoundaries = loadCountyBoundaries(config.countyBoundariesFile, config.countiesCodesJsonFile);
 
-const kmlFile = fs.readFileSync('OverlayMissouriRev3.kml', 'utf8');
-const kml = new DOMParser().parseFromString(kmlFile);
-const geoJson = tj.kml(kml, { styles: true });
+const stateCorners = findStateCorners(countyBoundaries);
+const aprsFilter = config.aprsFilter || `a/${stateCorners[0][1]}/${stateCorners[0][0]}/${stateCorners[1][1]}/${stateCorners[1][0]}`;
+console.log("stateCorners:", stateCorners);
 
 const parser = new aprs.APRSParser();
-
-const findCounty = (lat, lon) => {
-    const point = turf.point([lon, lat]);
-    const counties = geoJson.features.filter((feature) => {
-        const polygon = turf.polygon(feature.geometry.coordinates);
-        return turf.booleanPointInPolygon(point, polygon);
-    });
-    if (counties.length == 1) {
-        return counties[0];
-    } else if (counties.length > 1) {
-        console.log("WTF: More than one county found for lat: " + lat + ", lon: " + lon);
-        return counties[0];
-    }
-}
-
-function gridForLatLon(latitude, longitude) {
-	const UPPERCASE = 'ABCDEFGHIJKLMNOPQRSTUVWX'
-	const LOWERCASE = UPPERCASE.toLowerCase();
-
-	// Parameter Validataion
-	const lat = parseFloat(latitude);
-	if (isNaN(lat)) {
-		throw "latitude is NaN";
-	}
-
-	if (Math.abs(lat) === 90.0) {
-		throw "grid squares invalid at N/S poles";
-	}
-
-	if (Math.abs(lat) > 90) {
-		throw "invalid latitude: " + lat;
-	}
-
-	const lon = parseFloat(longitude);
-	if (isNaN(lon)) {
-		throw "longitude is NaN";
-	}
-
-  	if (Math.abs(lon) > 180) {
-		throw "invalid longitude: " + lon;
-	}
-
-	// Latitude
-	const adjLat = lat + 90;
-	const fieldLat = UPPERCASE[Math.trunc(adjLat / 10)];
-	const squareLat = '' + Math.trunc(adjLat % 10);
-	const rLat = (adjLat - Math.trunc(adjLat)) * 60;
-	const subLat = LOWERCASE[Math.trunc(rLat / 2.5)];
-	  
-	// Logitude
-  	const adjLon = lon + 180;
-  	const fieldLon = UPPERCASE[Math.trunc(adjLon / 20)];
-  	const squareLon = ''+Math.trunc((adjLon / 2) % 10);
-  	const rLon = (adjLon - 2*Math.trunc(adjLon / 2)) * 60;
-    const subLon = LOWERCASE[Math.trunc(rLon / 5)];
-	  
-  	return fieldLon + fieldLat + squareLon + squareLat + subLon + subLat;
-}
-
 const connect = async () => {
     const timeout = 30000; // 30 seconds timeout for connection
     const resetTimeout = (socket) => {
@@ -124,8 +29,8 @@ const connect = async () => {
         }, timeout); // 30 seconds timeout for data
     }
     const socket = await Bun.connect({
-        hostname: aprsServer,
-        port: aprsPort,
+        hostname: config.aprsServer,
+        port: config.aprsPort,
         socket: { 
             open(socket) {
                 console.log('Connected to APRS server.');
@@ -138,12 +43,16 @@ const connect = async () => {
                 const aprsLines = aprsLine.split("\r\n").filter(packet => packet !== "").filter(packet => packet[0] !== "#");
                 const decodedPackets = aprsLines.map(packet => parser.parse(packet));
                 decodedPackets.forEach(packet => {
-                    // console.dir(packet, { depth: null, colors: true });
+                    logger.debug(packet);
                     if (!packet?.data?.latitude || !packet?.data?.longitude) {
                         return;
                     }
-                    console.log(packet.raw)
-                    const county = findCounty(packet.data.latitude, packet.data.longitude);
+                    if (!packet?.data?.comment?.match(config.commentFilter)) {
+                        return;
+                    }
+
+                    logger.info(packet.raw)
+                    const county = findCounty(countyBoundaries, packet.data.latitude, packet.data.longitude);
                     const grid = gridForLatLon(packet.data.latitude, packet.data.longitude);
                     const insert = db.prepare(`INSERT INTO aprsPackets (
                         packet, fromCallsign, fromCallsignSsId, toCallsign, 
@@ -185,7 +94,7 @@ const connect = async () => {
             },
         }
     });
-    socket.write(`user ${aprsCall} pass -1 vers mo-qso-tracker 1 filter ${aprsFilter}\r\n`);
+    socket.write(`user ${config.aprsCall} pass -1 vers mo-qso-tracker 1 filter ${aprsFilter}\r\n`);
     return socket;
 }
 
