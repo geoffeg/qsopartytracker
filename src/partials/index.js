@@ -18,6 +18,8 @@ const index = (config) => {
     
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.2/dist/leaflet.css" />
     <link rel="stylesheet" href="/static/styles.css" />
+    <link rel="icon" type="image/png" href="/static/favicon.png">
+
 </head>
 <body>
     <header>

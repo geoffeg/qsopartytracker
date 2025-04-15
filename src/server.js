@@ -30,6 +30,7 @@ app.get('/', (c) => index(c));
 app.get('/counties.geojson', (c) => counties(c));
 app.get('/stations.geojson', (c) => stations(c, db));
 app.get('/stations.html', (c) => stationsHtml(c, db));
+app.get('/favicon.ico', (c) => c.file('./static/favicon.ico'));
 app.get('/health', (c) => health(c, db));
 
 export default app;
