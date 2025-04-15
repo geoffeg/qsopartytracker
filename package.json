@@ -3,7 +3,7 @@
   "module": "index.js",
   "type": "module",
   "scripts": {
-    "listenAndServe": "concurrently --names aprs,serve -c blue,yellow \"bun run aprs-daemon\" \"bun run serve\"",
+    "daemon-and-server": "NODE_ENV=production concurrently --names aprs,serve -c blue,yellow \"bun run aprs-daemon\" \"bun run serve\"",
     "aprs-daemon": "bun run src/aprs.js",
     "serve": "bun run src/server.jsx",
     "dev": "NODE_ENV=dev bun run --hot src/server.js"
