@@ -31,7 +31,6 @@ const stations = async (context, db) => {
             countyCode: row.countyCode,
             grid: row.grid
         });
-        console.log(feature)
         return feature;
     }).filter((feature) => feature !== undefined);
     return context.json({
