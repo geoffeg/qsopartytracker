@@ -7,14 +7,13 @@ const config = require('./config.js').default;
 const logger = require("pino")({ level: config.logLevel });
 
 const db = new Database(config.databasePath, { readonly: false, create: true });
-const schema = fs.readFileSync('schema.sql', 'utf8');
+const schema = fs.readFileSync('./schema.sql', 'utf8');
 db.exec(schema);
 
 const countyBoundaries = loadCountyBoundaries(config.countyBoundariesFile, config.countiesCodesJsonFile);
 
 const stateCorners = findStateCorners(countyBoundaries);
 const aprsFilter = config.aprsFilter || `a/${stateCorners[0][1]}/${stateCorners[0][0]}/${stateCorners[1][1]}/${stateCorners[1][0]}`;
-console.log("stateCorners:", stateCorners);
 
 const parser = new aprs.APRSParser();
 const connect = async () => {
@@ -44,23 +43,30 @@ const connect = async () => {
                 const decodedPackets = aprsLines.map(packet => parser.parse(packet));
                 decodedPackets.forEach(packet => {
                     logger.debug(packet);
+                    // If there's no latitute or longitude, skip the packet
                     if (!packet?.data?.latitude || !packet?.data?.longitude) {
                         return;
                     }
+                    // If the comment doesn't natch the filter, skip the packet
                     if (!packet?.data?.comment?.match(config.commentFilter)) {
                         return;
                     }
 
-                    logger.info(packet.raw)
                     const county = findCounty(countyBoundaries, packet.data.latitude, packet.data.longitude);
+                    // If the packet doesn't have a county, we're probably out of the state, skip the packet
+                    if (!county) {
+                        return;
+                    }
+                    logger.info(packet.raw)
                     const grid = gridForLatLon(packet.data.latitude, packet.data.longitude);
+                    console.log(grid)
                     const insert = db.prepare(`INSERT INTO aprsPackets (
                         packet, fromCallsign, fromCallsignSsId, toCallsign, 
                         latitude, longitude, comment, 
                         symbol, symbolIcon, speed, 
-                        course, altitude, county, grid) 
+                        course, altitude, countyName, countyCode, grid) 
                         VALUES 
-                        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`);
+                        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`);
                     insert.run(
                         packet.raw,
                         packet?.from?.call,
@@ -75,6 +81,7 @@ const connect = async () => {
                         packet?.data?.extension?.courseDeg,
                         packet?.data?.altitude,
                         county?.properties?.name,
+                        county?.properties?.code,
                         grid
                     );
                 });

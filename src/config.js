@@ -13,8 +13,7 @@ const config = {
     // The coordinates should be easily beyond the extremities of the state
     // See https://www.aprs-is.net/javAPRSFilter.aspx for more options
     //aprsFilter: ["a/40.616251/-95.824438/35.873701/-89.331518"],
-    databasePath: process.env.DB_PATH || "aprs.db",
+    databasePath: process.env.DB_PATH || "../aprs.db",
     logLevel: process.env.NODE_ENV === 'production' ? 'info' : 'debug',
 }
-
 export default config

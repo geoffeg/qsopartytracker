@@ -4,9 +4,9 @@
   "type": "module",
   "scripts": {
     "listenAndServe": "concurrently --names aprs,serve -c blue,yellow \"bun run aprs-daemon\" \"bun run serve\"",
-    "aprs-daemon": "bun run aprs.js",
-    "serve": "bun run index.js",
-    "dev": "bun run --hot server.js"
+    "aprs-daemon": "bun run src/aprs.js",
+    "serve": "bun run src/server.jsx",
+    "dev": "NODE_ENV=dev bun run --hot src/server.js"
   },
   "devDependencies": {
     "@types/bun": "latest"
@@ -23,6 +23,8 @@
     "humanize-duration": "^3.32.1",
     "js-aprs-is": "^2.0.1",
     "pino": "^9.6.0",
+    "pino-http": "^10.4.0",
+    "pino-pretty": "^13.0.0",
     "react": "^19.1.0",
     "xmldom": "^0.6.0"
   }

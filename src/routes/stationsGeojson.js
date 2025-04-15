@@ -3,7 +3,7 @@ import * as turf from '@turf/turf';
 const sql = `
 SELECT comment, longitude, latitude, 
        id, symbolIcon, fromCallsign, fromCallsignSsId, 
-       MAX(tsEpochMillis) as tsEpochMillis, county, grid 
+       MAX(tsEpochMillis) as tsEpochMillis, countyName, countyCode, grid 
 FROM aprsPackets 
 WHERE tsEpochMillis > unixepoch('now', '-4 hour', 'subsec') 
 GROUP BY fromCallsign 
@@ -21,18 +21,17 @@ const stations = async (context, db) => {
             type: "Point",
             coordinates: [row.longitude, row.latitude]
         }
-        const [ countyName, countyCode ] = row.county.split("=");
-        const countyCodeAlpha = countyCode.split(" ")[0]
         const feature = turf.feature(geometry, {
             id: row.id,
             icon: row.symbolIcon,
             frequency: Array.isArray(frequency) ? frequency[1] : '',
             call: row.fromCallsign + (row.fromCallsignSsId ? '-' + row.fromCallsignSsId : ''),
             text: row.comment,
-            county: countyName + " (" + countyCodeAlpha + ")",
-            countyCode: countyCodeAlpha,
+            county: row.countyName + " (" + row.countyCode + ")",
+            countyCode: row.countyCode,
             grid: row.grid
         });
+        console.log(feature)
         return feature;
     }).filter((feature) => feature !== undefined);
     return context.json({

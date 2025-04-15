@@ -1,7 +1,8 @@
 import { Hono } from 'hono';
 import { serveStatic } from 'hono/bun';
+import { requestId } from 'hono/request-id';
 import config from './config.js';
-const logger = require("pino")({level: config.logLevel});
+const pino = require("pino");
 
 import { Database } from "bun:sqlite";
 import index from './routes/index.js';
@@ -11,11 +12,17 @@ import stationsHtml from './routes/stationsHtml.jsx';
 import health from './routes/health.js'
 
 const db = new Database(config.databasePath, { readonly: false, create: true });
+const logger = process.env.NODE_ENV === "production" ? pino({level: config.logLevel}) : pino({level: config.logLevel, transport: { target: 'pino-pretty', options: { colorize: true } } });
 
 const app = new Hono();
-app.use('*', (c, next) => {
+app.use(requestId());
+app.use('*', async (c, next) => {
     c.set('config', config);
-    c.set('logger', logger)
+    c.env.incomingId = c.var.requestId;
+
+    const childLogger = logger.child({requestId: c.env.incomingId})
+    c.set('logger', childLogger)
+
     return next();
 });
 app.use('/static/*', serveStatic({ root: './', }));
