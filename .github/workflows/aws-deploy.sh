@@ -17,11 +17,13 @@ aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS 
 # 3. Push image to ECR
 docker push ${ECR_REPO}:${IMAGE_TAG}
 
+EC2_INSTANCE_ID=$(aws ec2 describe-instances --region $AWS_REGION --filters "Name=tag:Name,Values=qsopartytracker-prod" "Name=instance-state-name,Values=running" --query "Reservations[*].Instances[*].InstanceId" --output text)
+
 # 4. SSH into EC2 and deploy container
 aws ssm send-command \
     --region $AWS_REGION \
     --document-name "AWS-RunShellScript" \
-    --targets "Key=instanceIds,Values=i-0abcdef1234567890" \
+    --targets "Key=instanceIds,Values=${EC2_INSTANCE_ID}" \
     --comment "Deploying new Docker image" \
     --parameters commands="[
         'aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ECR_REPO',
