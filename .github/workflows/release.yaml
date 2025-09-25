@@ -1,0 +1,31 @@
+name: release
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Setup git
+        run: |
+          git config --global user.email "geoffeg@geoffeg.org"
+          git config --global user.name "geoffeg"
+
+      - name: checkout source
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Configure AWS creds (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_GHA_SSM_ROLE_ARN }}
+          aws-region: us-east-1
+
+      - name: Execute deploy script
+        run: |
+          chmod +x .github/workflows/aws-deploy.sh
+          .github/workflows/aws-deploy.sh

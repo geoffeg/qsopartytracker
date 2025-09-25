@@ -1,0 +1,34 @@
+#!/bin/bash
+set -e
+
+# Variables (edit these)
+AWS_REGION="us-east-1"
+# Get ECR repository URI from AWS
+ECR_REPO=$(aws ecr describe-repositories --region $AWS_REGION --repository-names qsoparty_repo --query 'repositories[0].repositoryUri' --output text)
+IMAGE_TAG="latest"
+CONTAINER_NAME="qsopartytracker"
+
+# 1. Build Docker image
+docker build . --build-arg GIT_SHA=$(git rev-parse --short HEAD) --platform linux/amd64 -t ${ECR_REPO}:${IMAGE_TAG}
+
+# 2. Authenticate Docker to ECR
+aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ECR_REPO}
+
+# 3. Push image to ECR
+docker push ${ECR_REPO}:${IMAGE_TAG}
+
+# 4. SSH into EC2 and deploy container
+aws ssm send-command \
+    --region $AWS_REGION \
+    --document-name "AWS-RunShellScript" \
+    --targets "Key=instanceIds,Values=i-0abcdef1234567890" \
+    --comment "Deploying new Docker image" \
+    --parameters commands="[
+        'aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ECR_REPO',
+        'docker pull ${ECR_REPO}:${IMAGE_TAG}',
+        'docker stop $CONTAINER_NAME || true',
+        'docker rm $CONTAINER_NAME || true',
+        'docker run -d --name $CONTAINER_NAME -p 80:80 ${ECR_REPO}:${IMAGE_TAG}'
+    ]"
+
+echo "Deployment complete."

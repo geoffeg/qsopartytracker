@@ -5,7 +5,7 @@
   "scripts": {
     "daemon-and-server": "NODE_ENV=production concurrently --names aprs,serve -c blue,yellow \"bun run aprs-daemon\" \"bun run serve\"",
     "aprs-daemon": "bun run src/aprs.js",
-    "serve": "bun run src/server.jsx",
+    "serve": "bun run src/server.js",
     "dev": "NODE_ENV=dev bun run --hot src/server.js"
   },
   "devDependencies": {

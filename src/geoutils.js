@@ -3,7 +3,7 @@ const path = require('path');
 const tj = require('@mapbox/togeojson');
 const DOMParser = require('xmldom').DOMParser;
 const turf = require("@turf/turf");
-const config = require('./config.js').default;
+const config = require('../config.js').default;
 const logger = require("pino")({ level: config.logLevel });
 
 const kmlToGeoJson = (kmlFile) => {

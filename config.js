@@ -3,7 +3,7 @@ const config = {
     operarationInstructions: "To be listed on this map, put \"MOQP XX.XXX\" in your APRS comment. (XX.XXX being your current frequency) Eg: \"MOQP 14.230\" if you are on 20mtrs at 14.230",
     countyBoundariesFile: "./states-geojson/Counties_Missouri.kml",
     countiesCodesJsonFile: "./states-geojson/countyCodes-MO.json",
-    commentFilter: /^MOQP /i,
+    commentFilter: '',
     aprsServer: "167.114.2.176",
     aprsPort: 14580,
     aprsCall: "NOCALL",

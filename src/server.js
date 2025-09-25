@@ -1,7 +1,7 @@
 import { Hono } from 'hono';
 import { serveStatic } from 'hono/bun';
 import { requestId } from 'hono/request-id';
-import config from './config.js';
+import config from '../config.js';
 const pino = require("pino");
 
 import { Database } from "bun:sqlite";
