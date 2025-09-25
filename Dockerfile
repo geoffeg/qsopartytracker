@@ -38,4 +38,4 @@ ARG GIT_SHA
 ENV GIT_SHA=$GIT_SHA
 ENV NODE_ENV=production
 EXPOSE 3000/tcp
-ENTRYPOINT [ "bun", "run", "listenAndServe" ]
+ENTRYPOINT [ "bun", "run", "daemon-and-server" ]

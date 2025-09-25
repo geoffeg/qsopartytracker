@@ -5,6 +5,7 @@ set -e
 AWS_REGION="us-east-1"
 # Get ECR repository URI from AWS
 ECR_REPO=$(aws ecr describe-repositories --region $AWS_REGION --repository-names qsoparty_repo --query 'repositories[0].repositoryUri' --output text)
+EC2_INSTANCE_ID=$(aws ec2 describe-instances --region $AWS_REGION --filters "Name=tag:Name,Values=qsopartytracker-prod" "Name=instance-state-name,Values=running" --query "Reservations[*].Instances[*].InstanceId" --output text)
 IMAGE_TAG="latest"
 CONTAINER_NAME="qsopartytracker"
 
@@ -17,7 +18,6 @@ aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS 
 # 3. Push image to ECR
 docker push ${ECR_REPO}:${IMAGE_TAG}
 
-EC2_INSTANCE_ID=$(aws ec2 describe-instances --region $AWS_REGION --filters "Name=tag:Name,Values=qsopartytracker-prod" "Name=instance-state-name,Values=running" --query "Reservations[*].Instances[*].InstanceId" --output text)
 
 # 4. SSH into EC2 and deploy container
 aws ssm send-command \
@@ -30,7 +30,8 @@ aws ssm send-command \
         'docker pull ${ECR_REPO}:${IMAGE_TAG}',
         'docker stop $CONTAINER_NAME || true',
         'docker rm $CONTAINER_NAME || true',
-        'docker run -d --name $CONTAINER_NAME -p 80:80 ${ECR_REPO}:${IMAGE_TAG}'
+        'mkdir ~/docker-volumes || true',
+        'docker run -d --name $CONTAINER_NAME -p 3000:3000 ${ECR_REPO}:${IMAGE_TAG}' --volume=~/docker-volumes:/opt -e DB_PATH="/opt/aprs.db"
     ]"
 
 echo "Deployment complete."
