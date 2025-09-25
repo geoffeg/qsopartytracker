@@ -31,7 +31,7 @@ aws ssm send-command \
         'docker stop $CONTAINER_NAME || true',
         'docker rm $CONTAINER_NAME || true',
         'mkdir ~/docker-volumes || true',
-        'docker run -d --name $CONTAINER_NAME -p 3000:3000 ${ECR_REPO}:${IMAGE_TAG}' --volume=~/docker-volumes:/opt -e DB_PATH="/opt/aprs.db"'
+        'docker run -d --name $CONTAINER_NAME -p 3000:3000 ${ECR_REPO}:${IMAGE_TAG} --volume=~/docker-volumes:/opt -e DB_PATH="/opt/aprs.db"'
     ]"
 
 echo "Deployment complete."
