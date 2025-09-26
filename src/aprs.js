@@ -3,7 +3,7 @@ const aprs = require("aprs-parser");
 const { Database } = require("bun:sqlite");
 
 const { loadCountyBoundaries, findStateCorners, findCounty, gridForLatLon } = require('./geoutils.js');
-const config = require('../config.js').default;
+const config = require('./config.js').default;
 const logger = require("pino")({ level: config.logLevel });
 
 const db = new Database(config.databasePath, { readonly: false, create: true });
