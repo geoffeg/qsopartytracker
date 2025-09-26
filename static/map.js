@@ -1,21 +1,26 @@
+const url = new URL(document.currentScript.src);
+const urlParams = new URLSearchParams(url.search);
+const mapBounds = urlParams.get('bounds').split(',').map(Number);
+const stateAbbr = urlParams.get('stateAbbr');
 
-let config = {
+const config = {
     minZoom: 5,
     maxZoom: 13,
     zoomSnap: 0.25,
   };
 // magnification with which the map will start
-const zoom = 7.3;
-// coordinates
-const lat = 38.3;
-const lng = -92.5;
+// const zoom = 7.3;
+// // coordinates
+// const lat = 38.3;
+// const lng = -92.5;
   
-const nva = new L.Marker([39,-77]);
-const seva = new L.Marker([38,-76]);
-const swva = new L.Marker([38,-80]);
-const cva = new L.Marker([38,-78]);
+
+// const nva = new L.Marker([39,-77]);
+// const seva = new L.Marker([38,-76]);
+// const swva = new L.Marker([38,-80]);
+// const cva = new L.Marker([38,-78]);
   
-const map = L.map('map', config).fitBounds([[40.616,-95.824],[35.873, -89.331]], { padding: [0, 0] });
+const map = L.map('map', config).fitBounds([[mapBounds[0],mapBounds[1]],[mapBounds[2], mapBounds[3]]], { padding: [0, 0] });
 const geojsonLayer = new L.GeoJSON.AJAX("/counties.geojson", {style: style, onEachFeature: onEachFeature2}).addTo(map);
 const qsoparty = L.featureGroup().addTo(map);
   
@@ -36,8 +41,8 @@ const homeControl = L.Control.extend({
 
     onAdd: function (map) {
         const btn = L.DomUtil.create("button");
-        btn.title = "Show all MO";
-        btn.innerHTML = "All<BR>MO";
+        btn.title = `Show all ${stateAbbr}`;
+        btn.innerHTML = `All<BR>${stateAbbr}`;
         btn.className += "leaflet-bar back-to-home";
         return btn;
     },
@@ -50,8 +55,8 @@ const nvaControl = L.Control.extend({
   
     onAdd: function (map) {
         const btn = L.DomUtil.create("button");
-        btn.title = "Zoom NW MO";
-        btn.innerHTML = "NW<BR>MO";
+        btn.title = `Zoom NW ${stateAbbr}`;
+        btn.innerHTML = `NW<BR>${stateAbbr}`;
         btn.className += "leaflet-bar to-nva";
         return btn;
     },
@@ -64,8 +69,8 @@ const cvaControl = L.Control.extend({
   
     onAdd: function (map) {
         const btn = L.DomUtil.create("button");
-        btn.title = "Zoom NE MO";
-        btn.innerHTML = "NE<BR>MO";
+        btn.title = `Zoom NE ${stateAbbr}`;
+        btn.innerHTML = `NE<BR>${stateAbbr}`;
         btn.className += "leaflet-bar to-cva";
         return btn;
     },
@@ -78,8 +83,8 @@ const sevaControl = L.Control.extend({
 
     onAdd: function (map) {
         const btn = L.DomUtil.create("button");
-        btn.title = "Zoom S.E. MO";
-        btn.innerHTML = "SE<BR>MO";
+        btn.title = `Zoom S.E. ${stateAbbr}`;
+        btn.innerHTML = `SE<BR>${stateAbbr}`;
         btn.className += "leaflet-bar to-seva";
         return btn;
     },
@@ -92,8 +97,8 @@ const swvaControl = L.Control.extend({
   
     onAdd: function (map) {
         const btn = L.DomUtil.create("button");
-        btn.title = "Zoom SW MO";
-        btn.innerHTML = "SW<BR>MO";
+        btn.title = `Zoom SW ${stateAbbr}`;
+        btn.innerHTML = `SW<BR>${stateAbbr}`;
         btn.className += "leaflet-bar to-swva";
         return btn;
     },
@@ -112,22 +117,45 @@ const buttonSEVa = document.querySelector(".to-seva");
 const buttonSWVa = document.querySelector(".to-swva");
   
 buttonBackToHome.addEventListener("click", () => {
-    map.flyTo([lat,lng], zoom);
+    map.fitBounds([[mapBounds[0],mapBounds[1]],[mapBounds[2], mapBounds[3]]], { padding: [0, 0] })
 });
   
+function getCornerCenter(cornerLat, cornerLng, zoom, xSign, ySign) {
+    // xSign, ySign: +1 for right/bottom, -1 for left/top
+    const mapSize = map.getSize();
+    const cornerPoint = map.project([cornerLat, cornerLng], zoom);
+    const centerPoint = cornerPoint.subtract([
+        xSign * mapSize.x / 2,
+        ySign * mapSize.y / 2
+    ]);
+    return map.unproject(centerPoint, zoom);
+}
+
 buttonNVa.addEventListener("click", () => {
-    map.flyTo([39.4,-94.1], 8.75);
+    const zoomLevel = 8.75;
+    // NW: upper left
+    const center = getCornerCenter(mapBounds[0], mapBounds[1], zoomLevel, -1, -1);
+    map.flyTo(center, zoomLevel);
 });
   
 buttonCVa.addEventListener("click", () => {
-    map.flyTo([39.3,-92.0], 8.75);
+    const zoomLevel = 8.75;
+    // NE: upper right
+    const center = getCornerCenter(mapBounds[0], mapBounds[3], zoomLevel, +1, -1);
+    map.flyTo(center, zoomLevel);
 });
 
 buttonSEVa.addEventListener("click", () => {
-    map.flyTo([37.14,-90.44], 8.75);
+    const zoomLevel = 8.75;
+    // SW: lower left
+    const center = getCornerCenter(mapBounds[2], mapBounds[1], zoomLevel, -1, +1);
+    map.flyTo(center, zoomLevel);
 });
 buttonSWVa.addEventListener("click", () => {
-    map.flyTo([37.30,-92.49], 8.5);
+    const zoomLevel = 8.5;
+    // SE: lower right
+    const center = getCornerCenter(mapBounds[2], mapBounds[3], zoomLevel, +1, +1);
+    map.flyTo(center, zoomLevel);
 });
   
 // add data to geoJSON layer and add to LayerGroup

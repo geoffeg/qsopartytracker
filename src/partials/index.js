@@ -1,6 +1,10 @@
 import { html } from 'hono/html'
 
 const index = (config) => {
+    const mapQueryString = new URLSearchParams({
+        bounds: config.stateCorners.flat().join(','),
+        stateAbbr: config.stateAbbr,
+    });
     return html`
 <!DOCTYPE html>
 <html lang="en">
@@ -33,7 +37,7 @@ const index = (config) => {
     <footer>
         <p>Created by <a href="https://geoffeg.org">geoffeg</a>, originally based on <a href="https://github.com/azwirko/QP-APRS-Tracker">QP-APRS-Tracker</a> by <a href="https://github.com/azwirko">Andy Zwirko</a></a></p>
     </footer>
-    <script src="/static/mapInit.js"></script>
+    <script src="/static/map.js?${mapQueryString}"></script>
     <script>
         document.body.addEventListener('htmx:configRequest', (event) => {
             event.detail.path = event.detail.path + '?_=' + Date.now();

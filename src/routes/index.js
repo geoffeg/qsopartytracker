@@ -1,9 +1,7 @@
-import index from '../partials/index.js';
+import indexPartial from '../partials/index.js';
 
-const config = require('../../config.js').default;
-
-const indexFoo = (c) => {
-    return c.html(index(config));
+const index = (c) => {
+    return c.html(indexPartial(c.get('config')));
 }
 
-export default indexFoo;
+export default index;
