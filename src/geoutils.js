@@ -14,11 +14,11 @@ const kmlToGeoJson = (kmlFile) => {
 }
 
 const loadCountyBoundaries = (countyBoundariesFile, countyCodesJsonFile) => {
-    if (!fs.existsSync(countyCodesJsonFile)) {
-        throw new Error("Counties codes file not found: " + countyCodesJsonFile);
-    }
-    const fileContents = fs.readFileSync(countyCodesJsonFile, 'utf8');
-    const countyCodes = JSON.parse(fileContents);
+    // if (!fs.existsSync(countyCodesJsonFile)) {
+    //     throw new Error("Counties codes file not found: " + countyCodesJsonFile);
+    // }
+    // const fileContents = fs.readFileSync(countyCodesJsonFile, 'utf8');
+    // const countyCodes = JSON.parse(fileContents);
 
     if (!fs.existsSync(countyBoundariesFile)) {
         throw new Error("County boundaries file not found: " + countyBoundariesFile);
@@ -27,12 +27,12 @@ const loadCountyBoundaries = (countyBoundariesFile, countyCodesJsonFile) => {
     const countiesWithCodes = {
         type: "FeatureCollection",
         features: convertedWithStyles.features.map((county) => {
-            const countyName = county.properties.name.replace(/ County$/, '');
+            const [countyName, countyCode] = county.properties.name.split('=');
             return {
                 type: 'Feature',
                 properties: {
                     name: countyName,
-                    code: countyCodes[countyName]
+                    code: countyCode.split(' ')[0],
                 },
                 geometry: county.geometry
             }
