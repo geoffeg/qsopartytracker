@@ -1,8 +1,13 @@
 import { html } from 'hono/html'
 
+// const { loadCountyBoundaries, findStateCorners, findCounty, gridForLatLon } = require('./geoutils.js');
+import { loadCountyBoundaries,  findStateCorners } from '../geoutils.js';
+
 const index = (config) => {
+    const countyBoundaries = loadCountyBoundaries(config.countyBoundariesFile);
+    const stateCorners = findStateCorners(countyBoundaries);
     const mapQueryString = new URLSearchParams({
-        bounds: config.stateCorners.flat().join(','),
+        bounds: [stateCorners[0].reverse(), stateCorners[1].reverse()].flat().join(','),
         stateAbbr: config.stateAbbr,
     });
     return html`
