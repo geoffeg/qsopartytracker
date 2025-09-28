@@ -1,6 +1,11 @@
 # use the official Bun image
 # see all versions at https://hub.docker.com/r/oven/bun/tags
 FROM oven/bun:1 AS base
+# USER root
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends procps \
+  && rm -rf /var/lib/apt/lists/*
+# USER bun
 WORKDIR /usr/src/app
 
 # install dependencies into temp directory
