@@ -148,13 +148,14 @@ buttonCVa.addEventListener("click", () => {
 buttonSEVa.addEventListener("click", () => {
     const zoomLevel = 8.75;
     // SW: lower left
-    const center = getCornerCenter(mapBounds[2], mapBounds[1], zoomLevel, -1, +1);
+    const center = getCornerCenter(mapBounds[2], mapBounds[3], zoomLevel, +1, +1);
+
     map.flyTo(center, zoomLevel);
 });
 buttonSWVa.addEventListener("click", () => {
     const zoomLevel = 8.5;
     // SE: lower right
-    const center = getCornerCenter(mapBounds[2], mapBounds[3], zoomLevel, +1, +1);
+    const center = getCornerCenter(mapBounds[2], mapBounds[1], zoomLevel, -1, +1);
     map.flyTo(center, zoomLevel);
 });
   
