@@ -30,9 +30,10 @@ const getRowClass = (positionEpochMillis) => {
 
 const table = (positions) => {
     const rows = positions.map((position) => {
+        const qrzLink = html`<a href="https://qrz.com/db/${position.fromCallsign}" target="_blank">${position.fromCallsign}${position.fromCallsignSsId ? '-' + position.fromCallsignSsId : ''}</a>`;
         return html`
             <tr class="${getRowClass(position.tsEpochMillis)}">
-                <td scope="row">${position.fromCallsign}${position.fromCallsignSsId ? '-' + position.fromCallsignSsId : ''}</td>
+                <td scope="row">${qrzLink}</td>
                 <td data-label="Age">${shortEnglishHumanizer((Date.now() - (position.tsEpochMillis * 1000)))}</td>
                 <td data-label="County">${position.countyName ? position.countyName + " (" + position.countyCode + ")" : ''}</td>
                 <td data-label="County Time">${shortEnglishHumanizer(position.countyDwellTime * 1000)}</td>
@@ -42,8 +43,9 @@ const table = (positions) => {
     });
 
     const cards = positions.map((position) => {
+        const qrzLink = html`<a href="https://qrz.com/db/${position.fromCallsign}" target="_blank">${position.fromCallsign}${position.fromCallsignSsId ? '-' + position.fromCallsignSsId : ''}</a>`;
         return html`
-                <tr class="${getRowClass(position.tsEpochMillis)}"><td colspan="2">${position.fromCallsign}${position.fromCallsignSsId ? '-' + position.fromCallsignSsId : ''}</td></tr>
+                <tr class="${getRowClass(position.tsEpochMillis)}"><td colspan="2">${qrzLink}</td></tr>
                 <tr><td>Age</td><td>${shortEnglishHumanizer((Date.now() - (position.tsEpochMillis * 1000)))}</td></tr>
                 <tr><td>County (code)</td><td>${position.countyName ? position.countyName + " (" + position.countyCode + ")" : ''}</td></tr>
                 <tr><td>County Dwell Time</td><td>${shortEnglishHumanizer(position.countyDwellTime * 1000)}</td></tr>
