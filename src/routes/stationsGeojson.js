@@ -11,12 +11,13 @@ ORDER BY tsEpochMillis DESC
 `;
 
 const stations = async (context, db) => {
+    const commentFilter = context.get('config').commentFilter;
     const rows = await db.query(sql);
     const geoFeatures = rows.all('%MOQP%').map((row) => {
         if (row.county === null) {
             return;
         }
-        const frequency = row.comment ? row.comment.match(/MOQP\s+([0-9\.]+)/i) : '';
+        const frequency = row.comment && commentFilter ? row.comment.match(new RegExp(commentFilter + '\\s+([0-9\\.]+)', 'i')) : '';
         const geometry = {
             type: "Point",
             coordinates: [row.longitude, row.latitude]
