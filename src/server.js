@@ -7,6 +7,7 @@ const pino = require("pino");
 
 import { Database } from "bun:sqlite";
 import index from './routes/index.js';
+import help from './routes/help.js';
 import counties from './routes/counties.js';
 import stations from './routes/stationsGeojson.js';
 import stationsHtml from './routes/stationsHtml.jsx';
@@ -29,6 +30,7 @@ app.use('*', async (c, next) => {
 });
 app.use('/static/*', serveStatic({ root: './', }));
 app.get('/', (c) => index(c));
+app.get('/help', (c) => help(c));
 app.get('/counties.geojson', (c) => counties(c));
 app.get('/stations.geojson', (c) => stations(c, db));
 app.get('/stations.html', (c) => stationsHtml(c, db));

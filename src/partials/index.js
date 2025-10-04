@@ -33,7 +33,8 @@ const index = (config) => {
 <body>
     <header>
         <h1>Live ${config.operationTitle} APRS Tracker</h1>
-        <p>${config.operarationInstructions}</p>
+        <p>${config.operarationInstructions}. For more instructions, including what app to use, <a href="/help">click here</a>.</p>
+
     </header>
     <main>
         <div id="map"></div>
