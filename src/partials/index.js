@@ -1,4 +1,4 @@
-import { html } from 'hono/html'
+import { html, raw } from 'hono/html'
 
 // const { loadCountyBoundaries, findStateCorners, findCounty, gridForLatLon } = require('./geoutils.js');
 import { loadCountyBoundaries,  findStateCorners } from '../geoutils.js';
@@ -33,7 +33,7 @@ const index = (config) => {
 <body>
     <header>
         <h1>Live ${config.operationTitle} APRS Tracker</h1>
-        <p>${config.operarationInstructions}. For more instructions, including what app to use, <a href="/help">click here</a>.</p>
+        <p>${raw(config.operarationInstructions)}. For more instructions, including what app to use, <a href="/help">click here</a>.</p>
 
     </header>
     <main>
