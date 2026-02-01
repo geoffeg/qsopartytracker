@@ -4,7 +4,6 @@ const health = (c, db) => {
     const config = c.get('config');
     const health = {
         status: "OK",
-        config: config,
         gitSha: process.env.GIT_SHA || "unknown",
         uptimeSeconds: process.uptime(),
         memoryUsage: process.memoryUsage(),
@@ -12,7 +11,7 @@ const health = (c, db) => {
         db: { 
             latestRecordTs: db.prepare("SELECT MAX(ts) as ts FROM aprsPackets").get().ts,
             recordCount: db.prepare("SELECT COUNT(*) as count FROM aprsPackets").get().count,
-            dbSizeBytes: fs.statSync("aprs.db").size,
+            dbSizeBytes: fs.statSync(config.databasePath).size,
         }
     }
     return c.json(health);
