@@ -15,7 +15,10 @@ import stationsHtml from './routes/stationsHtml.jsx';
 import health from './routes/health.js'
 
 const db = new Database(config.databasePath, { readonly: false, create: true });
-const pinoLogger = process.env.NODE_ENV === "production" ? pino({level: config.logLevel}) : pino({level: config.logLevel, transport: { target: 'pino-pretty', options: { colorize: true } } });
+const pinoLogger = process.env.NODE_ENV === "production" ? pino({level: config.logLevel}) : pino({
+    level: config.logLevel, 
+    transport: { target: 'pino-pretty', options: { colorize: true } }
+});
 
 const app = new Hono();
 app.use(logger());
@@ -24,7 +27,7 @@ app.use('*', async (c, next) => {
     c.set('config', config);
     c.env.incomingId = c.var.requestId;
 
-    const childLogger = pinoLogger.child({requestId: c.env.incomingId})
+    const childLogger = pinoLogger.child({requestId: c.env.incomingId}, {level: c.req.queries("logLevel") || config.logLevel});
     c.set('logger', childLogger)
 
     return next();

@@ -30,7 +30,7 @@ const index = (upcomingParties) => {
     <h2>Upcoming QSO Parties</h2>
     ${raw(partyDivs)}
     <footer>
-        <p>Created by <a href="https://geoffeg.org">geoffeg</a>, originally based on <a href="https://github.com/azwirko/QP-APRS-Tracker">QP-APRS-Tracker</a> by <a href="https://github.com/azwirko">Andy Zwirko</a></a></p>
+        <p>Brought to you by the <a href="https://nyqp.org/wordpress/live-mobile-tracking/">New York QSO Party</a>. Created by <a href="https://geoffeg.org">geoffeg</a>, originally based on <a href="https://github.com/azwirko/QP-APRS-Tracker">QP-APRS-Tracker</a> by <a href="https://github.com/azwirko">Andy Zwirko</a></p>
     </footer>
     <script>
         document.body.addEventListener('htmx:configRequest', (event) => {
