@@ -1,7 +1,6 @@
 import indexPartial from '../partials/stateIndex.js';
 import { loadCountyBoundaries, findStateCountiesFile, findStateCorners } from '../geoutils.js';
 
-
 const stateIndex = (c) => {
     const qsoPartyAbbv = c.req.param('party').toUpperCase();
     const stateConfig = c.get('config').qsoParties[qsoPartyAbbv];

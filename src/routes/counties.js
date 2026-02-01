@@ -1,26 +1,17 @@
-import fs from 'fs';
-import path from 'path';
-import os from 'os';
-
+import { memoize } from 'micro-memoize';
 import { loadCountyBoundaries, findStateCountiesFile } from '../geoutils.js';
 
-const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'qsopartytracker'));
+const memoizedLoadCountyBoundaries = memoize((filePath) => {
+    return loadCountyBoundaries(filePath);
+}, { maxAge: 24 * 60 * 60 * 1000 }); // Cache for 24 hours
 
-// Get kml county boundary files from https://files.boundmaps.com/
 const counties = (c) => {
     const party = c.req.param('party');
     const logger = c.get('logger');
 
-    if (fs.existsSync(path.join(tmpDir, `${party}-county.json`))) {
-        const fileContents = fs.readFileSync(path.join(tmpDir, `${party}-county.json`), 'utf8');
-        logger.info('Serving cached county boundaries for party ' + party);
-        return c.body(fileContents)
-    }
-    logger.info(`Cached county boundaries not found for party ${party}, loading from KML file.`);
     try {
         const countiesFile = findStateCountiesFile(party);
-        const countyBoundaries = loadCountyBoundaries(countiesFile)
-        fs.writeFileSync(path.join(tmpDir, `${party}-county.json`), JSON.stringify(countyBoundaries));
+        const countyBoundaries = memoizedLoadCountyBoundaries(countiesFile)
         return c.json(countyBoundaries);
     } catch (error) {
         logger.error(`Error finding county boundaries file for party ${party}: ${error}`);
