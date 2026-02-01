@@ -5,15 +5,18 @@ SELECT comment, longitude, latitude,
        id, symbolIcon, fromCallsign, fromCallsignSsId, 
        MAX(tsEpochMillis) as tsEpochMillis, countyName, countyCode, grid 
 FROM aprsPackets 
-WHERE tsEpochMillis > unixepoch('now', '-4 hour', 'subsec') 
+WHERE tsEpochMillis > unixepoch('now', '-4 hour', 'subsec')
+AND comment LIKE $commentFilter 
 GROUP BY fromCallsign 
 ORDER BY tsEpochMillis DESC
 `;
 
-const stations = async (context, db) => {
-    const commentFilter = context.get('config').commentFilter;
+const stations = async (c, db) => {
+    const qsoStateAbbv = c.req.param('party').toUpperCase();
+    const commentFilter = `${c.get('config').qsoParties[qsoStateAbbv].commentFilter}%`;
+    console.log(commentFilter);
     const rows = await db.query(sql);
-    const geoFeatures = rows.all('%MOQP%').map((row) => {
+    const geoFeatures = rows.all({ $commentFilter: commentFilter }).map((row) => {
         if (row.county === null) {
             return;
         }
@@ -34,7 +37,7 @@ const stations = async (context, db) => {
         });
         return feature;
     }).filter((feature) => feature !== undefined);
-    return context.json({
+    return c.json({
         type: "FeatureCollection",
         features: geoFeatures
     });

@@ -21,10 +21,10 @@ const config = {
 // const cva = new L.Marker([38,-78]);
   
 const map = L.map('map', config).fitBounds([[mapBounds[0],mapBounds[1]],[mapBounds[2], mapBounds[3]]], { padding: [100, 100] });
-const geojsonLayer = new L.GeoJSON.AJAX("/counties.geojson", {style: style, onEachFeature: onEachFeature2}).addTo(map);
+const geojsonLayer = new L.GeoJSON.AJAX(`/${stateAbbr}/counties.geojson`, {style: style, onEachFeature: onEachFeature2}).addTo(map);
 const qsoparty = L.featureGroup().addTo(map);
   
-window["qso-party"] = createRealtimeLayer('/stations.geojson', qsoparty).addTo(map);
+window["qso-party"] = createRealtimeLayer(`/${stateAbbr}/stations.geojson`, qsoparty).addTo(map);
   
 // Used to load and display tile layers on the map
 // Most tile servers require attribution, which you can set under `Layer`

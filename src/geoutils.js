@@ -6,6 +6,59 @@ const turf = require("@turf/turf");
 const config = require('../config.js').default;
 const logger = require("pino")({ level: config.logLevel });
 
+ const states = {
+    "AL": "Alabama",
+    "AK": "Alaska",
+    "AZ": "Arizona",
+    "AR": "Arkansas",
+    "CA": "California",
+    "CO": "Colorado",
+    "CT": "Connecticut",
+    "DE": "Delaware",
+    "FL": "Florida",
+    "GA": "Georgia",
+    "HI": "Hawaii",
+    "ID": "Idaho",
+    "IL": "Illinois",
+    "IN": "Indiana",
+    "IA": "Iowa",
+    "KS": "Kansas",
+    "KY": "Kentucky",
+    "LA": "Louisiana",
+    "ME": "Maine",
+    "MD": "Maryland",
+    "MA": "Massachusetts",
+    "MI": "Michigan",
+    "MN": "Minnesota",
+    "MS": "Mississippi",
+    "MO": "Missouri",
+    "MT": "Montana",
+    "NE": "Nebraska",
+    "NV": "Nevada",
+    "NH": "New Hampshire",
+    "NJ": "New Jersey",
+    "NM": "New Mexico",
+    "NY": "New York",
+    "NC": "North Carolina",
+    "ND": "North Dakota",
+    "OH": "Ohio",
+    "OK": "Oklahoma",
+    "OR": "Oregon",
+    "PA": "Pennsylvania",
+    "RI": "Rhode Island",
+    "SC": "South Carolina",
+    "SD": "South Dakota",
+    "TN": "Tennessee",
+    "TX": "Texas",
+    "UT": "Utah",
+    "VT": "Vermont",
+    "VA": "Virginia",
+    "WA": "Washington",
+    "WV": "West Virginia",
+    "WI": "Wisconsin",
+    "WY": "Wyoming"
+};
+
 const kmlToGeoJson = (kmlFile) => {
     const kmlFileContents = fs.readFileSync(kmlFile, 'utf8');
     const kml = new DOMParser().parseFromString(kmlFileContents);
@@ -13,13 +66,7 @@ const kmlToGeoJson = (kmlFile) => {
     return geoJson;
 }
 
-const loadCountyBoundaries = (countyBoundariesFile, countyCodesJsonFile) => {
-    // if (!fs.existsSync(countyCodesJsonFile)) {
-    //     throw new Error("Counties codes file not found: " + countyCodesJsonFile);
-    // }
-    // const fileContents = fs.readFileSync(countyCodesJsonFile, 'utf8');
-    // const countyCodes = JSON.parse(fileContents);
-
+const loadCountyBoundaries = (countyBoundariesFile) => {
     if (!fs.existsSync(countyBoundariesFile)) {
         throw new Error("County boundaries file not found: " + countyBoundariesFile);
     }
@@ -140,9 +187,36 @@ const gridForLatLon = (latitude, longitude) => {
   	return fieldLon + fieldLat + squareLon + squareLat + subLon + subLat;
 }
 
+const getStateNameFromCode = (stateCode) => {
+    return states[stateCode.toUpperCase()] || null;
+}
+
+const getStateCodeFromName = (stateName) => {
+    const entry = Object.entries(states).find(([code, name]) => name.toLowerCase() === stateName.toLowerCase());
+    return entry ? entry[0] : null;
+}
+
+// The files downloaded from https://www.no5w.com/CQxCountyOverlays-DL.php have the state name in the filename, as well as a "Rev", find the right one for this state.
+const findStateCountiesFile = (stateAbbr) => {
+    const stateName = getStateNameFromCode(stateAbbr);
+    if (!stateName) {
+        throw new Error(`Invalid state abbreviation: ${stateAbbr}`);
+    }
+    const countiesFile = fs.readdirSync('./maps').find((file) =>
+        file.startsWith(`Overlay${stateName.replace(/ /g, '')}`) && file.endsWith('.kml')
+    );
+    if (countiesFile) {
+        return path.join('./maps', countiesFile);
+    }
+    throw new Error(`County overlay file not found for state ${stateAbbr}`);
+}
+
 export {
     findCounty,
     gridForLatLon,
     loadCountyBoundaries,
-    findStateCorners
+    findStateCorners,
+    getStateNameFromCode,
+    getStateCodeFromName,
+    findStateCountiesFile
 }

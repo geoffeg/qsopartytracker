@@ -18,14 +18,17 @@ MAX(tsEpochMillis) - (
 ) as countyDwellTime,
 countyName, countyCode, comment 
 FROM aprsPackets ap 
-WHERE tsEpochMillis > unixepoch('now', '-4 hour', 'subsec') 
+WHERE tsEpochMillis > unixepoch('now', '-4 hour', 'subsec')
+AND comment LIKE $commentFilter
 GROUP BY fromCallsign ORDER BY tsEpochMillis DESC
 `;
 
-const stationsHtml = async (context, db) => {
+const stationsHtml = async (c, db) => {
+    const qsoStateAbbv = c.req.param('party').toUpperCase();
+    const commentFilter = `${c.get('config').qsoParties[qsoStateAbbv].commentFilter}%`;
     const rows = await db.query(sql);
-    const dbRows = rows.all('%1%').filter((row) => row !== undefined);
+    const dbRows = rows.all({ $commentFilter: commentFilter }).filter((row) => row !== undefined);
     const tableRows = table(dbRows);
-    return context.html(tableRows)
+    return c.html(tableRows)
 }
 export default stationsHtml

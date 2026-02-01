@@ -2,7 +2,7 @@ const fs = require('fs');
 const aprs = require("aprs-parser");
 const { Database } = require("bun:sqlite");
 
-const { loadCountyBoundaries, findStateCorners, findCounty, gridForLatLon } = require('./geoutils.js');
+const { loadCountyBoundaries, findStateCorners, findCounty, gridForLatLon, findStateCountiesFile } = require('./geoutils.js');
 const config = require('./config.js').default;
 const logger = require("pino")({ level: config.logLevel });
 
@@ -10,10 +10,11 @@ const db = new Database(config.databasePath, { readonly: false, create: true });
 const schema = fs.readFileSync('./schema.sql', 'utf8');
 db.exec(schema);
 
-const countyBoundaries = loadCountyBoundaries(config.countyBoundariesFile, config.countiesCodesJsonFile);
+// const countyBoundaries = loadCountyBoundaries(config.countyBoundariesFile, config.countiesCodesJsonFile);
 
-const stateCorners = findStateCorners(countyBoundaries);
-const aprsFilter = config.aprsFilter || `a/${stateCorners[0][1]}/${stateCorners[0][0]}/${stateCorners[1][1]}/${stateCorners[1][0]}`;
+// const stateCorners = findStateCorners(countyBoundaries);
+// const aprsFilter = config.aprsFilter || `a/${stateCorners[0][1]}/${stateCorners[0][0]}/${stateCorners[1][1]}/${stateCorners[1][0]}`;
+const aprsFilter = "t/po"
 
 const parser = new aprs.APRSParser();
 const connect = async () => {
@@ -47,19 +48,32 @@ const connect = async () => {
                     if (!packet?.data?.latitude || !packet?.data?.longitude) {
                         return;
                     }
-                    // If the comment doesn't natch the filter, skip the packet
+
+                    // If the comment doesn't match the filter, skip the packet
                     if (!packet?.data?.comment?.match(config.commentFilter)) {
                         return;
                     }
-
-                    const county = findCounty(countyBoundaries, packet.data.latitude, packet.data.longitude);
-                    // If the packet doesn't have a county, we're probably out of the state, skip the packet
-                    if (!county) {
+                    const stateCode = packet.data.comment.match(/.*?(\w+)QP.*/);
+                    if (!stateCode) {
                         return;
                     }
+                    const stateAbbr = stateCode[1].toUpperCase();
+
+                    const stateCountiesFile = findStateCountiesFile(stateAbbr);
+                    if (!stateCountiesFile) {
+                        return;
+                    }
+                    
+                    const countyBoundaries = loadCountyBoundaries(stateCountiesFile);
+                    const county = findCounty(countyBoundaries, packet.data.latitude, packet.data.longitude);
+
+                    // const county = findCounty(countyBoundaries, packet.data.latitude, packet.data.longitude);
+                    // // If the packet doesn't have a county, we're probably out of the state, skip the packet
+                    // if (!county) {
+                    //     return;
+                    // }
                     logger.info(packet.raw)
                     const grid = gridForLatLon(packet.data.latitude, packet.data.longitude);
-                    console.log(grid)
                     const insert = db.prepare(`INSERT INTO aprsPackets (
                         packet, fromCallsign, fromCallsignSsId, toCallsign, 
                         latitude, longitude, comment, 
