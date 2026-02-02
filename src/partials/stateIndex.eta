@@ -6,7 +6,7 @@
 }); %>
 <header>
     <h1>Live <%= it.stateConfig.operationTitle %> APRS Tracker</h1>
-    <p><%= it.stateConfig.operationInstructions %>. For more instructions, including what app to use, <a href="/help">click here</a>.</p>
+    <p><%~ it.stateConfig.operationInstructions %>. For more instructions, including what app to use, <a href="/help">click here</a>.</p>
 </header>
 <main>
     <div id="map"></div>
