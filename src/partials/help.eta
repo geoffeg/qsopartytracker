@@ -1,11 +1,9 @@
-const help = (config) => `
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>${config.operationTitle} APRS Tracker Help</title>
+    <title>QSO Party APRS Tracker Help</title>
 </head>
 <body>
       <h2>For chasers:</h2>
@@ -26,6 +24,4 @@ const help = (config) => `
             <li>For contests that do not permit self-spotting for mobiles, only the contest abbreviation (such as CQP) is required for the tracker to pick you up and track you on the map. In contests that do permit self-spotting for mobiles, such as NYQP, you may use either the contest name alone or the contest name and a frequency, so either NYQP or NYQP 7.230 will work.</li>
           </ol>
     </body>
-</html>`
-
-export default help;
+</html>

@@ -1,0 +1,26 @@
+<% layout("./base") %>
+
+<% const mapQueryString = new URLSearchParams({
+        bounds: it.mapBounds,
+        stateAbbr: it.stateConfig.stateAbbr,
+}); %>
+<header>
+    <h1>Live <%= it.stateConfig.operationTitle %> APRS Tracker</h1>
+    <p><%= it.stateConfig.operationInstructions %>. For more instructions, including what app to use, <a href="/help">click here</a>.</p>
+</header>
+<main>
+    <div id="map"></div>
+    <div id="tableContainer" hx-trigger="load, every 30s" hx-get="/<%= it.stateConfig.stateAbbr %>/stations.html"></div>
+</main>
+<footer>
+    <p>Created by <a href="https://geoffeg.org">geoffeg</a>, originally based on <a href="https://github.com/azwirko/QP-APRS-Tracker">QP-APRS-Tracker</a> by <a href="https://github.com/azwirko">Andy Zwirko</a></a></p>
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/htmx.org@1.9.12/dist/htmx.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.2/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/leaflet@1.3.4/dist/leaflet-src.js"></script>
+<script src='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-omnivore/v0.3.1/leaflet-omnivore.min.js'></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-realtime/2.2.0/leaflet-realtime.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.min.js"></script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.2/dist/leaflet.css" />
+<script src="/static/map.js?<%~ mapQueryString %>"></script>

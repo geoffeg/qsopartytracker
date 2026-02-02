@@ -43,4 +43,3 @@ const stations = async (c, db) => {
 }
 
 export default stations;
-// exports.stations = stations;

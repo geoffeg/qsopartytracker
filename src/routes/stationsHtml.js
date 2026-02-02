@@ -1,7 +1,18 @@
-import { html, raw } from 'hono/html'
+const humanizeDuration = require("humanize-duration");
+const shortEnglishHumanizer = humanizeDuration.humanizer({
+    "delimiter": " ",
+    "spacer": "",
+    "round" : "true",
+    "language": "shortEn",
+    "languages": {
+        "shortEn": {
+            d: () => "d",
+            h: () => "h",
+            m: () => "m",
+            s: () => "s",
+            ms: () => "ms",
+}}});
 
-// const { table } =  require('../partials/table.jsx');
-import table from '../partials/table.js';
 const sql = `SELECT 
 fromCallsign, fromCallsignSsId, MAX(tsEpochMillis) as tsEpochMillis, 
 MAX(tsEpochMillis) - (
@@ -28,7 +39,12 @@ const stationsHtml = async (c, db) => {
     const commentFilter = `${c.get('config').qsoParties[qsoStateAbbv].commentFilter}%`;
     const rows = await db.query(sql);
     const dbRows = rows.all({ $commentFilter: commentFilter }).filter((row) => row !== undefined);
-    const tableRows = table(dbRows);
-    return c.html(tableRows)
+
+    const partialData = {
+        durationFormatter: shortEnglishHumanizer,
+        positions: dbRows,
+    };
+
+    return c.html(c.get('eta').render('stationsList', partialData));
 }
-export default stationsHtml
+export default stationsHtml;
