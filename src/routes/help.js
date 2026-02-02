@@ -1,7 +1,5 @@
-import helpPartial from '../partials/help.js';
-
 const help = (c) => {
-    return c.html(helpPartial(c.get('config')));
+    return c.html(c.get('eta').render('help'));
 }
 
 export default help;

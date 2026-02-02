@@ -1,4 +1,3 @@
-import indexPartial from '../partials/stateIndex.js';
 import { loadCountyBoundaries, findStateCountiesFile, findStateCorners } from '../geoutils.js';
 
 const stateIndex = (c) => {
@@ -8,8 +7,11 @@ const stateIndex = (c) => {
     const countyBoundaries = loadCountyBoundaries(countyBoundariesFile);
     const stateCorners = findStateCorners(countyBoundaries);
 
-    const index = indexPartial(stateConfig, stateCorners);
-    return c.html(index);
+    const partialData = {
+        stateConfig: stateConfig,
+        mapBounds: [stateCorners[0].reverse(), stateCorners[1].reverse()].flat().join(','),
+    }
+    return c.html(c.get('eta').render('stateIndex', partialData));
 }
 
 export default stateIndex;

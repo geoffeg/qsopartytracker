@@ -2,10 +2,12 @@ import { Hono } from 'hono';
 import { logger } from 'hono/logger'
 import { serveStatic } from 'hono/bun';
 import { requestId } from 'hono/request-id';
-import config from './config.js';
+import { Database } from "bun:sqlite";
+import { Eta } from "eta"
+import path from 'path';
 const pino = require("pino");
 
-import { Database } from "bun:sqlite";
+import config from './config.js';
 import stateIndex from './routes/stateIndex.js';
 import index from './routes/index.js';
 import help from './routes/help.js';
@@ -19,11 +21,13 @@ const pinoLogger = process.env.NODE_ENV === "production" ? pino({level: config.l
     level: config.logLevel, 
     transport: { target: 'pino-pretty', options: { colorize: true } }
 });
+const eta = new Eta({ views: path.join(import.meta.dirname, "partials") })
 
 const app = new Hono();
 app.use(logger());
 app.use(requestId());
 app.use('*', async (c, next) => {
+    c.set('eta', eta);
     c.set('config', config);
     c.env.incomingId = c.var.requestId;
 
