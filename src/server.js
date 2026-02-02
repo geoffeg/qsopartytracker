@@ -13,7 +13,7 @@ import index from './routes/index.js';
 import help from './routes/help.js';
 import counties from './routes/counties.js';
 import stations from './routes/stationsGeojson.js';
-import stationsHtml from './routes/stationsHtml.jsx';
+import stationsHtml from './routes/stationsHtml.js';
 import health from './routes/health.js'
 
 const db = new Database(config.databasePath, { readonly: false, create: true });
