@@ -1,4 +1,4 @@
-<% layout("./base") %>
+<% layout("./base", { title: it.stateName }) %>
 
 <% const mapQueryString = new URLSearchParams({
         bounds: it.mapBounds,

@@ -1,4 +1,4 @@
-import { loadCountyBoundaries, findStateCountiesFile, findStateCorners } from '../geoutils.js';
+import { loadCountyBoundaries, findStateCountiesFile, findStateCorners, getStateNameFromCode } from '../geoutils.js';
 
 const stateIndex = (c) => {
     const qsoPartyAbbv = c.req.param('party').toUpperCase();
@@ -10,6 +10,7 @@ const stateIndex = (c) => {
     const partialData = {
         stateConfig: stateConfig,
         mapBounds: [stateCorners[0].reverse(), stateCorners[1].reverse()].flat().join(','),
+        stateName: `${getStateNameFromCode(stateConfig.stateAbbr)} `,
     }
     return c.html(c.get('eta').render('stateIndex', partialData));
 }
