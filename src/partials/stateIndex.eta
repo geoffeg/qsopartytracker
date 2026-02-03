@@ -1,4 +1,4 @@
-<% layout("./base", { title: it.stateName }) %>
+<% layout("./base", { title: `${it.stateName} QSO Party APRS Tracker` }) %>
 
 <% const mapQueryString = new URLSearchParams({
         bounds: it.mapBounds,

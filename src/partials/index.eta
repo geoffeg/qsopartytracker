@@ -1,5 +1,5 @@
 
-<% layout("./base") %>
+<% layout("./base", { title: 'QSO Party APRS Tracker'}) %>
 <header>
     <h1>Live QSO Party APRS Tracker</h1>
     <p>For more instructions, including what app to use, <a href="/help">click here</a>.</p>
