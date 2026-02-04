@@ -13,9 +13,9 @@ ORDER BY tsEpochMillis DESC
 
 const stations = async (c, db) => {
     const qsoStateAbbv = c.req.param('party').toUpperCase();
-    const commentFilter = `${c.get('config').qsoParties[qsoStateAbbv].commentFilter}%`;
+    const commentFilter = c.get('config').qsoParties[qsoStateAbbv].commentFilter;
     const rows = await db.query(sql);
-    const geoFeatures = rows.all({ $commentFilter: commentFilter }).map((row) => {
+    const geoFeatures = rows.all({ $commentFilter: `${commentFilter}%` }).map((row) => {
         if (row.county === null) {
             return;
         }
