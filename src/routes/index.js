@@ -9,9 +9,9 @@ const index = async (c) => {
     });
     
     // Filter out parties that have already ended
-    const today = new Date();
+    const now = new Date();
     onlyUSStates.splice(0, onlyUSStates.length, ...onlyUSStates.filter((party) => {
-        return party.dates.end >= today;
+        return party.dates.end >= now;
     }));
 
     // Filter out parties that are more than 30 days in the future
@@ -21,11 +21,18 @@ const index = async (c) => {
         return party.dates.start <= thirtyDaysFromNow;
     }));
 
-    const now = new Date();
+    // For testing, set the first party to have started 2 days ago
+    // if (onlyUSStates.length > 0) {
+    //     const twoDaysAgo = new Date();
+    //     twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
+    //     onlyUSStates[0].dates.start = twoDaysAgo;
+    // }
+
     const partialData = onlyUSStates.map(party => ({
         state: party.state,
         stateAbbr: getStateCodeFromName(party.state),
         timeToStart: formatDistance(now, new Date(party.dates.start)),
+        timeSinceStart: formatDistance(new Date(party.dates.start), now),
         start: party.dates.start,
     }))
 

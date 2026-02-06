@@ -4,11 +4,15 @@
     <h1>Live QSO Party APRS Tracker</h1>
     <p>For more instructions, including what app to use, <a href="/help">click here</a>.</p>
 </header>
-<h2>Upcoming QSO Parties</h2>
+<h2>Upcoming QSO Parties (next 30 days)</h2>
 <% it.upcomingParties.map((party) => { %>
     <div class="party">
-        <h3><a href="/<%= party.stateAbbr %>/"><%= party.state %></a> 
-        Starts in: <%= party.timeToStart %> on <%= party.start %></a></h3>
+        <h3><a href="/<%= party.stateAbbr %>/"><%= party.state %></a>
+        <% if (party.start < Date.now()) { %>
+            Started <%= party.timeSinceStart %> ago on "<%= party.start %>"</a></h3>
+        <% } else { %>
+            Starts in <%= party.timeToStart %> on "<%= party.start %>"</a></h3>
+        <% } %>
     </div>
 <% }) %>
 <footer>

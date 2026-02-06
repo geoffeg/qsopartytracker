@@ -8,17 +8,6 @@ const config = {
     maxZoom: 13,
     zoomSnap: 0.25,
   };
-// magnification with which the map will start
-// const zoom = 7.3;
-// // coordinates
-// const lat = 38.3;
-// const lng = -92.5;
-  
-
-// const nva = new L.Marker([39,-77]);
-// const seva = new L.Marker([38,-76]);
-// const swva = new L.Marker([38,-80]);
-// const cva = new L.Marker([38,-78]);
   
 const map = L.map('map', config).fitBounds([[mapBounds[0],mapBounds[1]],[mapBounds[2], mapBounds[3]]], { padding: [100, 100] });
 const geojsonLayer = new L.GeoJSON.AJAX(`/${stateAbbr}/counties.geojson`, {style: style, onEachFeature: onEachFeature2}).addTo(map);
@@ -30,7 +19,7 @@ window["qso-party"] = createRealtimeLayer(`/${stateAbbr}/stations.geojson`, qsop
 // Most tile servers require attribution, which you can set under `Layer`
 L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png').addTo(map);
   
-/* Home Button */
+// Home button
 const homeTemplate = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M32 18.451L16 6.031 0 18.451v-5.064L16 .967l16 12.42zM28 18v12h-8v-8h-8v8H4V18l12-9z" /></svg>';
   
 // create custom button
@@ -160,7 +149,6 @@ buttonSWVa.addEventListener("click", () => {
 });
   
 // add data to geoJSON layer and add to LayerGroup
-// const arrayLayers = ["qso-party", "non-qso-party"];
 const arrayLayers = ["qso-party"];
 
 document.addEventListener("click", (e) => {
@@ -217,14 +205,14 @@ function style(feature) {
     };
 }
   
-/* Set up County Name */
+// Set up County Name
 function onEachFeature2(feature, layer) {
     if (feature.properties && feature.properties.name && feature.properties.code) {
         layer.bindPopup('<h1>' + feature.properties.name  + ' (' + feature.properties.code + ') </h1>');
     }
 }
   
-/* Create APRS Callsign Layer */
+// Create APRS Callsign Layer
 function createRealtimeLayer(url, container) {
     const realtime = L.realtime(url, {
         interval: 30 * 1000,
