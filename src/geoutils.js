@@ -206,7 +206,13 @@ const findStateCountiesFile = (stateAbbr) => {
         file.startsWith(`Overlay${stateName.replace(/ /g, '')}`) && file.endsWith('.kml')
     );
     if (countiesFile) {
-        return path.join('./maps', countiesFile);
+        const resolvedPath = path.resolve('./maps', countiesFile);
+        const mapsDir = path.resolve('./maps');
+        const relative = path.relative(mapsDir, resolvedPath);
+        if (relative.startsWith('..') || path.isAbsolute(relative)) {
+            throw new Error(`Invalid county file path: ${countiesFile}`);
+        }
+        return resolvedPath;
     }
     throw new Error(`County overlay file not found for state ${stateAbbr}`);
 }
