@@ -8,10 +8,10 @@
 <% it.upcomingParties.map((party) => { %>
     <div class="party">
         <h3><a href="/<%= party.stateAbbr %>/"><%= party.state %></a>
-        <% if (party.start < Date.now()) { %>
-            Started <%= party.timeSinceStart %> ago on "<%= party.start %>"</a></h3>
+        <% if (party.start < new Date()) { %>
+            Started <%= party.timeSinceStart %> ago on "<%= party.start %>"</h3>
         <% } else { %>
-            Starts in <%= party.timeToStart %> on "<%= party.start %>"</a></h3>
+            Starts in <%= party.timeToStart %> on "<%= party.start %>"</h3>
         <% } %>
     </div>
 <% }) %>

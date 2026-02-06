@@ -21,7 +21,7 @@ const pinoLogger = process.env.NODE_ENV === "production" ? pino({level: config.l
     level: config.logLevel, 
     transport: { target: 'pino-pretty', options: { colorize: true } }
 });
-const eta = new Eta({ views: path.join(import.meta.dirname, "views") })
+const eta = new Eta({ views: path.join(import.meta.dirname, "views") });
 
 const app = new Hono();
 app.use(logger());
