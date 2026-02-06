@@ -3,6 +3,9 @@ import { loadCountyBoundaries, findStateCountiesFile, findStateCorners, getState
 const stateIndex = (c) => {
     const qsoPartyAbbv = c.req.param('party').toUpperCase();
     const stateConfig = c.get('config').qsoParties[qsoPartyAbbv];
+    if (!stateConfig) {
+        return c.text(`Unknown QSO Party: ${qsoPartyAbbv}`, 404);
+    }
     const countyBoundariesFile = findStateCountiesFile(stateConfig.stateAbbr);
     const countyBoundaries = loadCountyBoundaries(countyBoundariesFile);
     const stateCorners = findStateCorners(countyBoundaries);

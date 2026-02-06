@@ -208,7 +208,8 @@ const findStateCountiesFile = (stateAbbr) => {
     if (countiesFile) {
         const resolvedPath = path.resolve('./maps', countiesFile);
         const mapsDir = path.resolve('./maps');
-        if (!resolvedPath.startsWith(mapsDir)) {
+        const relative = path.relative(mapsDir, resolvedPath);
+        if (relative.startsWith('..') || path.isAbsolute(relative)) {
             throw new Error(`Invalid county file path: ${countiesFile}`);
         }
         return resolvedPath;

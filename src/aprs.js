@@ -7,6 +7,13 @@ const config = require('./config.js').default;
 const logger = require("pino")({ level: config.logLevel });
 
 const db = new Database(config.databasePath, { readonly: false, create: true });
+const insert = db.prepare(`INSERT INTO aprsPackets (
+    packet, fromCallsign, fromCallsignSsId, toCallsign, 
+    latitude, longitude, comment, 
+    symbol, symbolIcon, speed, 
+    course, altitude, countyName, countyCode, grid) 
+    VALUES 
+    (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`);
 const schema = fs.readFileSync('./schema.sql', 'utf8');
 db.exec(schema);
 
@@ -89,15 +96,9 @@ const connect = async () => {
                         if (!county) {
                             return;
                         }
-                        logger.info(packet.raw)
+                        logger.info(packet.raw);
                         const grid = gridForLatLon(packet.data.latitude, packet.data.longitude);
-                        const insert = db.prepare(`INSERT INTO aprsPackets (
-                            packet, fromCallsign, fromCallsignSsId, toCallsign, 
-                            latitude, longitude, comment, 
-                            symbol, symbolIcon, speed, 
-                            course, altitude, countyName, countyCode, grid) 
-                            VALUES 
-                            (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`);
+   
                         insert.run(
                             packet.raw,
                             packet?.from?.call,
@@ -121,6 +122,7 @@ const connect = async () => {
                     console.log('Error: ' + error);
                 },
                 close(socket) {
+                    clearTimeout(socket.data)
                     if (socket !== currentSocket) {
                         return; // Ignore closes from old sockets
                     }
@@ -130,7 +132,19 @@ const connect = async () => {
             }
         });
         currentSocket = socket;
-        socket.write(`user ${config.aprsCall} pass -1 vers mo-qso-tracker 1 filter ${aprsFilter}\r\n`);
+        try {
+            socket.write(`user ${config.aprsCall} pass -1 vers mo-qso-tracker 1 filter ${aprsFilter}\r\n`);
+        } catch (writeError) {
+            console.log('Failed to send login to APRS server: ' + writeError);
+            try {
+                socket.end();
+            } catch (_) {
+                // Ignore errors while closing socket
+            }
+            currentSocket = null;
+            scheduleReconnect();
+            return;
+        }
         return socket;
     } catch (error) {
         console.log('Failed to connect to APRS server: ' + error);
