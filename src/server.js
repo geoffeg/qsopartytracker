@@ -40,7 +40,7 @@ app.use('/static/*', serveStatic({ root: './', }));
 app.get('/', (c) => index(c));
 app.get('/health', (c) => health(c, db));
 app.get('/help', (c) => help(c));
-app.get('/favicon.ico', (c) => c.file('./static/favicon.ico'));
+app.get('/favicon.ico', (c) => c.redirect('/static/favicon.ico'));
 app.get('/:party', (c) => c.redirect(`/${c.req.param('party')}/`));
 app.get('/:party/', (c) => stateIndex(c));
 app.get('/:party/counties.geojson', (c) => counties(c));
