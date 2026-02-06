@@ -38,13 +38,13 @@ app.use('*', async (c, next) => {
 });
 app.use('/static/*', serveStatic({ root: './', }));
 app.get('/', (c) => index(c));
+app.get('/health', (c) => health(c, db));
+app.get('/help', (c) => help(c));
+app.get('/favicon.ico', (c) => c.file('./static/favicon.ico'));
 app.get('/:party', (c) => c.redirect(`/${c.req.param('party')}/`));
 app.get('/:party/', (c) => stateIndex(c));
-app.get('/help', (c) => help(c));
 app.get('/:party/counties.geojson', (c) => counties(c));
 app.get('/:party/stations.geojson', (c) => stations(c, db));
 app.get('/:party/stations.html', (c) => stationsHtml(c, db));
-app.get('/favicon.ico', (c) => c.file('./static/favicon.ico'));
-app.get('/health', (c) => health(c, db));
 
 export default app;
