@@ -22,8 +22,13 @@ CREATE TRIGGER IF NOT EXISTS cleanupTrigger AFTER INSERT ON aprsPackets
 BEGIN
     DELETE FROM aprsPackets WHERE tsEpochMillis < unixepoch('now', '-24 hour', 'subsec');
 END;
-CREATE INDEX IF NOT EXISTS idx_aprsPackets_tsEpochMillis ON aprsPackets(tsEpochMillis);
-CREATE INDEX IF NOT EXISTS idx_aprsPackets_countyCode ON aprsPackets(countyCode);
-CREATE INDEX IF NOT EXISTS idx_aprsPackets_fromCallsign ON aprsPackets(fromCallsign);
-CREATE INDEX IF NOT EXISTS idx_aprsPackets_fromCallsign_ts ON aprsPackets(fromCallsign, ts);
+-- Composite index for stationsHtml and stationsGeojson queries
+-- Filters on tsEpochMillis and comment, groups by fromCallsign
+CREATE INDEX IF NOT EXISTS idx_aprsPackets_tsEpochMillis_comment_fromCallsign
+ON aprsPackets(tsEpochMillis DESC, comment, fromCallsign);
+
+-- Index for the correlated subquery in stationsHtml
+-- Filters by fromCallsign and countyCode, ordered by tsEpochMillis
+CREATE INDEX IF NOT EXISTS idx_aprsPackets_fromCallsign_countyCode_tsEpochMillis
+ON aprsPackets(fromCallsign, countyCode, tsEpochMillis DESC);
 
