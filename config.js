@@ -277,7 +277,7 @@ const config = {
         "SC": {
             stateAbbr: "SC",
             operationTitle: `South Carolina QSO Party`,
-            operationInstructions: `To be listed on this map, put <u>SCQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "SCQP 14.230" if you are on 20mtrs at 14.230`,
+            operationInstructions: `To be listed on this map, put <u>SCQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Ex: "SCQP 14.230" if you are on 20 m at 14.230`,
             commentFilter: `SCQP`,
             kmlFile: 'OverlaySouthCarolinaRev3.kml',
             countyNamesOverrides: {
