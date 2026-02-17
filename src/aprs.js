@@ -2,7 +2,7 @@ const fs = require('fs');
 const aprs = require("aprs-parser");
 const { Database } = require("bun:sqlite");
 
-const { loadCountyBoundaries, findStateCorners, findCounty, gridForLatLon, findStateCountiesFile } = require('./geoutils.js');
+const { loadCountyBoundaries, findCounty, gridForLatLon } = require('./geoutils.js');
 const config = require('./config.js').default;
 const logger = require("pino")({ level: config.logLevel });
 
@@ -17,10 +17,6 @@ const insert = db.prepare(`INSERT INTO aprsPackets (
 const schema = fs.readFileSync('./schema.sql', 'utf8');
 db.exec(schema);
 
-// const countyBoundaries = loadCountyBoundaries(config.countyBoundariesFile, config.countiesCodesJsonFile);
-
-// const stateCorners = findStateCorners(countyBoundaries);
-// const aprsFilter = config.aprsFilter || `a/${stateCorners[0][1]}/${stateCorners[0][0]}/${stateCorners[1][1]}/${stateCorners[1][0]}`;
 const aprsFilter = "t/po"
 
 let reconnectTimer = null;
@@ -84,12 +80,16 @@ const connect = async () => {
                         }
                         const stateAbbr = stateCode[1].toUpperCase();
 
-                        const stateCountiesFile = findStateCountiesFile(stateAbbr);
+                        // If there isn't a key in "qsoParties" part of the config for this state, skip the packet, we don't support that state
+                        if (!config.qsoParties[stateAbbr]) {
+                            return;
+                        }
+                        const stateCountiesFile = config.qsoParties[stateAbbr].kmlFile;
                         if (!stateCountiesFile) {
                             return;
                         }
                         
-                        const countyBoundaries = loadCountyBoundaries(stateCountiesFile);
+                        const countyBoundaries = loadCountyBoundaries(stateCountiesFile, config.qsoParties[stateAbbr].countyNamesOverrides);
                         const county = findCounty(countyBoundaries, packet.data.latitude, packet.data.longitude);
 
                         // // If the packet doesn't have a county, we're probably out of the state, skip the packet
