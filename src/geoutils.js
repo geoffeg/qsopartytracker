@@ -66,15 +66,20 @@ const kmlToGeoJson = (kmlFile) => {
     return geoJson;
 }
 
-const loadCountyBoundaries = (countyBoundariesFile) => {
-    if (!fs.existsSync(countyBoundariesFile)) {
-        throw new Error("County boundaries file not found: " + countyBoundariesFile);
+const loadCountyBoundaries = (countyBoundariesFile, countyNamesOverrides) => {
+    const boundariesPath = path.join('./maps', countyBoundariesFile);
+    if (!fs.existsSync(boundariesPath)) {
+        throw new Error("County boundaries file not found: " + boundariesPath);
     }
-    const convertedWithStyles = kmlToGeoJson(countyBoundariesFile);
+    const convertedWithStyles = kmlToGeoJson(boundariesPath);
+    
     const countiesWithCodes = {
         type: "FeatureCollection",
         features: convertedWithStyles.features.map((county) => {
-            const [countyName, countyCode] = county.properties.name.split('=');
+            const kmlCountyName = countyNamesOverrides && countyNamesOverrides[county.properties.name]
+                ? countyNamesOverrides[county.properties.name]
+                : county.properties.name;
+            const [countyName, countyCode] = kmlCountyName.split('=');
             return {
                 type: 'Feature',
                 properties: {
@@ -197,25 +202,6 @@ const getStateCodeFromName = (stateName) => {
 }
 
 // The files downloaded from https://www.no5w.com/CQxCountyOverlays-DL.php have the state name in the filename, as well as a "Rev", find the right one for this state.
-const findStateCountiesFile = (stateAbbr) => {
-    const stateName = getStateNameFromCode(stateAbbr);
-    if (!stateName) {
-        throw new Error(`Invalid state abbreviation: ${stateAbbr}`);
-    }
-    const countiesFile = fs.readdirSync('./maps').find((file) =>
-        file.startsWith(`Overlay${stateName.replace(/ /g, '')}`) && file.endsWith('.kml')
-    );
-    if (countiesFile) {
-        const resolvedPath = path.resolve('./maps', countiesFile);
-        const mapsDir = path.resolve('./maps');
-        const relative = path.relative(mapsDir, resolvedPath);
-        if (relative.startsWith('..') || path.isAbsolute(relative)) {
-            throw new Error(`Invalid county file path: ${countiesFile}`);
-        }
-        return resolvedPath;
-    }
-    throw new Error(`County overlay file not found for state ${stateAbbr}`);
-}
 
 export {
     findCounty,
@@ -224,5 +210,4 @@ export {
     findStateCorners,
     getStateNameFromCode,
     getStateCodeFromName,
-    findStateCountiesFile
 }

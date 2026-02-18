@@ -7,12 +7,17 @@
 <h2>Upcoming QSO Parties (next 30 days)</h2>
 <% it.upcomingParties.map((party) => { %>
     <div class="party">
-        <h3><a href="/<%= party.stateAbbr %>/"><%= party.state %></a>
+        <% if (!party.isSupported) { %>
+            <h3><%= party.state %> (This party is not currently supported by the tracker, kml county boundaries file not available)
+        <% } else { %>
+            <h3><a href="/<%= party.stateAbbr %>/"><%= party.state %></a>
+        <% } %>
         <% if (party.start < new Date()) { %>
             Started <%= party.timeSinceStart %> ago on "<%= party.start %>"</h3>
         <% } else { %>
             Starts in <%= party.timeToStart %> on "<%= party.start %>"</h3>
         <% } %>
+
     </div>
 <% }) %>
 <footer>

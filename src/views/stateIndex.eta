@@ -1,9 +1,5 @@
 <% layout("./base", { title: `${it.stateName} QSO Party APRS Tracker` }) %>
 
-<% const mapQueryString = new URLSearchParams({
-        bounds: it.mapBounds,
-        stateAbbr: it.stateConfig.stateAbbr,
-}); %>
 <header>
     <h1>Live <%= it.stateConfig.operationTitle %> APRS Tracker</h1>
     <p><%~ it.stateConfig.operationInstructions %>. For more instructions, including what app to use, <a href="/help">click here</a>.</p>
@@ -23,4 +19,4 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.min.js"></script>
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.2/dist/leaflet.css" />
-<script src="/static/map.js?<%~ mapQueryString %>"></script>
+<script src="/static/map.js"></script>

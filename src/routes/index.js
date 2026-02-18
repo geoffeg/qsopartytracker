@@ -4,6 +4,7 @@ import { formatDistance } from "date-fns";
 
 const index = async (c) => {
     const stateParties = await fetchStateParties();
+    console.log(stateParties);
     const onlyUSStates = stateParties.filter((party) => {
         return getStateCodeFromName(party.state) !== null;
     });
@@ -34,6 +35,7 @@ const index = async (c) => {
         timeToStart: formatDistance(now, new Date(party.dates.start)),
         timeSinceStart: formatDistance(new Date(party.dates.start), now),
         start: party.dates.start,
+        isSupported: !!c.get('config').qsoParties[getStateCodeFromName(party.state)],
     }))
 
     return c.html(c.get('eta').render('index', { upcomingParties: partialData }));
