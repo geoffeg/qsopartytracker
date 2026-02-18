@@ -11,14 +11,8 @@ const stateIndex = (c) => {
         }
         const stateConfig = config.qsoParties[qsoPartyAbbv];
 
-        const countyBoundariesFile = config.qsoParties[qsoPartyAbbv].kmlFile;
-        const countyBoundaries = loadCountyBoundaries(countyBoundariesFile);
-        const stateCorners = findStateCorners(countyBoundaries);
-
         const partialData = {
             stateConfig: stateConfig,
-            mapBounds: [stateCorners[0].reverse(), stateCorners[1].reverse()].flat().join(','),
-            stateName: `${getStateNameFromCode(stateConfig.stateAbbr)} `,
         }
         return c.html(c.get('eta').render('stateIndex', partialData));
     } catch (error) {

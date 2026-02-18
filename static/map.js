@@ -1,7 +1,5 @@
-const url = new URL(document.currentScript.src);
-const urlParams = new URLSearchParams(url.search);
-const mapBounds = urlParams.get('bounds').split(',').map(Number);
-const stateAbbr = urlParams.get('stateAbbr');
+const url = new URL(window.location);
+const stateAbbr = url.pathname.split('/').filter(Boolean).pop();
 
 const config = {
     minZoom: 5,
@@ -9,18 +7,17 @@ const config = {
     zoomSnap: 0.25,
   };
   
-const map = L.map('map', config).fitBounds([[mapBounds[0],mapBounds[1]],[mapBounds[2], mapBounds[3]]], { padding: [100, 100] });
-const geojsonLayer = new L.GeoJSON.AJAX(`/${stateAbbr}/counties.geojson`, {style: style, onEachFeature: onEachFeature2}).addTo(map);
+const map = L.map('map', config)
+const geojsonLayer = new L.GeoJSON.AJAX('counties.geojson', {style: style, onEachFeature: onEachFeature2}).addTo(map).on('data:loaded', function() {
+    map.fitBounds(geojsonLayer.getBounds(), { padding: [0, 0] });
+});
 const qsoparty = L.featureGroup().addTo(map);
   
-window["qso-party"] = createRealtimeLayer(`/${stateAbbr}/stations.geojson`, qsoparty).addTo(map);
+window["qso-party"] = createRealtimeLayer('stations.geojson', qsoparty).addTo(map);
   
 // Used to load and display tile layers on the map
 // Most tile servers require attribution, which you can set under `Layer`
 L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png').addTo(map);
-  
-// Home button
-const homeTemplate = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M32 18.451L16 6.031 0 18.451v-5.064L16 .967l16 12.42zM28 18v12h-8v-8h-8v8H4V18l12-9z" /></svg>';
   
 // create custom button
 const homeControl = L.Control.extend({
@@ -36,77 +33,13 @@ const homeControl = L.Control.extend({
         return btn;
     },
 });
-
-const nvaControl = L.Control.extend({
-    options: {
-      position: "topleft",
-    },
-  
-    onAdd: function (map) {
-        const btn = L.DomUtil.create("button");
-        btn.title = `Zoom NW ${stateAbbr}`;
-        btn.innerHTML = `NW<BR>${stateAbbr}`;
-        btn.className += "leaflet-bar to-nva";
-        return btn;
-    },
-});
-  
-const cvaControl = L.Control.extend({
-    options: {
-      position: "topleft",
-    },
-  
-    onAdd: function (map) {
-        const btn = L.DomUtil.create("button");
-        btn.title = `Zoom NE ${stateAbbr}`;
-        btn.innerHTML = `NE<BR>${stateAbbr}`;
-        btn.className += "leaflet-bar to-cva";
-        return btn;
-    },
-  });
-  
-const sevaControl = L.Control.extend({
-    options: {
-        position: "topleft",
-    },
-
-    onAdd: function (map) {
-        const btn = L.DomUtil.create("button");
-        btn.title = `Zoom S.E. ${stateAbbr}`;
-        btn.innerHTML = `SE<BR>${stateAbbr}`;
-        btn.className += "leaflet-bar to-seva";
-        return btn;
-    },
-});
-  
-const swvaControl = L.Control.extend({
-    options: {
-        position: "topleft",
-    },
-  
-    onAdd: function (map) {
-        const btn = L.DomUtil.create("button");
-        btn.title = `Zoom SW ${stateAbbr}`;
-        btn.innerHTML = `SW<BR>${stateAbbr}`;
-        btn.className += "leaflet-bar to-swva";
-        return btn;
-    },
-});
   
 map.addControl(new homeControl());
-map.addControl(new nvaControl());
-map.addControl(new cvaControl());
-map.addControl(new sevaControl());
-map.addControl(new swvaControl());
   
 const buttonBackToHome = document.querySelector(".back-to-home");
-const buttonNVa = document.querySelector(".to-nva");
-const buttonCVa = document.querySelector(".to-cva");
-const buttonSEVa = document.querySelector(".to-seva");
-const buttonSWVa = document.querySelector(".to-swva");
   
 buttonBackToHome.addEventListener("click", () => {
-    map.fitBounds([[mapBounds[0],mapBounds[1]],[mapBounds[2], mapBounds[3]]], { padding: [0, 0] })
+    map.fitBounds(geojsonLayer.getBounds(), { padding: [0, 0] });
 });
   
 function getCornerCenter(cornerLat, cornerLng, zoom, xSign, ySign) {
@@ -120,33 +53,6 @@ function getCornerCenter(cornerLat, cornerLng, zoom, xSign, ySign) {
     return map.unproject(centerPoint, zoom);
 }
 
-buttonNVa.addEventListener("click", () => {
-    const zoomLevel = 8.75;
-    // NW: upper left
-    const center = getCornerCenter(mapBounds[0], mapBounds[1], zoomLevel, -1, -1);
-    map.flyTo(center, zoomLevel);
-});
-  
-buttonCVa.addEventListener("click", () => {
-    const zoomLevel = 8.75;
-    // NE: upper right
-    const center = getCornerCenter(mapBounds[0], mapBounds[3], zoomLevel, +1, -1);
-    map.flyTo(center, zoomLevel);
-});
-
-buttonSEVa.addEventListener("click", () => {
-    const zoomLevel = 8.75;
-    // SW: lower left
-    const center = getCornerCenter(mapBounds[2], mapBounds[3], zoomLevel, +1, +1);
-
-    map.flyTo(center, zoomLevel);
-});
-buttonSWVa.addEventListener("click", () => {
-    const zoomLevel = 8.5;
-    // SE: lower right
-    const center = getCornerCenter(mapBounds[2], mapBounds[1], zoomLevel, -1, +1);
-    map.flyTo(center, zoomLevel);
-});
   
 // add data to geoJSON layer and add to LayerGroup
 const arrayLayers = ["qso-party"];
