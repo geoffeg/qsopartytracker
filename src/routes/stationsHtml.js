@@ -36,7 +36,7 @@ GROUP BY fromCallsign ORDER BY tsEpochMillis DESC
 
 const stationsHtml = async (c, db) => {
     const qsoStateAbbv = c.req.param('party').toUpperCase();
-    const commentFilter = `%${c.get('config').qsoParties[qsoStateAbbv].commentFilter}%`;
+    const commentFilter = `${c.get('config').qsoParties[qsoStateAbbv].commentFilter}%`;
     const rows = await db.query(sql);
     const dbRows = rows.all({ $commentFilter: commentFilter }).filter((row) => row !== undefined);
 

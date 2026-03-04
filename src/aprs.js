@@ -7,6 +7,9 @@ const config = require('./config.js').default;
 const logger = require("pino")({ level: config.logLevel });
 
 const db = new Database(config.databasePath, { readonly: false, create: true });
+
+const schema = fs.readFileSync('./schema.sql', 'utf8');
+db.exec(schema);
 const insert = db.prepare(`INSERT INTO aprsPackets (
     packet, fromCallsign, fromCallsignSsId, toCallsign, 
     latitude, longitude, comment, 
@@ -14,8 +17,6 @@ const insert = db.prepare(`INSERT INTO aprsPackets (
     course, altitude, countyName, countyCode, grid) 
     VALUES 
     (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`);
-const schema = fs.readFileSync('./schema.sql', 'utf8');
-db.exec(schema);
 
 const aprsFilter = "t/po"
 
@@ -106,7 +107,7 @@ const connect = async () => {
                             packet?.to?.call,
                             packet?.data?.latitude,
                             packet?.data?.longitude,
-                            packet?.data?.comment,
+                            packet?.data?.comment.trimStart(),
                             packet?.data?.symbol,
                             packet?.data?.symbolIcon,
                             packet?.data?.extension?.speedMPerS,
