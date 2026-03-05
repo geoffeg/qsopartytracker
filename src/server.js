@@ -15,6 +15,7 @@ import counties from './routes/counties.js';
 import stations from './routes/stationsGeojson.js';
 import stationsHtml from './routes/stationsHtml.js';
 import health from './routes/health.js'
+import stats from './middleware/stats.js';
 
 const db = new Database(config.databasePath, { readonly: false, create: true });
 const pinoLogger = process.env.NODE_ENV === "production" ? pino({level: config.logLevel}) : pino({
@@ -26,6 +27,7 @@ const eta = new Eta({ views: path.join(import.meta.dirname, "views") });
 const app = new Hono();
 app.use(logger());
 app.use(requestId());
+app.use((c, next) => stats(c, next));
 app.use('*', async (c, next) => {
     c.set('eta', eta);
     c.set('config', config);

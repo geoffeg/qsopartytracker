@@ -10,14 +10,13 @@ IMAGE_TAG="latest"
 CONTAINER_NAME="qsopartytracker"
 
 # 1. Build Docker image
-docker build . --build-arg GIT_SHA=$(git rev-parse --short HEAD) --platform linux/amd64 -t ${ECR_REPO}:${IMAGE_TAG}
+docker build . --build-arg GIT_SHA=$(git rev-parse --short HEAD) --build-arg GOATCOUNTER_API_KEY=${GOATCOUNTER_API_KEY} --platform linux/amd64 -t ${ECR_REPO}:${IMAGE_TAG}
 
 # 2. Authenticate Docker to ECR
 aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ECR_REPO}
 
 # 3. Push image to ECR
 docker push ${ECR_REPO}:${IMAGE_TAG}
-
 
 # 4. SSH into EC2 and deploy container
 aws ssm send-command \

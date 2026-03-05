@@ -6,7 +6,7 @@ const stateIndex = (c) => {
 
     try {
         if (!config.qsoParties[qsoPartyAbbv]) {
-            logger.error(`Invalid party: ${qsoPartyAbbv}`);
+            c.get('logger').error(`Invalid party: ${qsoPartyAbbv}`);
             return c.json({ error: 'Invalid party or that party is not supported' }, 400);
         }
         const stateConfig = config.qsoParties[qsoPartyAbbv];
