@@ -40,9 +40,7 @@ COPY --from=prerelease /usr/src/app/. .
 # run the app
 USER bun
 ARG GIT_SHA
-ARG GOATCOUNTER_API_KEY
 ENV GIT_SHA=$GIT_SHA
-ENV GOATCOUNTER_API_KEY=$GOATCOUNTER_API_KEY
 ENV NODE_ENV=production
 EXPOSE 3000/tcp
 ENTRYPOINT [ "bun", "run", "daemon-and-server" ]

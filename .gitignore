@@ -1,4 +1,5 @@
 aprs.db
+secrets/age-key.txt
 
 # Based on https://raw.githubusercontent.com/github/gitignore/main/Node.gitignore
 

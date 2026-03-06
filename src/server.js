@@ -27,7 +27,6 @@ const eta = new Eta({ views: path.join(import.meta.dirname, "views") });
 const app = new Hono();
 app.use(logger());
 app.use(requestId());
-app.use((c, next) => stats(c, next));
 app.use('*', async (c, next) => {
     c.set('eta', eta);
     c.set('config', config);
@@ -38,6 +37,7 @@ app.use('*', async (c, next) => {
 
     return next();
 });
+app.use((c, next) => stats(c, next));
 app.use('/static/*', serveStatic({ root: './', }));
 app.get('/', (c) => index(c));
 app.get('/health', (c) => health(c, db));
