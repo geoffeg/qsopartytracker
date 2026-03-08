@@ -3,8 +3,8 @@ keys:
     - &prodec2 age1tkvqy82ny4v7vlv8y7nuqaep86ztsdryysgw3pes3s8gd7kecfyskvp445
 
 creation_rules:
-  - shamir_threshold: 1
-    path_regex: ".env"
+  - path_regex: \.sops$
+    shamir_threshold: 1
     encrypted_regex: "^(GOATCOUNTER_API_KEY)$"
     key_groups:
     - age:

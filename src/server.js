@@ -25,7 +25,11 @@ const pinoLogger = process.env.NODE_ENV === "production" ? pino({level: config.l
 const eta = new Eta({ views: path.join(import.meta.dirname, "views") });
 
 const app = new Hono();
-app.use(logger());
+app.use(logger(
+    (message, ...rest) => {
+        console.log(`[${new Date().toISOString()}] ${message}`, ...rest);
+    }
+));
 app.use(requestId());
 app.use('*', async (c, next) => {
     c.set('eta', eta);

@@ -4,7 +4,6 @@ import { formatDistance } from "date-fns";
 
 const index = async (c) => {
     const stateParties = await fetchStateParties();
-    console.log(stateParties);
     const onlyUSStates = stateParties.filter((party) => {
         return getStateCodeFromName(party.state) !== null;
     });
