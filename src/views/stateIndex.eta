@@ -1,4 +1,4 @@
-<% layout("./base", { title: `${it.stateConfig.stateName} QSO Party APRS Tracker` }) %>
+<% layout("./base", { title: `${it.stateConfig.stateAbbr} QSO Party APRS Tracker` }) %>
 
 <header>
     <h1>Live <%= it.stateConfig.operationTitle %> APRS Tracker</h1>
