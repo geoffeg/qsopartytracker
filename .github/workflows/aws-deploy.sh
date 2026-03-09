@@ -19,7 +19,7 @@ aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS 
 docker push ${ECR_REPO}:${GIT_SHA}
 docker push ${ECR_REPO}:${IMAGE_TAG}
 
-SSH into EC2 and deploy container
+# Tell EC2 to deploy the new image
 aws ssm send-command \
     --region $AWS_REGION \
     --document-name "AWS-RunShellScript" \
