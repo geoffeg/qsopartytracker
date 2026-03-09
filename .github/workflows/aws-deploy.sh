@@ -26,7 +26,7 @@ aws ssm send-command \
     --targets "Key=instanceIds,Values=${EC2_INSTANCE_ID}" \
     --comment "Deploying new Docker image" \
     --parameters commands="[
-        '/home/ec2-user/deploy-ec2 ${GIT_SHA}'
+        '/home/ec2-user/deploy-ec2.sh ${GIT_SHA}'
     ]"
 
 echo "Deployment complete."
