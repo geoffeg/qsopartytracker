@@ -1,37 +1,40 @@
 #!/bin/bash
 set -e
 
-# Variables (edit these)
 AWS_REGION="us-east-1"
 # Get ECR repository URI from AWS
 ECR_REPO=$(aws ecr describe-repositories --region $AWS_REGION --repository-names qsoparty_repo --query 'repositories[0].repositoryUri' --output text)
 EC2_INSTANCE_ID=$(aws ec2 describe-instances --region $AWS_REGION --filters "Name=tag:Name,Values=qsopartytracker-prod" "Name=instance-state-name,Values=running" --query "Reservations[*].Instances[*].InstanceId" --output text)
 IMAGE_TAG="latest"
 CONTAINER_NAME="qsopartytracker"
+GIT_SHA=$(git rev-parse --short HEAD)
 
-# 1. Build Docker image
-docker build . --build-arg GIT_SHA=$(git rev-parse --short HEAD) --platform linux/amd64 -t ${ECR_REPO}:${IMAGE_TAG}
+# Build Docker image
+docker build . --build-arg GIT_SHA=${GIT_SHA} --platform linux/amd64 -t ${ECR_REPO}:${GIT_SHA} -t ${ECR_REPO}:${IMAGE_TAG}
 
-# 2. Authenticate Docker to ECR
+# Authenticate Docker to ECR
 aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ECR_REPO}
 
-# 3. Push image to ECR
+# Push image to ECR
+docker push ${ECR_REPO}:${GIT_SHA}
 docker push ${ECR_REPO}:${IMAGE_TAG}
 
+# SECRETS_FILE_BASE64=$(base64 -w 0 secrets/.env
 
-# 4. SSH into EC2 and deploy container
-aws ssm send-command \
-    --region $AWS_REGION \
-    --document-name "AWS-RunShellScript" \
-    --targets "Key=instanceIds,Values=${EC2_INSTANCE_ID}" \
-    --comment "Deploying new Docker image" \
-    --parameters commands="[
-        'aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ECR_REPO',
-        'docker pull ${ECR_REPO}:${IMAGE_TAG}',
-        'docker stop $CONTAINER_NAME || true',
-        'docker rm $CONTAINER_NAME || true',
-        'mkdir ~/docker-volumes || true',
-        'docker run -d --name $CONTAINER_NAME --restart always -p 80:3000 --volume=/data/:/opt -e DB_PATH="/opt/aprs.db" -e CONFIG_PATH="./config.js" ${ECR_REPO}:${IMAGE_TAG}'
-    ]"
+# SSH into EC2 and deploy container
+# aws ssm send-command \
+#     --region $AWS_REGION \
+#     --document-name "AWS-RunShellScript" \
+#     --targets "Key=instanceIds,Values=${EC2_INSTANCE_ID}" \
+#     --comment "Deploying new Docker image" \
+#     --parameters commands="[
+#         'echo ${SECRETS_FILE_BASE64} | base64 -d > /home/ec2-user/env.sops',
+#         'aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ECR_REPO',
+#         'docker pull ${ECR_REPO}:${IMAGE_TAG}',
+#         'docker stop $CONTAINER_NAME || true',
+#         'docker rm $CONTAINER_NAME || true',
+#         'mkdir ~/docker-volumes || true',
+#         'sudo SOPS_AGE_KEY_FILE=/etc/age/age-key.txt /usr/local/bin/sops --input-type dotenv --output-type dotenv exec-file /data/env docker run -d --name $CONTAINER_NAME --env-file {} --restart always -p 80:3000 --volume=/data/:/opt --env-file /data/env ${ECR_REPO}:${IMAGE_TAG}'
+#     ]"
 
 echo "Deployment complete."
