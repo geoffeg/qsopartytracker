@@ -19,22 +19,14 @@ aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS 
 docker push ${ECR_REPO}:${GIT_SHA}
 docker push ${ECR_REPO}:${IMAGE_TAG}
 
-# SECRETS_FILE_BASE64=$(base64 -w 0 secrets/.env
-
-# SSH into EC2 and deploy container
-# aws ssm send-command \
-#     --region $AWS_REGION \
-#     --document-name "AWS-RunShellScript" \
-#     --targets "Key=instanceIds,Values=${EC2_INSTANCE_ID}" \
-#     --comment "Deploying new Docker image" \
-#     --parameters commands="[
-#         'echo ${SECRETS_FILE_BASE64} | base64 -d > /home/ec2-user/env.sops',
-#         'aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ECR_REPO',
-#         'docker pull ${ECR_REPO}:${IMAGE_TAG}',
-#         'docker stop $CONTAINER_NAME || true',
-#         'docker rm $CONTAINER_NAME || true',
-#         'mkdir ~/docker-volumes || true',
-#         'sudo SOPS_AGE_KEY_FILE=/etc/age/age-key.txt /usr/local/bin/sops --input-type dotenv --output-type dotenv exec-file /data/env docker run -d --name $CONTAINER_NAME --env-file {} --restart always -p 80:3000 --volume=/data/:/opt --env-file /data/env ${ECR_REPO}:${IMAGE_TAG}'
-#     ]"
+SSH into EC2 and deploy container
+aws ssm send-command \
+    --region $AWS_REGION \
+    --document-name "AWS-RunShellScript" \
+    --targets "Key=instanceIds,Values=${EC2_INSTANCE_ID}" \
+    --comment "Deploying new Docker image" \
+    --parameters commands="[
+        '/home/ec2-user/deploy-ec2 ${GIT_SHA}'
+    ]"
 
 echo "Deployment complete."
