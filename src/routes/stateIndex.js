@@ -6,8 +6,8 @@ const stateIndex = (c) => {
 
     try {
         if (!config.qsoParties[qsoPartyAbbv]) {
-            c.get('logger').error(`Invalid party: ${qsoPartyAbbv}`);
-            return c.text('Invalid party/state code or file not found', 404);
+            c.get('logger').error(`Unknown party/state code: ${qsoPartyAbbv}`);
+            return c.text(`Unknown party/state code: ${qsoPartyAbbv}`, 404);
         }
         const stateConfig = config.qsoParties[qsoPartyAbbv];
 
