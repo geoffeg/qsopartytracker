@@ -6,7 +6,7 @@ const memoizedLoadCountyBoundaries = memoize((filePath, countyNamesOverrides) =>
 }, { maxAge: 24 * 60 * 60 * 1000 }); // Cache for 24 hours
 
 const counties = (c) => {
-    const party = c.req.param('party');
+    const party = c.req.param('party').toUpperCase();
     const logger = c.get('logger');
     const config = c.get('config');
 
