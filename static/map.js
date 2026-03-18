@@ -5,9 +5,11 @@ const config = {
     minZoom: 5,
     maxZoom: 13,
     zoomSnap: 0.25,
+    attributionControl: true,
   };
   
 const map = L.map('map', config)
+map.attributionControl.setPosition('bottomright');
 const geojsonLayer = new L.GeoJSON.AJAX('counties.geojson', {style: style, onEachFeature: onEachFeature2}).addTo(map).on('data:loaded', function() {
     map.fitBounds(geojsonLayer.getBounds(), { padding: [0, 0] });
 });
@@ -15,9 +17,9 @@ const qsoparty = L.featureGroup().addTo(map);
   
 window["qso-party"] = createRealtimeLayer('stations.geojson', qsoparty).addTo(map);
   
-// Used to load and display tile layers on the map
-// Most tile servers require attribution, which you can set under `Layer`
-L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png').addTo(map);
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(map);
   
 // create custom button
 const homeControl = L.Control.extend({
