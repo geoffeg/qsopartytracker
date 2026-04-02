@@ -1,7 +1,7 @@
 <% layout("./base", { title: `${it.stateConfig.stateAbbr} QSO Party APRS Tracker` }) %>
 
 <header>
-    <a href="/">Back home</a>
+    <a href="/">&#8592; QSO Party List</a>
     <h1>Live <%= it.stateConfig.operationTitle %> APRS Tracker</h1>
 </header>
 <p><%~ it.stateConfig.operationInstructions %>. For more instructions, including what app to use, <a href="/help">click here</a>.
