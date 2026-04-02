@@ -29,7 +29,12 @@ const memoizedFetch = memoize(async (url) => {
     const res = await fetch(url);
     if (!res.ok) throw new Error(`Failed to fetch ${url}: ${res.status}`);
     return res.text();
-}, { async: true, maxAge: 24 * 60 * 60 * 1000 }); // Cache for 24 hours
+}, {
+    async: true,
+    maxSize: 100, // More than enough room for the main page and all state party pages
+    expires: 24 * 60 * 60 * 1000 + Math.floor(Math.random() * 60000), // Cache for 24 hours, plus a little randomness to avoid cache stampedes
+});
+memoizedFetch.cache.on('add', (event) => console.log(`Cache miss for URL fetch: ${event.key}`));
 
 function extractLinkRefFromRow(row) {
     const link = row.querySelector('a');
