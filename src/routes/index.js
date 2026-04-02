@@ -1,4 +1,4 @@
-import fetchStateParties from "../contestCalendar";
+import {fetchStateParties, fetchPartyRules} from "../contestCalendar";
 import { getStateCodeFromName } from '../geoutils.js';
 import { formatDistance } from "date-fns";
 
@@ -28,14 +28,19 @@ const index = async (c) => {
     //     onlyUSStates[0].dates.start = twoDaysAgo;
     // }
 
-    const partialData = onlyUSStates.map(party => ({
-        state: party.state,
-        stateAbbr: getStateCodeFromName(party.state),
-        timeToStart: formatDistance(now, new Date(party.dates.start)),
-        timeSinceStart: formatDistance(new Date(party.dates.start), now),
-        start: party.dates.start,
-        isSupported: !!c.get('config').qsoParties[getStateCodeFromName(party.state)],
-    }))
+    const partialDataPromises = onlyUSStates.map(async (party) => {
+        const rulesUrl = await fetchPartyRules(party.refId);
+        return {
+            state: party.state,
+            rulesUrl: rulesUrl,
+            stateAbbr: getStateCodeFromName(party.state),
+            timeToStart: formatDistance(now, new Date(party.dates.start)),
+            timeSinceStart: formatDistance(new Date(party.dates.start), now),
+            start: party.dates.start,
+            isSupported: !!c.get('config').qsoParties[getStateCodeFromName(party.state)],
+        }
+    });
+    const partialData = await Promise.all(partialDataPromises);
 
     return c.html(c.get('eta').render('index', { upcomingParties: partialData }));
 }
