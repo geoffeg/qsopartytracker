@@ -6,21 +6,23 @@ SELECT comment, longitude, latitude,
        MAX(tsEpochMillis) as tsEpochMillis, countyName, countyCode, grid 
 FROM aprsPackets 
 WHERE tsEpochMillis > unixepoch('now', '-4 hour', 'subsec')
-AND comment LIKE $commentFilter 
+AND stateAbbr = $stateAbbr
 GROUP BY fromCallsign 
 ORDER BY tsEpochMillis DESC
 `;
 
 const stations = async (c, db) => {
-    const qsoStateAbbv = c.req.param('party').toUpperCase();
+    const config = c.get('config');
+    const party = c.req.param('party').toUpperCase();
+    const commentFilter = config.qsoParties[party].commentFilter;
+    const stateAbbr = config.qsoParties[party].stateAbbr;
 
-    const commentFilter = c.get('config').qsoParties[qsoStateAbbv].commentFilter;
     const rows = await db.query(sql);
-    const geoFeatures = rows.all({ $commentFilter: `${commentFilter}%` }).map((row) => {
+    const geoFeatures = rows.all({ $stateAbbr: stateAbbr }).map((row) => {
         if (row.county === null) {
             return;
         }
-        const frequency = row.comment && commentFilter ? row.comment.match(new RegExp(commentFilter + '\\s+([0-9\\.]+)', 'i')) : '';
+        const frequency = row.comment && commentFilter ? row.comment.match(new RegExp(commentFilter.source + /\s+([0-9\.]+)/.source, 'i')) : '';
         const geometry = {
             type: "Point",
             coordinates: [row.longitude, row.latitude]

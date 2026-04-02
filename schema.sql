@@ -16,7 +16,8 @@ CREATE TABLE IF NOT EXISTS aprsPackets (
     altitude REAL,
     countyName TEXT,
     countyCode TEXT,
-    grid TEXT
+    grid TEXT,
+    stateAbbr TEXT
 );
 CREATE TRIGGER IF NOT EXISTS cleanupTrigger AFTER INSERT ON aprsPackets
 BEGIN
@@ -26,4 +27,5 @@ CREATE INDEX IF NOT EXISTS idx_aprsPackets_tsEpochMillis ON aprsPackets(tsEpochM
 CREATE INDEX IF NOT EXISTS idx_aprsPackets_countyCode ON aprsPackets(countyCode);
 CREATE INDEX IF NOT EXISTS idx_aprsPackets_fromCallsign ON aprsPackets(fromCallsign);
 CREATE INDEX IF NOT EXISTS idx_aprsPackets_fromCallsign_ts ON aprsPackets(fromCallsign, ts);
+CREATE INDEX IF NOT EXISTS idx_aprsPackets_stateAbbr ON aprsPackets(stateAbbr);
 

@@ -8,15 +8,15 @@ const logger = require("pino")({ level: config.logLevel });
 
 const db = new Database(config.databasePath, { readonly: false, create: true });
 
-const schema = fs.readFileSync('./schema.sql', 'utf8');
-db.exec(schema);
+const schema = await Bun.file('./schema.sql').text();
+db.run(schema);
 const insert = db.prepare(`INSERT INTO aprsPackets (
     packet, fromCallsign, fromCallsignSsId, toCallsign, 
     latitude, longitude, comment, 
     symbol, symbolIcon, speed, 
-    course, altitude, countyName, countyCode, grid) 
+    course, altitude, countyName, countyCode, grid, stateAbbr)
     VALUES 
-    (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`);
+    (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`);
 
 const aprsFilter = "t/po"
 
@@ -65,32 +65,35 @@ const connect = async () => {
                     const aprsLines = aprsLine.split("\r\n").filter(packet => packet !== "").filter(packet => packet[0] !== "#");
                     const decodedPackets = aprsLines.map(packet => parser.parse(packet));
                     decodedPackets.forEach(packet => {
-                        logger.debug(packet);
+                        // logger.debug(packet);
                         // If there's no latitute or longitude, skip the packet
                         if (!packet?.data?.latitude || !packet?.data?.longitude) {
                             return;
                         }
 
-                        // If the comment doesn't match the filter, skip the packet
-                        if (!packet?.data?.comment?.match(config.commentFilter)) {
+                        // If the comment doesn't contain the commentFilter, skip the packet
+                        if (!packet?.data?.comment?.toUpperCase().includes(config.commentFilter)) {
                             return;
                         }
-                        const stateCode = packet.data.comment.match(/.*?(\w+)QP.*/);
-                        if (!stateCode) {
-                            return;
-                        }
-                        const stateAbbr = stateCode[1].toUpperCase();
 
-                        // If there isn't a key in "qsoParties" part of the config for this state, skip the packet, we don't support that state
-                        if (!config.qsoParties[stateAbbr]) {
+                        // If the comment doesn't contain at least one character before the commentFilter, skip the packet
+                        const commentPrefix = packet.data.comment.match(new RegExp(`.*?(\\w+${config.commentFilter}).*`, 'i'));
+                        if (!commentPrefix || commentPrefix.length < 2) {
                             return;
                         }
-                        const stateCountiesFile = config.qsoParties[stateAbbr].kmlFile;
+
+                        // Search all "commentFilter"'s in the qsoParties, checking if each commentFilter matches the packet's comment.
+                        const matchingParties = Object.values(config.qsoParties).filter(party => packet.data.comment.match(party.commentFilter));
+                        if (matchingParties.length === 0) {
+                            return;
+                        }
+
+                        const stateCountiesFile = config.qsoParties[matchingParties[0].stateAbbr].kmlFile;
                         if (!stateCountiesFile) {
                             return;
                         }
                         
-                        const countyBoundaries = loadCountyBoundaries(stateCountiesFile, config.qsoParties[stateAbbr].countyNamesOverrides);
+                        const countyBoundaries = loadCountyBoundaries(stateCountiesFile, config.qsoParties[matchingParties[0].stateAbbr].countyNamesOverrides);
                         const county = findCounty(countyBoundaries, packet.data.latitude, packet.data.longitude);
 
                         // // If the packet doesn't have a county, we're probably out of the state, skip the packet
@@ -115,7 +118,8 @@ const connect = async () => {
                             packet?.data?.altitude,
                             county?.properties?.name,
                             county?.properties?.code,
-                            grid
+                            grid,
+                            matchingParties[0].stateAbbr
                         );
                     });
                 },
