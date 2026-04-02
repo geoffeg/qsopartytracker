@@ -1,6 +1,7 @@
-import { loadCountyBoundaries, findStateCorners, getStateNameFromCode } from '../geoutils.js';
+import {fetchStateParties, fetchPartyRules} from "../contestCalendar";
+import { getStateNameFromCode } from '../geoutils.js';
 
-const stateIndex = (c) => {
+const stateIndex = async (c) => {
     const qsoPartyAbbv = c.req.param('party').toUpperCase();
     const config = c.get('config');
 
@@ -10,9 +11,16 @@ const stateIndex = (c) => {
             return c.text(`Unknown party/state code: ${qsoPartyAbbv}`, 404);
         }
         const stateConfig = config.qsoParties[qsoPartyAbbv];
-
+        const stateName = getStateNameFromCode(stateConfig.stateAbbr);
+        const stateParties = await fetchStateParties();
+        const party = stateParties.find(p => p.state === stateName);
+        let partyRulesUrl = null;
+        if (party && party.refId) {
+            partyRulesUrl = await fetchPartyRules(party.refId);
+        }
         const partialData = {
             stateConfig: stateConfig,
+            partyRulesUrl: partyRulesUrl,
         }
         return c.html(c.get('eta').render('stateIndex', partialData));
     } catch (error) {

@@ -1,4 +1,4 @@
-import fetchStateParties from "../contestCalendar";
+import {fetchStateParties, fetchPartyRules} from "../contestCalendar";
 import { getStateCodeFromName } from '../geoutils.js';
 import { formatDistance } from "date-fns";
 
@@ -28,14 +28,32 @@ const index = async (c) => {
     //     onlyUSStates[0].dates.start = twoDaysAgo;
     // }
 
-    const partialData = onlyUSStates.map(party => ({
-        state: party.state,
-        stateAbbr: getStateCodeFromName(party.state),
-        timeToStart: formatDistance(now, new Date(party.dates.start)),
-        timeSinceStart: formatDistance(new Date(party.dates.start), now),
-        start: party.dates.start,
-        isSupported: !!c.get('config').qsoParties[getStateCodeFromName(party.state)],
-    }))
+    const partialDataPromises = onlyUSStates.map(async (party) => {
+        const isSupported = !!c.get('config').qsoParties[getStateCodeFromName(party.state)];
+        let rulesUrl = null;
+        if (isSupported && party.refId) {
+            rulesUrl = await fetchPartyRules(party.refId);
+        }
+
+        return {
+            state: party.state,
+            rulesUrl: rulesUrl,
+            stateAbbr: getStateCodeFromName(party.state),
+            timeToStart: formatDistance(now, new Date(party.dates.start)),
+            timeSinceStart: formatDistance(new Date(party.dates.start), now),
+            start: party.dates.start,
+            isSupported: isSupported,
+        }
+    });
+    const partialDataPromiseResults = await Promise.allSettled(partialDataPromises);
+    const partialData = partialDataPromiseResults.map(result => {
+        if (result.status === 'fulfilled') {
+            return result.value;
+        } else {
+            c.get('logger').error(`Error processing party data: ${result.reason}`);
+            return null;
+        }
+    }).filter(p => p !== null);
 
     return c.html(c.get('eta').render('index', { upcomingParties: partialData }));
 }

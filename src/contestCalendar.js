@@ -31,6 +31,17 @@ const memoizedFetch = memoize(async (url) => {
     return res.text();
 }, { async: true, maxAge: 24 * 60 * 60 * 1000 }); // Cache for 24 hours
 
+function extractLinkRefFromRow(row) {
+    const link = row.querySelector('a');
+    if (link) {
+        const match = link.getAttribute('href').match(/ref=(\d+)/);
+        if (match) {
+            return match[1];
+        }
+    }
+    return null;
+}
+
 export async function fetchStateParties(url = 'https://www.contestcalendar.com/stateparties.php') {
   const html = await memoizedFetch(url);
 //   if (!res.ok) throw new Error(`Failed to fetch ${url}: ${res.status}`);
@@ -38,7 +49,7 @@ export async function fetchStateParties(url = 'https://www.contestcalendar.com/s
 //   const html = readFileSync('/tmp/stateparties.php', 'utf8');
   const parsed = parse(html);
   const rows = parsed.querySelectorAll('table > tr');
-  const tempRow = {};
+  let tempRow = {};
   const parties = rows.reduce((acc, row) => {
     const cols = row.querySelectorAll('td');
     if (cols[0].text.trim() === 'State') {
@@ -54,11 +65,13 @@ export async function fetchStateParties(url = 'https://www.contestcalendar.com/s
         const endDateString = cols[2].text.trim();
         acc.push({
             state: tempRow.state,
+            refId: tempRow.refId,
             dates: {
                 start: tempRow.startDate,
                 end: parseDate(endDateString)[1]
             }
         });
+        tempRow = {};
         return acc;
     }
     if (cols.length === 3) {
@@ -66,11 +79,13 @@ export async function fetchStateParties(url = 'https://www.contestcalendar.com/s
         const dates = cols[2].text.trim();
         const contestDates = parseDate(dates);
         if (cols[2].text.endsWith("and")) {
+            tempRow.refId = extractLinkRefFromRow(cols[1]);
             tempRow.state = stateName;
             tempRow.startDate = contestDates[0];
         } else {
             acc.push({
                 state: stateName,
+                refId: extractLinkRefFromRow(cols[1]),
                 dates: {
                     start: contestDates[0],
                     end: contestDates[1]
@@ -82,5 +97,29 @@ export async function fetchStateParties(url = 'https://www.contestcalendar.com/s
   }, []);
   return parties;
 }
+
+
+
+export async function fetchPartyRules(partyRefId) {
+    if (!partyRefId) return null;
+    const url = `https://www.contestcalendar.com/contestdetails.php?ref=${partyRefId}`;
+    const html = await memoizedFetch(url);
+    const parsed = parse(html);
+    const tableRows = parsed.querySelectorAll('table[width="100%"] > tr');
+
+    const rulesLink = tableRows.reduce((acc, row) => {
+        const secondTD = row.querySelectorAll('td');
+        if (secondTD.length < 3) return acc;
+        if (secondTD && secondTD[1].text.trim() === 'Find rules at:') {
+            const thirdTDLink = row.querySelectorAll('td')[2].querySelector('a');
+            if (thirdTDLink) {
+                return thirdTDLink.getAttribute('href');
+            }
+        }
+        return acc;
+    }, null);
+    return rulesLink;
+}
+
 
 export default fetchStateParties;
