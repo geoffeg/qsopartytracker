@@ -4,7 +4,11 @@
     <a href="/">Back home</a>
     <h1>Live <%= it.stateConfig.operationTitle %> APRS Tracker</h1>
 </header>
-<p><%~ it.stateConfig.operationInstructions %>. For more instructions, including what app to use, <a href="/help">click here</a>. Find more information on the QSO party's <a href="<%= it.partyRulesUrl %>">website</a>.</p>
+<p><%~ it.stateConfig.operationInstructions %>. For more instructions, including what app to use, <a href="/help">click here</a>.
+<% if (it.partyRulesUrl && /^https?:\/\//.test(it.partyRulesUrl)) { %>
+    Find more information on the QSO party's <a href="<%= it.partyRulesUrl %>">website</a>.
+<% } %>
+</p>
 
 <main>
     <div id="map"></div>

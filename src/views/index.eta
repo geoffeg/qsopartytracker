@@ -2,15 +2,15 @@
 <% layout("./base", { title: 'QSO Party APRS Tracker'}) %>
 <header>
     <h1>Live QSO Party APRS Tracker</h1>
-    <p>For more instructions, including what app to use, <a href="/help">click here</a>.</p>
 </header>
+<p>For more instructions, including what app to use, <a href="/help">click here</a>.</p>
 <h2>Upcoming QSO Parties (next 30 days)</h2>
 <% it.upcomingParties.map((party) => { %>
     <div class="party">
         <% if (!party.isSupported) { %>
             <h3><%= party.state %> (This party is not currently supported by the tracker, kml county boundaries file not available)
         <% } else { %>
-            <h3><a href="/<%= party.stateAbbr %>/"><%= party.state %></a> (<a href="<%= party.rulesUrl %>">QSO Party website</a>)
+            <h3><a href="/<%= party.stateAbbr %>/"><%= party.state %></a><% if (party.rulesUrl && /^https?:\/\//.test(party.rulesUrl)) { %> (<a href="<%= party.rulesUrl %>">QSO Party website</a>)<% } %>
         <% } %>
         <% if (party.start < new Date()) { %>
             Started <%= party.timeSinceStart %> ago on <%= new Intl.DateTimeFormat(undefined, { dateStyle: 'full', timeStyle: 'long' }).format(party.start) %></h3>

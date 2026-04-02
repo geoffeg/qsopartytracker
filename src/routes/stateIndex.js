@@ -14,8 +14,10 @@ const stateIndex = async (c) => {
         const stateName = getStateNameFromCode(stateConfig.stateAbbr);
         const stateParties = await fetchStateParties();
         const party = stateParties.find(p => p.state === stateName);
-        const partyRulesUrl = await fetchPartyRules(party.refId);
-
+        let partyRulesUrl = null;
+        if (party && party.refId) {
+            partyRulesUrl = await fetchPartyRules(party.refId);
+        }
         const partialData = {
             stateConfig: stateConfig,
             partyRulesUrl: partyRulesUrl,

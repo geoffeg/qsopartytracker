@@ -29,7 +29,12 @@ const index = async (c) => {
     // }
 
     const partialDataPromises = onlyUSStates.map(async (party) => {
-        const rulesUrl = await fetchPartyRules(party.refId);
+        const isSupported = !!c.get('config').qsoParties[getStateCodeFromName(party.state)];
+        let rulesUrl = null;
+        if (isSupported && party.refId) {
+            rulesUrl = await fetchPartyRules(party.refId);
+        }
+
         return {
             state: party.state,
             rulesUrl: rulesUrl,
@@ -37,10 +42,18 @@ const index = async (c) => {
             timeToStart: formatDistance(now, new Date(party.dates.start)),
             timeSinceStart: formatDistance(new Date(party.dates.start), now),
             start: party.dates.start,
-            isSupported: !!c.get('config').qsoParties[getStateCodeFromName(party.state)],
+            isSupported: isSupported,
         }
     });
-    const partialData = await Promise.all(partialDataPromises);
+    const partialDataPromiseResults = await Promise.allSettled(partialDataPromises);
+    const partialData = partialDataPromiseResults.map(result => {
+        if (result.status === 'fulfilled') {
+            return result.value;
+        } else {
+            c.get('logger').error(`Error processing party data: ${result.reason}`);
+            return null;
+        }
+    }).filter(p => p !== null);
 
     return c.html(c.get('eta').render('index', { upcomingParties: partialData }));
 }

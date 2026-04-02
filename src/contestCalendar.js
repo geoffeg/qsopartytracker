@@ -31,6 +31,17 @@ const memoizedFetch = memoize(async (url) => {
     return res.text();
 }, { async: true, maxAge: 24 * 60 * 60 * 1000 }); // Cache for 24 hours
 
+function extractLinkRefFromRow(row) {
+    const link = row.querySelector('a');
+    if (link) {
+        const match = link.getAttribute('href').match(/ref=(\d+)/);
+        if (match) {
+            return match[1];
+        }
+    }
+    return null;
+}
+
 export async function fetchStateParties(url = 'https://www.contestcalendar.com/stateparties.php') {
   const html = await memoizedFetch(url);
 //   if (!res.ok) throw new Error(`Failed to fetch ${url}: ${res.status}`);
@@ -68,13 +79,13 @@ export async function fetchStateParties(url = 'https://www.contestcalendar.com/s
         const dates = cols[2].text.trim();
         const contestDates = parseDate(dates);
         if (cols[2].text.endsWith("and")) {
-            tempRow.refId = cols[1].querySelector('a') ? cols[1].querySelector('a').getAttribute('href').match(/ref=(\d+)/)[1] : null;
+            tempRow.refId = extractLinkRefFromRow(cols[1]);
             tempRow.state = stateName;
             tempRow.startDate = contestDates[0];
         } else {
             acc.push({
                 state: stateName,
-                refId: cols[1].querySelector('a') ? cols[1].querySelector('a').getAttribute('href').match(/ref=(\d+)/)[1] : null,
+                refId: extractLinkRefFromRow(cols[1]),
                 dates: {
                     start: contestDates[0],
                     end: contestDates[1]
@@ -87,7 +98,10 @@ export async function fetchStateParties(url = 'https://www.contestcalendar.com/s
   return parties;
 }
 
+
+
 export async function fetchPartyRules(partyRefId) {
+    if (!partyRefId) return null;
     const url = `https://www.contestcalendar.com/contestdetails.php?ref=${partyRefId}`;
     const html = await memoizedFetch(url);
     const parsed = parse(html);
@@ -95,7 +109,7 @@ export async function fetchPartyRules(partyRefId) {
 
     const rulesLink = tableRows.reduce((acc, row) => {
         const secondTD = row.querySelectorAll('td');
-        if (secondTD.length < 2) return acc;
+        if (secondTD.length < 3) return acc;
         if (secondTD && secondTD[1].text.trim() === 'Find rules at:') {
             const thirdTDLink = row.querySelectorAll('td')[2].querySelector('a');
             if (thirdTDLink) {
