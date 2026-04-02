@@ -3,7 +3,10 @@ import { loadCountyBoundaries } from '../geoutils.js';
 
 const memoizedLoadCountyBoundaries = memoize((filePath, countyNamesOverrides) => {
     return loadCountyBoundaries(filePath, countyNamesOverrides);
-}, { maxAge: 24 * 60 * 60 * 1000 }); // Cache for 24 hours
+}, {
+    maxSize: 20, // We will only ever load a handful of county boundaries files, so no need for a large cache
+    expires: 24 * 60 * 60 * 1000
+}); // Cache for 24 hours
 
 const counties = (c) => {
     const party = c.req.param('party').toUpperCase();
