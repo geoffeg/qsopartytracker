@@ -3,19 +3,18 @@
 <header>
     <h1>Live QSO Party APRS Tracker</h1>
 </header>
-<p>For more instructions, including what app to use, <a href="/help">click here</a>.</p>
 <h2>Upcoming QSO Parties (next 30 days)</h2>
 <% it.upcomingParties.map((party) => { %>
     <div class="party">
         <% if (!party.isSupported) { %>
-            <h3><%= party.state %> (This party is not currently supported by the tracker, kml county boundaries file not available)
+            <h3><%= party.state %></h3><h4>(This party is not currently supported by the tracker, kml county boundaries file not available)</h4>
         <% } else { %>
-            <h3><a href="/<%= party.stateAbbr %>/"><%= party.state %></a><% if (party.rulesUrl && /^https?:\/\//.test(party.rulesUrl)) { %> (<a href="<%= party.rulesUrl %>">QSO party website</a>)<% } %>
+            <h3><a href="/<%= party.stateAbbr %>/"><%= party.state %> Live Tracker</a></h3><h4><% if (party.rulesUrl && /^https?:\/\//.test(party.rulesUrl)) { %> (<a href="<%= party.rulesUrl %>"><%= party.state %> QSO party website</a>)<% } %></h4>
         <% } %>
         <% if (party.start < new Date()) { %>
-            Started <%= party.timeSinceStart %> ago on <%= new Intl.DateTimeFormat(undefined, { dateStyle: 'full', timeStyle: 'long' }).format(party.start) %></h3>
+            <h5>Started <%= party.timeSinceStart %> ago on <%= new Intl.DateTimeFormat(undefined, { dateStyle: 'full', timeStyle: 'long' }).format(party.start) %></h5>
         <% } else { %>
-            Starts in <%= party.timeToStart %> on <%= new Intl.DateTimeFormat(undefined, { dateStyle: 'full', timeStyle: 'long' }).format(party.start) %></h3>
+            <h5>Starts in <%= party.timeToStart %> on <%= new Intl.DateTimeFormat(undefined, { dateStyle: 'full', timeStyle: 'long' }).format(party.start) %></h5>
         <% } %>
 
     </div>
