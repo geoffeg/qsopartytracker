@@ -26,7 +26,12 @@ const parseDate = (dateStr) => {
 }
 
 const memoizedFetch = memoize(async (url) => {
-    const res = await fetch(url);
+    const res = await fetch(url, {
+        headers: {
+            'User-Agent': 'Mozilla/5.0 (compatible; QSO-Party-Tracker/1.0; +kc8fdu@geoffeg.org)',
+            'Referer': 'https://mobiletracker.stateqso.com/'
+        }
+    });
     if (!res.ok) throw new Error(`Failed to fetch ${url}: ${res.status}`);
     return res.text();
 }, {
