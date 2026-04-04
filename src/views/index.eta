@@ -8,7 +8,7 @@
 <% it.upcomingParties.map((party) => { %>
     <li class="party">
         <% if (!party.isSupported) { %>
-            <h3><%= party.state %></h3><h4>(This party is not currently supported by the tracker, kml county boundaries file not available)</h4>
+            <h3><%= party.state %></h3><span>(This party is not currently supported by the tracker, KML county boundaries file not available)</span>
         <% } else { %>
             <h3><a href="/<%= party.stateAbbr %>/"><%= party.state %> Live Tracker</a></h3><span><% if (party.rulesUrl && /^https?:\/\//.test(party.rulesUrl)) { %> (<a href="<%= party.rulesUrl %>"><%= party.state %> QSO party website</a>)<% } %></span>
         <% } %>
