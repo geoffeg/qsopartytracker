@@ -3,23 +3,23 @@
 <header>
     <h1>Live QSO Party APRS Tracker</h1>
 </header>
-<p>For more instructions, including what app to use, <a href="/help">click here</a>.</p>
 <h2>Upcoming QSO Parties (next 30 days)</h2>
+<ul class="party-list">
 <% it.upcomingParties.map((party) => { %>
-    <div class="party">
+    <li class="party">
         <% if (!party.isSupported) { %>
-            <h3><%= party.state %> (This party is not currently supported by the tracker, kml county boundaries file not available)
+            <h3><%= party.state %></h3><span>(This party is not currently supported by the tracker, KML county boundaries file not available)</span>
         <% } else { %>
-            <h3><a href="/<%= party.stateAbbr %>/"><%= party.state %></a><% if (party.rulesUrl && /^https?:\/\//.test(party.rulesUrl)) { %> (<a href="<%= party.rulesUrl %>">QSO party website</a>)<% } %>
+            <h3><a href="/<%= party.stateAbbr %>/"><%= party.state %> Live Tracker</a></h3><span><% if (party.rulesUrl && /^https?:\/\//.test(party.rulesUrl)) { %> (<a href="<%= party.rulesUrl %>"><%= party.state %> QSO party website</a>)<% } %></span>
         <% } %>
         <% if (party.start < new Date()) { %>
-            Started <%= party.timeSinceStart %> ago on <%= new Intl.DateTimeFormat(undefined, { dateStyle: 'full', timeStyle: 'long' }).format(party.start) %></h3>
+            <p>Started <%= party.timeSinceStart %> ago on <%= new Intl.DateTimeFormat(undefined, { dateStyle: 'full', timeStyle: 'long' }).format(party.start) %></p>
         <% } else { %>
-            Starts in <%= party.timeToStart %> on <%= new Intl.DateTimeFormat(undefined, { dateStyle: 'full', timeStyle: 'long' }).format(party.start) %></h3>
+            <p>Starts in <%= party.timeToStart %> on <time datetime="<%= party.start.toISOString() %>"><%= new Intl.DateTimeFormat(undefined, { dateStyle: 'full', timeStyle: 'long' }).format(party.start) %></time></p>
         <% } %>
-
-    </div>
+    </li>
 <% }) %>
+</ul>
 <footer>
     <p>Brought to you by the <a href="https://nyqp.org/wordpress/live-mobile-tracking/">New York QSO Party</a>. Created by <a href="https://geoffeg.org">geoffeg</a>, originally based on <a href="https://github.com/azwirko/QP-APRS-Tracker">QP-APRS-Tracker</a> by <a href="https://github.com/azwirko">Andy Zwirko</a></p>
 </footer>

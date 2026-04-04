@@ -80,6 +80,19 @@ caption {
   padding: 10px;
 }
 
+.party-list {
+    list-style: none;
+    padding-left: 0;
+}
+
+.party-list h3 {
+    display: inline;
+}
+
+.party-list p {
+    margin: 5px 0 15px 0;
+}
+
 .newCall {
     background-color: #d6ecd4;
 }
