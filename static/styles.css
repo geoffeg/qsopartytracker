@@ -80,12 +80,17 @@ caption {
   padding: 10px;
 }
 
-.party h3, .party h4 {
+.party-list {
+    list-style: none;
+    padding-left: 0;
+}
+
+.party-list h3 {
     display: inline;
 }
 
-.party h5 {
-    margin: 4px 0 10px 0;
+.party-list p {
+    margin: 5px 0 15px 0;
 }
 
 .newCall {
