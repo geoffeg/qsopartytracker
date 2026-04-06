@@ -61,7 +61,7 @@ const config = {
             stateAbbr: "FL",
             operationTitle: `Florida QSO Party`,
             operationInstructions: `To be listed on this map, put <u>FLQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "FLQP 14.230" if you are on 20 m at 14.23. Note: Frequency is optional`,
-            commentFilter: /FLQP/,
+            commentFilter: /FL*QP/,
             kmlFile: 'OverlayFloridaRev8.kml',
         },
         "GA": {
