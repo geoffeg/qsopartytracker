@@ -10,12 +10,12 @@ ROUND(latitude, 5) as roundedLatitude,
 id,
 symbolIcon,
 fromCallsign,
-fromCallsignSsId, 
+fromCallsignSsId,
 tsEpochMillis,
 countyName,
 countyCode,
 grid
-FROM aprsPackets 
+FROM aprsPackets
 WHERE tsEpochMillis > unixepoch('now', '-30 minutes', 'subsec')
 AND fromCallsign = $callsign
 AND stateAbbr = $stateAbbr

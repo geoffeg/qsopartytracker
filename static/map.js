@@ -83,30 +83,76 @@ function style(feature) {
 // Set up County Name
 function countyNamePopup(feature, layer) {
     if (feature.properties && feature.properties.name && feature.properties.code) {
-        layer.bindPopup('<h1>' + feature.properties.name  + ' (' + feature.properties.code + ') </h1>');
+        const heading = document.createElement('h1');
+        heading.textContent = `${feature.properties.name} (${feature.properties.code})`;
+        layer.bindPopup(heading);
     }
 }
 
 const generateToolTipContent = (feature) => {
-    const tooltipHtml = feature.properties.call + 
-        "<BR>" +
-        `<DIV class="rotator-wrap" style="--count: ${feature.properties.frequencies.length + 1}; --step: 2s; --steps: ${feature.properties.frequencies.length + 1};">` +
-          `<UL class="rotator">` +
-            feature.properties.frequencies.map((freq, i) => `<LI>${freq}</LI>`).join('') +
-            (feature.properties.frequencies.length > 0 ?
-            `<LI>${feature.properties.frequencies[feature.properties.frequencies.length - 1]}</LI>` : '') +
-          "</UL>" + 
-        "</DIV>" +
-        feature.properties.countyCode;
-    return tooltipHtml;
+    const tooltipRoot = document.createElement('div');
+
+    const callLine = document.createElement('div');
+    callLine.textContent = feature.properties.call;
+    tooltipRoot.appendChild(callLine);
+
+    const frequencies = Array.isArray(feature.properties.frequencies) ? feature.properties.frequencies : [];
+    const rotatorWrap = document.createElement('div');
+    rotatorWrap.className = 'rotator-wrap';
+    rotatorWrap.style.setProperty('--count', frequencies.length + 1);
+    rotatorWrap.style.setProperty('--step', '2s');
+    rotatorWrap.style.setProperty('--steps', frequencies.length + 1);
+
+    const rotatorList = document.createElement('ul');
+    rotatorList.className = 'rotator';
+    frequencies.forEach((frequency) => {
+        const item = document.createElement('li');
+        item.textContent = frequency;
+        rotatorList.appendChild(item);
+    });
+
+    if (frequencies.length > 0) {
+        const loopItem = document.createElement('li');
+        loopItem.textContent = frequencies[frequencies.length - 1];
+        rotatorList.appendChild(loopItem);
+    }
+
+    rotatorWrap.appendChild(rotatorList);
+    tooltipRoot.appendChild(rotatorWrap);
+
+    const countyLine = document.createElement('div');
+    countyLine.textContent = feature.properties.countyCode;
+    tooltipRoot.appendChild(countyLine);
+
+    return tooltipRoot;
 }
 
 const generatePopupContent = (feature) => {
-    const popupHtml = `<h1>${feature.properties.call}</h1>` +
-        `<p><h3>${feature.properties.text}</h3></p>` +
-        `<p><h3>County: ${feature.properties.county}</h3></p>` +
-        `<p><h3>Grid: ${feature.properties.grid}</h3></p>`;
-   return popupHtml; 
+    const popupRoot = document.createElement('div');
+
+    const heading = document.createElement('h1');
+    heading.textContent = feature.properties.call;
+    popupRoot.appendChild(heading);
+
+    const textParagraph = document.createElement('p');
+    const textHeading = document.createElement('h3');
+    textHeading.textContent = feature.properties.text;
+    textParagraph.appendChild(textHeading);
+    popupRoot.appendChild(textParagraph);
+
+    const countyParagraph = document.createElement('p');
+    const countyHeading = document.createElement('h3');
+    countyHeading.textContent = `County: ${feature.properties.county}`;
+    countyParagraph.appendChild(countyHeading);
+    popupRoot.appendChild(countyParagraph);
+
+    const gridParagraph = document.createElement('p');
+    const gridHeading = document.createElement('h3');
+    gridHeading.textContent = `Grid: ${feature.properties.grid}`;
+    gridParagraph.appendChild(gridHeading);
+    popupRoot.appendChild(gridParagraph);
+
+    return popupRoot;
 }
 
 const syncRealtimeTooltip = (layer, feature) => {

@@ -31,7 +31,7 @@ const stations = async (c, db) => {
         if (row.county === null) {
             return;
         }
-        const frequency = row.comment && commentFilter ? [...row.comment.matchAll(/\s+([0-9\.]+)/g)].map(match => match[1]) : '';
+        const frequency = row.comment && commentFilter ? [...row.comment.matchAll(/\s+([0-9\.]+)/g)].map(match => match[1]) : [];
         const geometry = {
             type: "Point",
             coordinates: [row.longitude, row.latitude]

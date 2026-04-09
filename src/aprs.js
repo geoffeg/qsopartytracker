@@ -67,7 +67,6 @@ const connect = async () => {
                     const aprsLines = aprsLine.split("\r\n").filter(packet => packet !== "").filter(packet => packet[0] !== "#");
                     const decodedPackets = aprsLines.map(packet => parser.parse(packet));
                     decodedPackets.forEach(packet => {
-                        // Block a few callsigns defined in BLOCK_CALLS env var, command separated
                         if (blockedCallsigns.includes(packet?.from?.call?.toUpperCase())) {
                             return;
                         }
