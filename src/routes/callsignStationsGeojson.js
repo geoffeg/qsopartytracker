@@ -4,34 +4,37 @@ const sql = `
 SELECT
 comment,
 longitude,
+ROUND(longitude, 5) as roundedLongitude,
 latitude,
+ROUND(latitude, 5) as roundedLatitude,
 id,
 symbolIcon,
 fromCallsign,
-fromCallsignSsId,
-MAX(tsEpochMillis) as tsEpochMillis,
+fromCallsignSsId, 
+tsEpochMillis,
 countyName,
 countyCode,
 grid
 FROM aprsPackets 
-WHERE tsEpochMillis > unixepoch('now', '-4 hour', 'subsec')
+WHERE tsEpochMillis > unixepoch('now', '-30 minutes', 'subsec')
+AND fromCallsign = $callsign
 AND stateAbbr = $stateAbbr
-GROUP BY fromCallsign 
+GROUP BY fromCallsign, roundedLongitude, roundedLatitude
 ORDER BY tsEpochMillis DESC
+LIMIT 100 OFFSET 1
 `;
 
 const stations = async (c, db) => {
     const config = c.get('config');
     const party = c.req.param('party').toUpperCase();
-    const commentFilter = config.qsoParties[party].commentFilter;
+    const callsign = c.req.param('callsign').split('-')[0].toUpperCase();
     const stateAbbr = config.qsoParties[party].stateAbbr;
 
     const rows = await db.query(sql);
-    const geoFeatures = rows.all({ $stateAbbr: stateAbbr }).map((row) => {
+    const geoFeatures = rows.all({ $callsign: callsign, $stateAbbr: stateAbbr }).map((row) => {
         if (row.county === null) {
             return;
         }
-        const frequency = row.comment && commentFilter ? [...row.comment.matchAll(/\s+([0-9\.]+)/g)].map(match => match[1]) : '';
         const geometry = {
             type: "Point",
             coordinates: [row.longitude, row.latitude]
@@ -40,12 +43,10 @@ const stations = async (c, db) => {
         const feature = turf.feature(geometry, {
             id: row.id,
             icon: row.symbolIcon,
-            frequencies: frequency,
             call: row.fromCallsign + (row.fromCallsignSsId ? '-' + row.fromCallsignSsId : ''),
-            text: row.comment,
-            county: row.countyName + " (" + row.countyCode + ")",
             countyCode: row.countyCode,
-            grid: row.grid
+            grid: row.grid,
+            ts: new Date(row.tsEpochMillis * 1000).toISOString(),
         });
         return feature;
     }).filter((feature) => feature !== undefined);

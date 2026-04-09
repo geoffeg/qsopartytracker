@@ -24,6 +24,8 @@ let reconnectTimer = null;
 let currentAttempt = 0;
 let currentSocket = null;
 
+const blockedCallsigns = process.env.BLOCKED_CALLSIGNS ? process.env.BLOCKED_CALLSIGNS.split(",").map(callsign => callsign.trim().toUpperCase()) : [];
+
 const parser = new aprs.APRSParser();
 const connect = async () => {
     if (reconnectTimer) {
@@ -65,6 +67,11 @@ const connect = async () => {
                     const aprsLines = aprsLine.split("\r\n").filter(packet => packet !== "").filter(packet => packet[0] !== "#");
                     const decodedPackets = aprsLines.map(packet => parser.parse(packet));
                     decodedPackets.forEach(packet => {
+                        // Block a few callsigns defined in BLOCK_CALLS env var, command separated
+                        if (blockedCallsigns.includes(packet?.from?.call?.toUpperCase())) {
+                            return;
+                        }
+
                         // logger.debug(packet);
                         // If there's no latitute or longitude, skip the packet
                         if (!packet?.data?.latitude || !packet?.data?.longitude) {
