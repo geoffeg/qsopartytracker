@@ -15,6 +15,7 @@ import counties from './routes/counties.js';
 import stations from './routes/stationsGeojson.js';
 import stationsHtml from './routes/stationsHtml.js';
 import health from './routes/health.js'
+import stationsByCallsign from './routes/callsignStationsGeojson.js';
 import stats from './middleware/stats.js';
 
 const db = new Database(config.databasePath, { readonly: false, create: true });
@@ -51,6 +52,7 @@ app.get('/:party', (c) => c.redirect(`/${c.req.param('party')}/`));
 app.get('/:party/', (c) => stateIndex(c));
 app.get('/:party/counties.geojson', (c) => counties(c));
 app.get('/:party/stations.geojson', (c) => stations(c, db));
+app.get('/:party/:callsign/history.geojson', (c) => stationsByCallsign(c, db));
 app.get('/:party/stations.html', (c) => stationsHtml(c, db));
 
 export default app;

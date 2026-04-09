@@ -108,3 +108,33 @@ caption {
 .deadCall {
     background-color: #f9a0a0;
 }
+
+.rotator-wrap {
+  --line-height: 1.5em;
+  --duration: calc((var(--count) - 1) * var(--step));
+  height: var(--line-height);
+  overflow: hidden;
+}
+
+.rotator {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  line-height: var(--line-height);
+  animation: frequenciesScroll var(--duration) steps(calc(var(--count) - 1), end) infinite;
+}
+
+.rotator li {
+  height: var(--line-height);
+  margin: 0;
+  padding: 0;
+}
+
+@keyframes frequenciesScroll {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(calc(-1 * var(--line-height) * (var(--count) - 1)));
+  }
+}
