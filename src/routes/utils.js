@@ -1,7 +1,7 @@
 const censorCommentFrequency = (comment) => {
     if (!comment) return "";
     if (typeof comment === 'string') {
-        return comment.replace(/\s+([0-9\.]+)/g, ' XXXXX')
+        return comment.replace(/([0-9\.]{3,})/g, (match) => 'X'.repeat(match.length))
     }
     return "";
 }
