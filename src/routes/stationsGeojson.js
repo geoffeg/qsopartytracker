@@ -1,4 +1,5 @@
 import * as turf from '@turf/turf';
+import censorCommentFrequency from './utils';
 
 const sql = `
 SELECT
@@ -24,6 +25,7 @@ const stations = async (c, db) => {
     const config = c.get('config');
     const party = c.req.param('party').toUpperCase();
     const commentFilter = config.qsoParties[party].commentFilter;
+    const selfSpottingAllowed = config.qsoParties[party].selfSpottingAllowed ?? true;
     const stateAbbr = config.qsoParties[party].stateAbbr;
 
     const rows = await db.query(sql);
@@ -40,9 +42,9 @@ const stations = async (c, db) => {
         const feature = turf.feature(geometry, {
             id: row.id,
             icon: row.symbolIcon,
-            frequencies: frequency,
+            frequencies: selfSpottingAllowed ? frequency : [],
             call: row.fromCallsign + (row.fromCallsignSsId ? '-' + row.fromCallsignSsId : ''),
-            text: row.comment,
+            text: selfSpottingAllowed ? row.comment : censorCommentFrequency(row.comment),
             county: row.countyName + " (" + row.countyCode + ")",
             countyCode: row.countyCode,
             grid: row.grid

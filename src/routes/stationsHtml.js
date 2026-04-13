@@ -1,3 +1,4 @@
+import censorCommentFrequency from './utils';
 const humanizeDuration = require("humanize-duration");
 const shortEnglishHumanizer = humanizeDuration.humanizer({
     "delimiter": " ",
@@ -36,9 +37,20 @@ GROUP BY fromCallsign ORDER BY tsEpochMillis DESC
 
 const stationsHtml = async (c, db) => {
     const config = c.get('config');
-    const stateAbbr = config.qsoParties[c.req.param('party').toUpperCase()].stateAbbr;
+    const party = c.req.param('party').toUpperCase();
+    const stateAbbr = config.qsoParties[party].stateAbbr;
+    const selfSpottingAllowed = config.qsoParties[party].selfSpottingAllowed ?? true;
     const rows = await db.query(sql);
     const dbRows = rows.all({ $stateAbbr: stateAbbr }).filter((row) => row !== undefined);
+
+    if (!selfSpottingAllowed) {
+        // For parties that don't allow self-spotting, replace any frequencies (/\s+([0-9\.]+)/) with X's to avoid their frequencies showing on the map
+        dbRows.forEach((row) => {
+            if (row.comment) {
+                row.comment = censorCommentFrequency(row.comment);
+            }
+        });
+    }
 
     const partialData = {
         durationFormatter: shortEnglishHumanizer,
