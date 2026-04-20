@@ -60,7 +60,7 @@ const config = {
         "FL": {
             stateAbbr: "FL",
             operationTitle: `Florida QSO Party`,
-            operationInstructions: `To be listed on this map, put <u>FLQP</u> or <u>FQP</u> in your APRS comment. Note: Florida does not allow self-spotting; frequencies will be censored`,
+            operationInstructions: `To be listed on this map, put <u>FLQP</u> or <u>FQP</u> in your APRS comment. Note: Florida does not allow self-spotting; frequencies will be redacted`,
             commentFilter: /FL?QP/,
             kmlFile: 'OverlayFloridaRev8.kml',
             selfSpottingAllowed: false,
