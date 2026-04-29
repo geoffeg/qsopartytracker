@@ -10,7 +10,7 @@
     <snippet></snippet>
     <description><![CDATA[Connecticut Planning Region Index is a 1:125,000-scale polygon feature-based layer that includes a polygon feature for every Connecticut Regional Planning Organization. There are nine polygon features in this layer. The corresponding Regional Planning Organization number and name attributes uniquely identify individual polygon features. The Regional Planning Organization number values are based on an alphabetic sort of Regional Planning Organization names and range from 1 to 9.]]></description>
     <Placemark id="ID_00000">
-      <name>CRCOG</name>
+      <name>CT Capital=CTCAP</name>
       <snippet></snippet>
       <description><![CDATA[<html><body><table border="1"><tr><th>Field Name</th><th>Field Value</th></tr><tr><td>RPO_COD</td><td>1</td></tr><tr><td>REGPLANORG</td><td>Capitol Region Council of Governments</td></tr><tr><td>SHORT_NAME</td><td>CRCOG</td></tr><tr><td>Shape__Area</td><td>29177929630.486023</td></tr><tr><td>Shape__Length</td><td>918066.092056</td></tr></table></body></html>]]></description>
       <styleUrl>#PolyStyle00</styleUrl>
