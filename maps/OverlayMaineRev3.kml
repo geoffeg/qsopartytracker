@@ -79,7 +79,7 @@
   </PolyStyle>
 </Style>
 <Placemark>
-  <name>Androscoggin=ANDME 1</name>
+  <name>Androscoggin=MEAND 1</name>
   <visibility>0</visibility>
   <styleUrl>#transBluePoly</styleUrl>
   <Polygon>
@@ -243,7 +243,7 @@
 </Placemark>
 
 <Placemark>
-  <name>Aroostook=AROME 1</name>
+  <name>Aroostook=MEARO 1</name>
   <visibility>0</visibility>
   <styleUrl>#transGreenPoly</styleUrl>
   <Polygon>
@@ -792,7 +792,7 @@
 </Placemark>
 
 <Placemark>
-  <name>Cumberland=CUMME 1</name>
+  <name>Cumberland=MECUM 1</name>
   <visibility>0</visibility>
   <styleUrl>#transGreenPoly</styleUrl>
   <Polygon>
@@ -1339,7 +1339,7 @@
   </Polygon>
 </Placemark>
 <Placemark>
-  <name>Cumberland=CUMME 2</name>
+  <name>Cumberland=MECUM 2</name>
   <visibility>0</visibility>
   <styleUrl>#transGreenPoly</styleUrl>
   <Polygon>
@@ -1368,7 +1368,7 @@
   </Polygon>
 </Placemark>
 <Placemark>
-  <name>Cumberland=CUMME 3</name>
+  <name>Cumberland=MECUM 3</name>
   <visibility>0</visibility>
   <styleUrl>#transGreenPoly</styleUrl>
   <Polygon>
@@ -1399,7 +1399,7 @@
   </Polygon>
 </Placemark>
 <Placemark>
-  <name>Cumberland=CUMME 4</name>
+  <name>Cumberland=MECUM 4</name>
   <visibility>0</visibility>
   <styleUrl>#transGreenPoly</styleUrl>
   <Polygon>
@@ -1428,7 +1428,7 @@
   </Polygon>
 </Placemark>
 <Placemark>
-  <name>Cumberland=CUMME 5</name>
+  <name>Cumberland=MECUM 5</name>
   <visibility>0</visibility>
   <styleUrl>#transGreenPoly</styleUrl>
   <Polygon>
@@ -1461,7 +1461,7 @@
   </Polygon>
 </Placemark>
 <Placemark>
-  <name>Cumberland=CUMME 6</name>
+  <name>Cumberland=MECUM 6</name>
   <visibility>0</visibility>
   <styleUrl>#transGreenPoly</styleUrl>
   <Polygon>
@@ -1491,7 +1491,7 @@
 </Placemark>
 
 <Placemark>
-  <name>FranklinME=FRAME 1</name>
+  <name>FranklinME=MEFRA 1</name>
   <visibility>0</visibility>
   <styleUrl>#transRedPoly</styleUrl>
   <Polygon>
@@ -1793,7 +1793,7 @@
 </Placemark>
 
 <Placemark>
-  <name>Hancock=HANME 1</name>
+  <name>Hancock=MEHAN 1</name>
   <visibility>0</visibility>
   <styleUrl>#transGreenPoly</styleUrl>
   <Polygon>
@@ -2211,7 +2211,7 @@
   </Polygon>
 </Placemark>
 <Placemark>
-  <name>Hancock=HANME 2</name>
+  <name>Hancock=MEHAN 2</name>
   <visibility>0</visibility>
   <styleUrl>#transGreenPoly</styleUrl>
   <Polygon>
@@ -2270,7 +2270,7 @@
   </Polygon>
 </Placemark>
 <Placemark>
-  <name>Hancock=HANME 3</name>
+  <name>Hancock=MEHAN 3</name>
   <visibility>0</visibility>
   <styleUrl>#transGreenPoly</styleUrl>
   <Polygon>
@@ -2324,7 +2324,7 @@
   </Polygon>
 </Placemark>
 <Placemark>
-  <name>Hancock=HANME 4</name>
+  <name>Hancock=MEHAN 4</name>
   <visibility>0</visibility>
   <styleUrl>#transGreenPoly</styleUrl>
   <Polygon>
@@ -2352,7 +2352,7 @@
   </Polygon>
 </Placemark>
 <Placemark>
-  <name>Hancock=HANME 5</name>
+  <name>Hancock=MEHAN 5</name>
   <visibility>0</visibility>
   <styleUrl>#transGreenPoly</styleUrl>
   <Polygon>
@@ -2383,7 +2383,7 @@
   </Polygon>
 </Placemark>
 <Placemark>
-  <name>Hancock=HANME 6</name>
+  <name>Hancock=MEHAN 6</name>
   <visibility>0</visibility>
   <styleUrl>#transGreenPoly</styleUrl>
   <Polygon>
@@ -2425,7 +2425,7 @@
   </Polygon>
 </Placemark>
 <Placemark>
-  <name>Hancock=HANME 7</name>
+  <name>Hancock=MEHAN 7</name>
   <visibility>0</visibility>
   <styleUrl>#transGreenPoly</styleUrl>
   <Polygon>
@@ -2473,7 +2473,7 @@
   </Polygon>
 </Placemark>
 <Placemark>
-  <name>Hancock=HANME 8</name>
+  <name>Hancock=MEHAN 8</name>
   <visibility>0</visibility>
   <styleUrl>#transGreenPoly</styleUrl>
   <Polygon>
@@ -2514,7 +2514,7 @@
   </Polygon>
 </Placemark>
 <Placemark>
-  <name>Hancock=HANME 9</name>
+  <name>Hancock=MEHAN 9</name>
   <visibility>0</visibility>
   <styleUrl>#transGreenPoly</styleUrl>
   <Polygon>
@@ -2552,7 +2552,7 @@
   </Polygon>
 </Placemark>
 <Placemark>
-  <name>Hancock=HANME 10</name>
+  <name>Hancock=MEHAN 10</name>
   <visibility>0</visibility>
   <styleUrl>#transGreenPoly</styleUrl>
   <Polygon>
@@ -2582,7 +2582,7 @@
 </Placemark>
 
 <Placemark>
-  <name>Kennebec=KENME 1</name>
+  <name>Kennebec=MEKEN 1</name>
   <visibility>0</visibility>
   <styleUrl>#transBluePoly</styleUrl>
   <Polygon>
@@ -2834,7 +2834,7 @@
 </Placemark>
 
 <Placemark>
-  <name>Knox=KNOME 1</name>
+  <name>Knox=MEKNO 1</name>
   <visibility>0</visibility>
   <styleUrl>#transYellowPoly</styleUrl>
   <Polygon>
@@ -3020,7 +3020,7 @@
   </Polygon>
 </Placemark>
 <Placemark>
-  <name>Knox=KNOME 2</name>
+  <name>Knox=MEKNO 2</name>
   <visibility>0</visibility>
   <styleUrl>#transYellowPoly</styleUrl>
   <Polygon>
@@ -3081,7 +3081,7 @@
   </Polygon>
 </Placemark>
 <Placemark>
-  <name>Knox=KNOME 3</name>
+  <name>Knox=MEKNO 3</name>
   <visibility>0</visibility>
   <styleUrl>#transYellowPoly</styleUrl>
   <Polygon>
@@ -3137,7 +3137,7 @@
   </Polygon>
 </Placemark>
 <Placemark>
-  <name>Knox=KNOME 4</name>
+  <name>Knox=MEKNO 4</name>
   <visibility>0</visibility>
   <styleUrl>#transYellowPoly</styleUrl>
   <Polygon>
@@ -3176,7 +3176,7 @@
 </Placemark>
 
 <Placemark>
-  <name>Lincoln=LINME 1</name>
+  <name>Lincoln=MELIN 1</name>
   <visibility>0</visibility>
   <styleUrl>#transBluePoly</styleUrl>
   <Polygon>
@@ -3442,7 +3442,7 @@
   </Polygon>
 </Placemark>
 <Placemark>
-  <name>Lincoln=LINME 2</name>
+  <name>Lincoln=MELIN 2</name>
   <visibility>0</visibility>
   <styleUrl>#transBluePoly</styleUrl>
   <Polygon>
@@ -3468,7 +3468,7 @@
   </Polygon>
 </Placemark>
 <Placemark>
-  <name>Lincoln=LINME 3</name>
+  <name>Lincoln=MELIN 3</name>
   <visibility>0</visibility>
   <styleUrl>#transBluePoly</styleUrl>
   <Polygon>
@@ -3495,7 +3495,7 @@
 </Placemark>
 
 <Placemark>
-  <name>Oxford=OXFME 1</name>
+  <name>Oxford=MEOXF 1</name>
   <visibility>0</visibility>
   <styleUrl>#transBluePoly</styleUrl>
   <Polygon>
@@ -3905,7 +3905,7 @@
 </Placemark>
 
 <Placemark>
-  <name>Penobscot=PENME 1</name>
+  <name>Penobscot=MEPEN 1</name>
   <visibility>0</visibility>
   <styleUrl>#transGreenPoly</styleUrl>
   <Polygon>
@@ -4156,7 +4156,7 @@
 </Placemark>
 
 <Placemark>
-  <name>Piscataquis=PISME 1</name>
+  <name>Piscataquis=MEPIS 1</name>
   <visibility>0</visibility>
   <styleUrl>#transYellowPoly</styleUrl>
   <Polygon>
@@ -4545,7 +4545,7 @@
 </Placemark>
 
 <Placemark>
-  <name>Sagadahoc=SAGME 1</name>
+  <name>Sagadahoc=MESAG 1</name>
   <visibility>0</visibility>
   <styleUrl>#transRedPoly</styleUrl>
   <Polygon>
@@ -4813,7 +4813,7 @@
 </Placemark>
 
 <Placemark>
-  <name>Somerset=SOMME 1</name>
+  <name>Somerset=MESOM 1</name>
   <visibility>0</visibility>
   <styleUrl>#transBluePoly</styleUrl>
   <Polygon>
@@ -5511,7 +5511,7 @@
 </Placemark>
 
 <Placemark>
-  <name>Waldo=WALME 1</name>
+  <name>Waldo=MEWAL 1</name>
   <visibility>0</visibility>
   <styleUrl>#transGreenPoly</styleUrl>
   <Polygon>
@@ -5723,7 +5723,7 @@
   </Polygon>
 </Placemark>
 <Placemark>
-  <name>Waldo=WALME 2</name>
+  <name>Waldo=MEWAL 2</name>
   <visibility>0</visibility>
   <styleUrl>#transGreenPoly</styleUrl>
   <Polygon>
@@ -5768,7 +5768,7 @@
 </Placemark>
 
 <Placemark>
-  <name>WashingtonME=WASME 1</name>
+  <name>WashingtonME=MEWAS 1</name>
   <visibility>0</visibility>
   <styleUrl>#transYellowPoly</styleUrl>
   <Polygon>
@@ -6328,7 +6328,7 @@
   </Polygon>
 </Placemark>
 <Placemark>
-  <name>WashingtonME=WASME 2</name>
+  <name>WashingtonME=MEWAS 2</name>
   <visibility>0</visibility>
   <styleUrl>#transYellowPoly</styleUrl>
   <Polygon>
@@ -6364,7 +6364,7 @@
 </Placemark>
 
 <Placemark>
-  <name>York=YORME 1</name>
+  <name>York=MEYOR 1</name>
   <visibility>0</visibility>
   <styleUrl>#transGreenPoly</styleUrl>
   <Polygon>

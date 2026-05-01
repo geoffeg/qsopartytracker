@@ -79,7 +79,7 @@
   </PolyStyle>
 </Style>
 <Placemark>
-  <name>Addison=ADD 1</name>
+  <name>Addison=VTADD 1</name>
   <visibility>0</visibility>
   <styleUrl>#transRedPoly</styleUrl>
   <Polygon>
@@ -318,7 +318,7 @@
 </Placemark>
 
 <Placemark>
-  <name>Bennington=BEN 1</name>
+  <name>Bennington=VTBEN 1</name>
   <visibility>0</visibility>
   <styleUrl>#transBluePoly</styleUrl>
   <Polygon>
@@ -438,7 +438,7 @@
 </Placemark>
 
 <Placemark>
-  <name>Caledonia=CAL 1</name>
+  <name>Caledonia=VTCAL 1</name>
   <visibility>0</visibility>
   <styleUrl>#transGreenPoly</styleUrl>
   <Polygon>
@@ -686,7 +686,7 @@
 </Placemark>
 
 <Placemark>
-  <name>Chittenden=CHI 1</name>
+  <name>Chittenden=VTCHI 1</name>
   <visibility>0</visibility>
   <styleUrl>#transYellowPoly</styleUrl>
   <Polygon>
@@ -903,7 +903,7 @@
 </Placemark>
 
 <Placemark>
-  <name>Essex=ESS 1</name>
+  <name>Essex=VTESS 1</name>
   <visibility>0</visibility>
   <styleUrl>#transRedPoly</styleUrl>
   <Polygon>
@@ -1414,7 +1414,7 @@
 </Placemark>
 
 <Placemark>
-  <name>Franklin=FRA 1</name>
+  <name>Franklin=VTFRA 1</name>
   <visibility>0</visibility>
   <styleUrl>#transBluePoly</styleUrl>
   <Polygon>
@@ -1602,7 +1602,7 @@
 </Placemark>
 
 <Placemark>
-  <name>GrandIsle=GRA 1</name>
+  <name>GrandIsle=VTGRA 1</name>
   <visibility>0</visibility>
   <styleUrl>#transGreenPoly</styleUrl>
   <Polygon>
@@ -1819,7 +1819,7 @@
 </Placemark>
 
 <Placemark>
-  <name>Lamoille=LAM 1</name>
+  <name>Lamoille=VTLAM 1</name>
   <visibility>0</visibility>
   <styleUrl>#transYellowPoly</styleUrl>
   <Polygon>
@@ -1952,7 +1952,7 @@
 </Placemark>
 
 <Placemark>
-  <name>Orange=ORA 1</name>
+  <name>Orange=VTORA 1</name>
   <visibility>0</visibility>
   <styleUrl>#transRedPoly</styleUrl>
   <Polygon>
@@ -2294,7 +2294,7 @@
 </Placemark>
 
 <Placemark>
-  <name>Orleans=ORL 1</name>
+  <name>Orleans=VTORL 1</name>
   <visibility>0</visibility>
   <styleUrl>#transBluePoly</styleUrl>
   <Polygon>
@@ -2456,7 +2456,7 @@
 </Placemark>
 
 <Placemark>
-  <name>Rutland=RUT 1</name>
+  <name>Rutland=VTRUT 1</name>
   <visibility>0</visibility>
   <styleUrl>#transGreenPoly</styleUrl>
   <Polygon>
@@ -2736,7 +2736,7 @@
 </Placemark>
 
 <Placemark>
-  <name>Washington=WAS 1</name>
+  <name>Washington=VTWAS 1</name>
   <visibility>0</visibility>
   <styleUrl>#transYellowPoly</styleUrl>
   <Polygon>
@@ -2903,7 +2903,7 @@
 </Placemark>
 
 <Placemark>
-  <name>Windham=WNH 1</name>
+  <name>Windham=VTWNH 1</name>
   <visibility>0</visibility>
   <styleUrl>#transRedPoly</styleUrl>
   <Polygon>
@@ -3213,7 +3213,7 @@
 </Placemark>
 
 <Placemark>
-  <name>Windsor=WND 1</name>
+  <name>Windsor=VTWND 1</name>
   <visibility>0</visibility>
   <styleUrl>#transBluePoly</styleUrl>
   <Polygon>

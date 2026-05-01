@@ -67,15 +67,18 @@ const kmlToGeoJson = (kmlFile) => {
 }
 
 const loadCountyBoundaries = (countyBoundariesFile, countyNamesOverrides) => {
-    const boundariesPath = path.join('./maps', countyBoundariesFile);
-    if (!fs.existsSync(boundariesPath)) {
-        throw new Error("County boundaries file not found: " + boundariesPath);
-    }
-    const convertedWithStyles = kmlToGeoJson(boundariesPath);
+    const convertedWithStyles = [].concat(countyBoundariesFile ?? []).flatMap((kmlFile) => {
+        const boundariesPath = path.join('./maps', kmlFile);
+        if (!fs.existsSync(boundariesPath)) {
+            throw new Error("County boundaries file not found: " + boundariesPath);
+        }
+        const convertedWithStyles = kmlToGeoJson(boundariesPath);
+        return convertedWithStyles.features;
+    });
     
     const countiesWithCodes = {
         type: "FeatureCollection",
-        features: convertedWithStyles.features.map((county) => {
+        features: convertedWithStyles.map((county) => {
             const kmlCountyName = countyNamesOverrides && countyNamesOverrides[county.properties.name]
                 ? countyNamesOverrides[county.properties.name]
                 : county.properties.name;

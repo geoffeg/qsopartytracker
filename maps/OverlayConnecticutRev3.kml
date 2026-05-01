@@ -79,7 +79,7 @@
   </PolyStyle>
 </Style>
 <Placemark>
-  <name>Fairfield=FAICT 1</name>
+  <name>Fairfield=CTFAI 1</name>
   <visibility>0</visibility>
   <styleUrl>#transGreenPoly</styleUrl>
   <Polygon>
@@ -450,7 +450,7 @@
 </Placemark>
 
 <Placemark>
-  <name>Hartford=HARCT 1</name>
+  <name>Hartford=CTHAR 1</name>
   <visibility>0</visibility>
   <styleUrl>#transYellowPoly</styleUrl>
   <Polygon>
@@ -724,7 +724,7 @@
 </Placemark>
 
 <Placemark>
-  <name>Litchfield=LITCT 1</name>
+  <name>Litchfield=CTLIT 1</name>
   <visibility>0</visibility>
   <styleUrl>#transGreenPoly</styleUrl>
   <Polygon>
@@ -947,7 +947,7 @@
 </Placemark>
 
 <Placemark>
-  <name>MiddlesexCT=MIDCT 1</name>
+  <name>MiddlesexCT=CTMID 1</name>
   <visibility>0</visibility>
   <styleUrl>#transRedPoly</styleUrl>
   <Polygon>
@@ -1204,7 +1204,7 @@
 </Placemark>
 
 <Placemark>
-  <name>NewHaven=NHVCT 1</name>
+  <name>NewHaven=CTNHV 1</name>
   <visibility>0</visibility>
   <styleUrl>#transYellowPoly</styleUrl>
   <Polygon>
@@ -1677,7 +1677,7 @@
 </Placemark>
 
 <Placemark>
-  <name>NewLondon=NLNCT 1</name>
+  <name>NewLondon=CTNLN 1</name>
   <visibility>0</visibility>
   <styleUrl>#transRedPoly</styleUrl>
   <Polygon>
@@ -1949,7 +1949,7 @@
 </Placemark>
 
 <Placemark>
-  <name>Tolland=TOLCT 1</name>
+  <name>Tolland=CTTOL 1</name>
   <visibility>0</visibility>
   <styleUrl>#transBluePoly</styleUrl>
   <Polygon>
@@ -2171,7 +2171,7 @@
 </Placemark>
 
 <Placemark>
-  <name>WindhamCT=WINCT 1</name>
+  <name>WindhamCT=CTWIN 1</name>
   <visibility>0</visibility>
   <styleUrl>#transGreenPoly</styleUrl>
   <Polygon>

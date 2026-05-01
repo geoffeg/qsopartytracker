@@ -75,6 +75,7 @@ export async function fetchStateParties(url = 'https://www.contestcalendar.com/s
         const endDateString = cols[2].text.trim();
         acc.push({
             state: tempRow.state,
+            qsoPartyName: tempRow.qsoPartyName,
             refId: tempRow.refId,
             dates: {
                 start: tempRow.startDate,
@@ -86,15 +87,18 @@ export async function fetchStateParties(url = 'https://www.contestcalendar.com/s
     }
     if (cols.length === 3) {
         const stateName = cols[0].text.trim();
+        const qsoPartyName = cols[1].childNodes[1].text.trim();
         const dates = cols[2].text.trim();
         const contestDates = parseDate(dates);
         if (cols[2].text.endsWith("and")) {
             tempRow.refId = extractLinkRefFromRow(cols[1]);
+            tempRow.qsoPartyName = qsoPartyName;
             tempRow.state = stateName;
             tempRow.startDate = contestDates[0];
         } else {
             acc.push({
                 state: stateName,
+                qsoPartyName: qsoPartyName,
                 refId: extractLinkRefFromRow(cols[1]),
                 dates: {
                     start: contestDates[0],
@@ -107,8 +111,6 @@ export async function fetchStateParties(url = 'https://www.contestcalendar.com/s
   }, []);
   return parties;
 }
-
-
 
 export async function fetchPartyRules(partyRefId) {
     if (!partyRefId) return null;

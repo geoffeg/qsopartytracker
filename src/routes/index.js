@@ -4,7 +4,11 @@ import { formatDistance } from "date-fns";
 
 const index = async (c) => {
     const stateParties = await fetchStateParties();
-    const onlyUSStates = stateParties.filter((party) => {
+    const distinctQSOParties = [...new Set(stateParties.map(p => p.qsoPartyName))];
+    const onlyDistinctQSOParties = distinctQSOParties.map(qsoPartyName => {
+        return stateParties.find(p => p.qsoPartyName === qsoPartyName);
+    });
+    const onlyUSStates = onlyDistinctQSOParties.filter((party) => {
         return getStateCodeFromName(party.state) !== null;
     });
     
@@ -21,28 +25,23 @@ const index = async (c) => {
         return party.dates.start <= thirtyDaysFromNow;
     }));
 
-    // For testing, set the first party to have started 2 days ago
-    // if (onlyUSStates.length > 0) {
-    //     const twoDaysAgo = new Date();
-    //     twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
-    //     onlyUSStates[0].dates.start = twoDaysAgo;
-    // }
-
+    const config = c.get('config');
     const partialDataPromises = onlyUSStates.map(async (party) => {
-        const isSupported = !!c.get('config').qsoParties[getStateCodeFromName(party.state)];
-        let rulesUrl = null;
-        if (isSupported && party.refId) {
-            rulesUrl = await fetchPartyRules(party.refId);
-        }
+        const [operationCode, stateConfig] = Object.entries(config.qsoParties).find(([partyId, partyConfig]) => {
+            return partyConfig.contestCalendarId == party.refId;
+        }) || {};
+        const rulesUrl = stateConfig && party.refId ? await fetchPartyRules(party.refId) : null;
 
         return {
             state: party.state,
+            qsoPartyName: stateConfig?.operationTitle,
+            qsoPartyCode: operationCode,
             rulesUrl: rulesUrl,
             stateAbbr: getStateCodeFromName(party.state),
             timeToStart: formatDistance(now, new Date(party.dates.start)),
             timeSinceStart: formatDistance(new Date(party.dates.start), now),
             start: party.dates.start,
-            isSupported: isSupported,
+            isSupported: stateConfig !== undefined,
         }
     });
     const partialDataPromiseResults = await Promise.allSettled(partialDataPromises);

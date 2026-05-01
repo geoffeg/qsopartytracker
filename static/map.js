@@ -2,7 +2,7 @@ const url = new URL(window.location);
 const stateAbbr = url.pathname.split('/').filter(Boolean).pop();
 
 const config = {
-    minZoom: 5,
+    minZoom: 2,
     maxZoom: 13,
     zoomSnap: 0.25,
     attributionControl: true,
