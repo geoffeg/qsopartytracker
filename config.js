@@ -9,7 +9,7 @@ const config = {
         "AL": {
             stateAbbr: "AL",
             operationTitle: `Alabama QSO Party`,
-            operationInstructions: `To be listed on this map, put <u>ALQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "ALQP 14.230" if you are on 20 m at 14.23. Note: Frequency is optional`,
+            operationInstructions: `To be listed on this map, put <u>ALQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "ALQP 14.230" if you are on 20 m at 14.230. Note: Frequency is optional`,
             commentFilter: /ALQP/,
             kmlFile: 'OverlayAlabamaRev5.kml',
             contestCalendarId: 134,
@@ -17,7 +17,7 @@ const config = {
         "AZ": {
             stateAbbr: "AZ",
             operationTitle: `Arizona QSO Party`,
-            operationInstructions: `To be listed on this map, put <u>AZQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "AZQP 14.230" if you are on 20 m at 14.23. Note: Frequency is optional`,
+            operationInstructions: `To be listed on this map, put <u>AZQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "AZQP 14.230" if you are on 20 m at 14.230. Note: Frequency is optional`,
             commentFilter: /AZQP/,
             kmlFile: 'OverlayArizonaRev3.kml',
             contestCalendarId: 482,
@@ -25,7 +25,7 @@ const config = {
         "AR": {
             stateAbbr: "AR",
             operationTitle: `Arkansas QSO Party`,
-            operationInstructions: `To be listed on this map, put <u>ARQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "ARQP 14.230" if you are on 20 m at 14.23. Note: Frequency is optional`,
+            operationInstructions: `To be listed on this map, put <u>ARQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "ARQP 14.230" if you are on 20 m at 14.230. Note: Frequency is optional`,
             commentFilter: /ARQP/,
             kmlFile: 'OverlayArkansasRev5.kml',
             contestCalendarId: 132,
@@ -33,7 +33,7 @@ const config = {
         "CA": {
             stateAbbr: "CA",
             operationTitle: `California QSO Party`,
-            operationInstructions: `To be listed on this map, put <u>CAQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "CAQP 14.230" if you are on 20 m at 14.23. Note: Frequency is optional`,
+            operationInstructions: `To be listed on this map, put <u>CAQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "CAQP 14.230" if you are on 20 m at 14.230. Note: Frequency is optional`,
             commentFilter: /CAQP/,
             kmlFile: 'OverlayCaliforniaRev4.kml',
             contestCalendarId: 140,
@@ -41,7 +41,7 @@ const config = {
         "CO": {
             stateAbbr: "CO",
             operationTitle: `Colorado QSO Party`,
-            operationInstructions: `To be listed on this map, put <u>COQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "COQP 14.230" if you are on 20 m at 14.23. Note: Frequency is optional`,
+            operationInstructions: `To be listed on this map, put <u>COQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "COQP 14.230" if you are on 20 m at 14.230. Note: Frequency is optional`,
             commentFilter: /COQP/,
             kmlFile: 'OverlayColoradoRev6.kml',
             contestCalendarId: 431,
@@ -49,14 +49,14 @@ const config = {
         // "CT": {
         //     stateAbbr: "CT",
         //     operationTitle: `Connecticut QSO Party`,
-        //     operationInstructions: `To be listed on this map, put <u>CTQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "CTQP 14.230" if you are on 20 m at 14.23. Note: Frequency is optional`,
+        //     operationInstructions: `To be listed on this map, put <u>CTQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "CTQP 14.230" if you are on 20 m at 14.230. Note: Frequency is optional`,
         //     commentFilter: /CTQP/,
         //     kmlFile: 'OverlayConnecticutRev3.kml',
         // },
         "DE": {
             stateAbbr: "DE",
             operationTitle: `Delaware QSO Party`,
-            operationInstructions: `To be listed on this map, put <u>DEQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "DEQP 14.230" if you are on 20 m at 14.23. Note: Frequency is optional`,
+            operationInstructions: `To be listed on this map, put <u>DEQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "DEQP 14.230" if you are on 20 m at 14.230. Note: Frequency is optional`,
             commentFilter: /DEQP/,
             kmlFile: 'OverlayDelawareRev3.kml',
             contestCalendarId: 240,
@@ -73,7 +73,7 @@ const config = {
         "GA": {
             stateAbbr: "GA",
             operationTitle: `Georgia QSO Party`,
-            operationInstructions: `To be listed on this map, put <u>GAQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "GAQP 14.230" if you are on 20 m at 14.23. Note: Frequency is optional`,
+            operationInstructions: `To be listed on this map, put <u>GAQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "GAQP 14.230" if you are on 20 m at 14.230. Note: Frequency is optional`,
             commentFilter: /GAQP/,
             kmlFile: 'OverlayGeorgiaRev3.kml',
             contestCalendarId: 328
@@ -81,7 +81,7 @@ const config = {
         "HI": {
             stateAbbr: "HI",
             operationTitle: `Hawaii QSO Party`,
-            operationInstructions: `To be listed on this map, put <u>HIQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "HIQP 14.230" if you are on 20 m at 14.23. Note: Frequency is optional`,
+            operationInstructions: `To be listed on this map, put <u>HIQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "HIQP 14.230" if you are on 20 m at 14.230. Note: Frequency is optional`,
             commentFilter: /HIQP/,
             kmlFile: 'OverlayHawaiiRev2.kml',
             contestCalendarId: 96,
@@ -89,7 +89,7 @@ const config = {
         "ID": {
             stateAbbr: "ID",
             operationTitle: `Idaho QSO Party`,
-            operationInstructions: `To be listed on this map, put <u>IDQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "IDQP 14.230" if you are on 20 m at 14.23. Note: Frequency is optional`,
+            operationInstructions: `To be listed on this map, put <u>IDQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "IDQP 14.230" if you are on 20 m at 14.230. Note: Frequency is optional`,
             commentFilter: /IDQP/,
             kmlFile: 'OverlayIdahoRev4.kml',
             contestCalendarId: 305,
@@ -97,7 +97,7 @@ const config = {
         "IL": {
             stateAbbr: "IL",
             operationTitle: `Illinois QSO Party`,
-            operationInstructions: `To be listed on this map, put <u>ILQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "ILQP 14.230" if you are on 20 m at 14.23. Note: Frequency is optional`,
+            operationInstructions: `To be listed on this map, put <u>ILQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "ILQP 14.230" if you are on 20 m at 14.230. Note: Frequency is optional`,
             commentFilter: /ILQP/,
             kmlFile: 'OverlayIllinoisRev3.kml',
             contestCalendarId: 167,
@@ -105,7 +105,7 @@ const config = {
         "IN": {
             stateAbbr: "IN",
             operationTitle: `Indiana QSO Party`,
-            operationInstructions: `To be listed on this map, put <u>INQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "INQP 14.230" if you are on 20 m at 14.23. Note: Frequency is optional`,
+            operationInstructions: `To be listed on this map, put <u>INQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "INQP 14.230" if you are on 20 m at 14.230. Note: Frequency is optional`,
             commentFilter: /INQP/,
             kmlFile: 'OverlayIndianaRev3.kml',
             contestCalendarId: 8,
@@ -113,7 +113,7 @@ const config = {
         "IA": {
             stateAbbr: "IA",
             operationTitle: `Iowa QSO Party`,
-            operationInstructions: `To be listed on this map, put <u>IAQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "IAQP 14.230" if you are on 20 m at 14.23. Note: Frequency is optional`,
+            operationInstructions: `To be listed on this map, put <u>IAQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "IAQP 14.230" if you are on 20 m at 14.230. Note: Frequency is optional`,
             commentFilter: /IAQP/,
             kmlFile: 'OverlayIowaRev3.kml',
             contestCalendarId: 484,
@@ -121,7 +121,7 @@ const config = {
         "KS": {
             stateAbbr: "KS",
             operationTitle: `Kansas QSO Party`,
-            operationInstructions: `To be listed on this map, put <u>KSQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "KSQP 14.230" if you are on 20 m at 14.23. Note: Frequency is optional`,
+            operationInstructions: `To be listed on this map, put <u>KSQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "KSQP 14.230" if you are on 20 m at 14.230. Note: Frequency is optional`,
             commentFilter: /KSQP/,
             kmlFile: 'OverlayKansasRev3.kml',
             contestCalendarId: 483,
@@ -129,7 +129,7 @@ const config = {
         "KY": {
             stateAbbr: "KY",
             operationTitle: `Kentucky QSO Party`,
-            operationInstructions: `To be listed on this map, put <u>KYQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "KYQP 14.230" if you are on 20 m at 14.23. Note: Frequency is optional`,
+            operationInstructions: `To be listed on this map, put <u>KYQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "KYQP 14.230" if you are on 20 m at 14.230. Note: Frequency is optional`,
             commentFilter: /KYQP/,
             kmlFile: 'OverlayKentuckyRev3.kml',
             contestCalendarId: 371,
@@ -137,7 +137,7 @@ const config = {
         "LA": {
             stateAbbr: "LA",
             operationTitle: `Louisiana QSO Party`,
-            operationInstructions: `To be listed on this map, put <u>LAQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "LAQP 14.230" if you are on 20 m at 14.23. Note: Frequency is optional`,
+            operationInstructions: `To be listed on this map, put <u>LAQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "LAQP 14.230" if you are on 20 m at 14.230. Note: Frequency is optional`,
             commentFilter: /LAQP/,
             kmlFile: 'OverlayLouisianaRev06.kml',
             contestCalendarId: 250,
@@ -145,7 +145,7 @@ const config = {
         "ME": {
             stateAbbr: "ME",
             operationTitle: `Maine QSO Party`,
-            operationInstructions: `To be listed on this map, put <u>MEQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "MEQP 14.230" if you are on 20 m at 14.23. Note: Frequency is optional`,
+            operationInstructions: `To be listed on this map, put <u>MEQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "MEQP 14.230" if you are on 20 m at 14.230. Note: Frequency is optional`,
             commentFilter: /MEQP/,
             kmlFile: 'OverlayMaineRev3.kml',
             contestCalendarId: 592,
@@ -153,7 +153,7 @@ const config = {
         "MD": {
             stateAbbr: "MD",
             operationTitle: `Maryland QSO Party`,
-            operationInstructions: `To be listed on this map, put <u>MDQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "MDQP 14.230" if you are on 20 m at 14.23. Note: Frequency is optional`,
+            operationInstructions: `To be listed on this map, put <u>MDQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "MDQP 14.230" if you are on 20 m at 14.230. Note: Frequency is optional`,
             commentFilter: /MDQP/,
             kmlFile: 'OverlayMaryland-DCRev4.kml',
             contestCalendarId: 86,
@@ -161,14 +161,14 @@ const config = {
         // "MA": {
         //     stateAbbr: "MA",
         //     operationTitle: `Massachusetts QSO Party`,
-        //     operationInstructions: `To be listed on this map, put <u>MAQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "MAQP 14.230" if you are on 20 m at 14.23. Note: Frequency is optional`,
+        //     operationInstructions: `To be listed on this map, put <u>MAQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "MAQP 14.230" if you are on 20 m at 14.230. Note: Frequency is optional`,
         //     commentFilter: /MAQP/,
         //     kmlFile: 'OverlayMassachusettsRev6.kml',
         // },
         "MI": {
             stateAbbr: "MI",
             operationTitle: `Michigan QSO Party`,
-            operationInstructions: `To be listed on this map, put <u>MIQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "MIQP 14.230" if you are on 20 m at 14.23. Note: Frequency is optional`,
+            operationInstructions: `To be listed on this map, put <u>MIQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "MIQP 14.230" if you are on 20 m at 14.230. Note: Frequency is optional`,
             commentFilter: /MIQP/,
             kmlFile: 'OverlayMichiganRev4.kml',
             contestCalendarId: 323,
@@ -176,7 +176,7 @@ const config = {
         "MN": {
             stateAbbr: "MN",
             operationTitle: `Minnesota QSO Party`,
-            operationInstructions: `To be listed on this map, put <u>MNQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "MNQP 14.230" if you are on 20 m at 14.23. Note: Frequency is optional`,
+            operationInstructions: `To be listed on this map, put <u>MNQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "MNQP 14.230" if you are on 20 m at 14.230. Note: Frequency is optional`,
             commentFilter: /MNQP/,
             kmlFile: 'OverlayMinnesotaRev3.kml',
             contestCalendarId: 238,
@@ -184,7 +184,7 @@ const config = {
         "MS": {
             stateAbbr: "MS",
             operationTitle: `Mississippi QSO Party`,
-            operationInstructions: `To be listed on this map, put <u>MSQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "MSQP 14.230" if you are on 20 m at 14.23. Note: Frequency is optional`,
+            operationInstructions: `To be listed on this map, put <u>MSQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "MSQP 14.230" if you are on 20 m at 14.230. Note: Frequency is optional`,
             commentFilter: /MSQP/,
             kmlFile: 'OverlayMississippiRev4.kml',
             contestCalendarId: 308,
@@ -192,7 +192,7 @@ const config = {
         "MO": {
             stateAbbr: "MO",
             operationTitle: `Missouri QSO Party`,
-            operationInstructions: `To be listed on this map, put <u>MOQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "MOQP 14.230" if you are on 20 m at 14.23. Note: Frequency is optional`,
+            operationInstructions: `To be listed on this map, put <u>MOQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "MOQP 14.230" if you are on 20 m at 14.230. Note: Frequency is optional`,
             commentFilter: /MOQP/,
             kmlFile: 'OverlayMissouriRev3.kml',
             selfSpottingAllowed: true,
@@ -201,14 +201,14 @@ const config = {
         // "MT": {
         //     stateAbbr: "MT",
         //     operationTitle: `Montana QSO Party`,
-        //     operationInstructions: `To be listed on this map, put <u>MTQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "MTQP 14.230" if you are on 20 m at 14.23. Note: Frequency is optional`,
+        //     operationInstructions: `To be listed on this map, put <u>MTQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "MTQP 14.230" if you are on 20 m at 14.230. Note: Frequency is optional`,
         //     commentFilter: /MTQP/,
         //     kmlFile: 'OverlayMontanaRev3.kml',
         // },
         "NE": {
             stateAbbr: "NE",
             operationTitle: `Nebraska QSO Party`,
-            operationInstructions: `To be listed on this map, put <u>NEQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "NEQP 14.230" if you are on 20 m at 14.23. Note: Frequency is optional`,
+            operationInstructions: `To be listed on this map, put <u>NEQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "NEQP 14.230" if you are on 20 m at 14.230. Note: Frequency is optional`,
             commentFilter: /NEQP/,
             kmlFile: 'OverlayNebraskaRev3.kml',
             contestCalendarId: 336,
@@ -216,7 +216,7 @@ const config = {
         "NH": {
             stateAbbr: "NH",
             operationTitle: `New Hampshire QSO Party`,
-            operationInstructions: `To be listed on this map, put <u>NHQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "NHQP 14.230" if you are on 20 m at 14.23. Note: Frequency is optional`,
+            operationInstructions: `To be listed on this map, put <u>NHQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "NHQP 14.230" if you are on 20 m at 14.230. Note: Frequency is optional`,
             commentFilter: /NHQP/,
             kmlFile: 'OverlayNewHampshire_NHQP_Rev3.kml',
             contestCalendarId: 71,
@@ -224,7 +224,7 @@ const config = {
         "NJ": {
             stateAbbr: "NJ",
             operationTitle: `New Jersey QSO Party`,
-            operationInstructions: `To be listed on this map, put <u>NJQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "NJQP 14.230" if you are on 20 m at 14.23. Note: Frequency is optional`,
+            operationInstructions: `To be listed on this map, put <u>NJQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "NJQP 14.230" if you are on 20 m at 14.230. Note: Frequency is optional`,
             commentFilter: /NJQP/,
             kmlFile: 'OverlayNewJerseyRev3.kml',
             contestCalendarId: 92,
@@ -232,7 +232,7 @@ const config = {
         "NM": {
             stateAbbr: "NM",
             operationTitle: `New Mexico QSO Party`,
-            operationInstructions: `To be listed on this map, put <u>NMQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "NMQP 14.230" if you are on 20 m at 14.23. Note: Frequency is optional`,
+            operationInstructions: `To be listed on this map, put <u>NMQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "NMQP 14.230" if you are on 20 m at 14.230. Note: Frequency is optional`,
             commentFilter: /NMQP/,
             kmlFile: 'OverlayNewMexicoRev3.kml',
             contestCalendarId: 286,
@@ -240,7 +240,7 @@ const config = {
         "NY": {
             stateAbbr: "NY",
             operationTitle: `NY QSO Party`,
-            operationInstructions: `To be listed on this map, put <u>NYQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "NYQP 14.230" if you are on 20 m at 14.23. Note: Frequency is optional`,
+            operationInstructions: `To be listed on this map, put <u>NYQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "NYQP 14.230" if you are on 20 m at 14.230. Note: Frequency is optional`,
             commentFilter: /NYQP/,
             kmlFile: 'OverlayNewYorkRev4.kml',
             contestCalendarId: 473,
@@ -248,7 +248,7 @@ const config = {
         "NC": {
             stateAbbr: "NC",
             operationTitle: `North Carolina QSO Party`,
-            operationInstructions: `To be listed on this map, put <u>NCQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "NCQP 14.230" if you are on 20 m at 14.23. Note: Frequency is optional`,
+            operationInstructions: `To be listed on this map, put <u>NCQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "NCQP 14.230" if you are on 20 m at 14.230. Note: Frequency is optional`,
             commentFilter: /NCQP/,
             kmlFile: 'OverlayNorthCarolinaRev3.kml',
             contestCalendarId: 265,
@@ -256,7 +256,7 @@ const config = {
         "ND": {
             stateAbbr: "ND",
             operationTitle: `North Dakota QSO Party`,
-            operationInstructions: `To be listed on this map, put <u>NDQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "NDQP 14.230" if you are on 20 m at 14.23. Note: Frequency is optional`,
+            operationInstructions: `To be listed on this map, put <u>NDQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "NDQP 14.230" if you are on 20 m at 14.230. Note: Frequency is optional`,
             commentFilter: /NDQP/,
             kmlFile: 'OverlayNorthDakotaRev3.kml',
             contestCalendarId: 468,
@@ -264,14 +264,14 @@ const config = {
         // "NV": {
         //     stateAbbr: "NV",
         //     operationTitle: `Nevada QSO Party`,
-        //     operationInstructions: `To be listed on this map, put <u>NVQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "NVQP 14.230" if you are on 20 m at 14.23. Note: Frequency is optional`,
+        //     operationInstructions: `To be listed on this map, put <u>NVQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "NVQP 14.230" if you are on 20 m at 14.230. Note: Frequency is optional`,
         //     commentFilter: /NVQP/,
         //     kmlFile: 'OverlayNevada_NVQP_Rev3.kml',
         // },
         "OH": {
             stateAbbr: "OH",
             operationTitle: `Ohio QSO Party`,
-            operationInstructions: `To be listed on this map, put <u>OHQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "OHQP 14.230" if you are on 20 m at 14.23. Note: Frequency is optional`,
+            operationInstructions: `To be listed on this map, put <u>OHQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "OHQP 14.230" if you are on 20 m at 14.230. Note: Frequency is optional`,
             commentFilter: /OHQP/,
             kmlFile: 'OverlayOhioRev4.kml',
             contestCalendarId: 100,
@@ -279,7 +279,7 @@ const config = {
         "OK": {
             stateAbbr: "OK",
             operationTitle: `Oklahoma QSO Party`,
-            operationInstructions: `To be listed on this map, put <u>OKQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "OKQP 14.230" if you are on 20 m at 14.23. Note: Frequency is optional`,
+            operationInstructions: `To be listed on this map, put <u>OKQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "OKQP 14.230" if you are on 20 m at 14.230. Note: Frequency is optional`,
             commentFilter: /OKQP/,
             kmlFile: 'OverlayOklahomaRev3.kml',
             contestCalendarId: 293,
@@ -287,14 +287,14 @@ const config = {
         // "OR": {
         //     stateAbbr: "OR",
         //     operationTitle: `Oregon QSO Party`,
-        //     operationInstructions: `To be listed on this map, put <u>ORQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "ORQP 14.230" if you are on 20 m at 14.23. Note: Frequency is optional`,
+        //     operationInstructions: `To be listed on this map, put <u>ORQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "ORQP 14.230" if you are on 20 m at 14.230. Note: Frequency is optional`,
         //     commentFilter: /ORQP/,
         //     kmlFile: 'OverlayOregonRev3.kml',
         // },
         "PA": {
             stateAbbr: "PA",
             operationTitle: `Pennsylvania QSO Party`,
-            operationInstructions: `To be listed on this map, put <u>PAQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "PAQP 14.230" if you are on 20 m at 14.23. Note: Frequency is optional`,
+            operationInstructions: `To be listed on this map, put <u>PAQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "PAQP 14.230" if you are on 20 m at 14.230. Note: Frequency is optional`,
             commentFilter: /PAQP/,
             kmlFile: 'OverlayPennsylvaniaRev3.kml',
             contestCalendarId: 153,
@@ -302,14 +302,14 @@ const config = {
         // "RI": {
         //     stateAbbr: "RI",
         //     operationTitle: `Rhode Island QSO Party`,
-        //     operationInstructions: `To be listed on this map, put <u>RIQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "RIQP 14.230" if you are on 20 m at 14.23. Note: Frequency is optional`,
+        //     operationInstructions: `To be listed on this map, put <u>RIQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "RIQP 14.230" if you are on 20 m at 14.230. Note: Frequency is optional`,
         //     commentFilter: /RIQP/,
         //     kmlFile: 'OverlayRhodeIslandRev7.kml',
         // },
         "SC": {
             stateAbbr: "SC",
             operationTitle: `South Carolina QSO Party`,
-            operationInstructions: `To be listed on this map, put <u>SCQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Ex: "SCQP 14.230" if you are on 20 m at 14.23. Note: Frequency is optional`,
+            operationInstructions: `To be listed on this map, put <u>SCQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Ex: "SCQP 14.230" if you are on 20 m at 14.230. Note: Frequency is optional`,
             commentFilter: /SCQP/,
             kmlFile: 'OverlaySouthCarolinaRev3.kml',
             contestCalendarId: 123,
@@ -365,7 +365,7 @@ const config = {
         "SD": {
             stateAbbr: "SD",
             operationTitle: `South Dakota QSO Party`,
-            operationInstructions: `To be listed on this map, put <u>SDQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "SDQP 14.230" if you are on 20 m at 14.23. Note: Frequency is optional`,
+            operationInstructions: `To be listed on this map, put <u>SDQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "SDQP 14.230" if you are on 20 m at 14.230. Note: Frequency is optional`,
             commentFilter: /SDQP/,
             kmlFile: 'OverlaySouthDakotaRev04.kml',
             contestCalendarId: 492,
@@ -373,7 +373,7 @@ const config = {
         "TN": {
             stateAbbr: "TN",
             operationTitle: `Tennessee QSO Party`,
-            operationInstructions: `To be listed on this map, put <u>TNQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "TNQP 14.230" if you are on 20 m at 14.23. Note: Frequency is optional`,
+            operationInstructions: `To be listed on this map, put <u>TNQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "TNQP 14.230" if you are on 20 m at 14.230. Note: Frequency is optional`,
             commentFilter: /TNQP/,
             kmlFile: 'OverlayTennesseeRev3.kml',
             contestCalendarId: 115,
@@ -381,7 +381,7 @@ const config = {
         "TX": {
             stateAbbr: "TX",
             operationTitle: `Texas QSO Party`,
-            operationInstructions: `To be listed on this map, put <u>TXQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "TXQP 14.230" if you are on 20 m at 14.23. Note: Frequency is optional`,
+            operationInstructions: `To be listed on this map, put <u>TXQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "TXQP 14.230" if you are on 20 m at 14.230. Note: Frequency is optional`,
             commentFilter: /TXQP/,
             kmlFile: 'OverlayTexasRev04.kml',
             contestCalendarId: 133,
@@ -389,14 +389,14 @@ const config = {
         // "UT": {
         //     stateAbbr: "UT",
         //     operationTitle: `Utah QSO Party`,
-        //     operationInstructions: `To be listed on this map, put <u>UTQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "UTQP 14.230" if you are on 20 m at 14.23. Note: Frequency is optional`,
+        //     operationInstructions: `To be listed on this map, put <u>UTQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "UTQP 14.230" if you are on 20 m at 14.230. Note: Frequency is optional`,
         //     commentFilter: /UTQP/,
         //     kmlFile: 'OverlayUtahRev3.kml',
         // },
         "VT": {
             stateAbbr: "VT",
             operationTitle: `Vermont QSO Party`,
-            operationInstructions: `To be listed on this map, put <u>VTQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "VTQP 14.230" if you are on 20 m at 14.23. Note: Frequency is optional`,
+            operationInstructions: `To be listed on this map, put <u>VTQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "VTQP 14.230" if you are on 20 m at 14.230. Note: Frequency is optional`,
             commentFilter: /VTQP/,
             kmlFile: 'OverlayVermont_VTQP_Rev3.kml',
             contestCalendarId: 236,
@@ -404,7 +404,7 @@ const config = {
         "VA": {
             stateAbbr: "VA",
             operationTitle: `Virginia QSO Party`,
-            operationInstructions: `To be listed on this map, put <u>VAQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "VAQP 14.230" if you are on 20 m at 14.23. Note: Frequency is optional`,
+            operationInstructions: `To be listed on this map, put <u>VAQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "VAQP 14.230" if you are on 20 m at 14.230. Note: Frequency is optional`,
             commentFilter: /V[Aa]*QP/,
             kmlFile: 'OverlayVirginiaRev4.kml',
             contestCalendarId: 302,
@@ -412,7 +412,7 @@ const config = {
         "WA": {
             stateAbbr: "WA",
             operationTitle: `Washington QSO Party`,
-            operationInstructions: `To be listed on this map, put <u>WAQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "WAQP 14.230" if you are on 20 m at 14.23. Note: Frequency is optional`,
+            operationInstructions: `To be listed on this map, put <u>WAQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "WAQP 14.230" if you are on 20 m at 14.230. Note: Frequency is optional`,
             commentFilter: /WAQP/,
             kmlFile: 'OverlayWashingtonSalmonRunRev3.kml',
             contestCalendarId: 126,
@@ -420,7 +420,7 @@ const config = {
         "WV": {
             stateAbbr: "WV",
             operationTitle: `West Virginia QSO Party`,
-            operationInstructions: `To be listed on this map, put <u>WVQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "WVQP 14.230" if you are on 20 m at 14.23. Note: Frequency is optional`,
+            operationInstructions: `To be listed on this map, put <u>WVQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "WVQP 14.230" if you are on 20 m at 14.230. Note: Frequency is optional`,
             commentFilter: /WVQP/,
             kmlFile: 'OverlayWestVirginiaRev3.kml',
             contestCalendarId: 49,
@@ -436,14 +436,14 @@ const config = {
         // "WY": {
         //     stateAbbr: "WY",
         //     operationTitle: `Wyoming QSO Party`,
-        //     operationInstructions: `To be listed on this map, put <u>WYQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "WYQP 14.230" if you are on 20 m at 14.23. Note: Frequency is optional`,
+        //     operationInstructions: `To be listed on this map, put <u>WYQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "WYQP 14.230" if you are on 20 m at 14.230. Note: Frequency is optional`,
         //     commentFilter: /WYQP/,
         //     kmlFile: 'OverlayWyomingRev3.kml',
         // },
         "7QP": {
             stateAbbr: "7QP",
             operationTitle: `7th Call Area QSO Party`,
-            operationInstructions: `To be listed on this map, put <u>7QP</u> in your APRS comment. Note: The 7th Call Area QSO Party does not allow self-spotting; frequencies will be redacted`,
+            operationInstructions: `To be listed on this map, put <u>7QP</u> in your APRS comment. Note: The 7th Call Area QSO Party does not allow APRS self-spotting of frequency information; frequencies will be redacted`,
             commentFilter: /7QP/,
             contestCalendarId: 404,
             selfSpottingAllowed: false,
@@ -461,7 +461,7 @@ const config = {
         "NEWE": {
             stateAbbr: "NEWE",
             operationTitle: `New England QSO Party`,
-            operationInstructions: `To be listed on this map, put <u>NEWE XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "NEWE 14.230" if you are on 20 m at 14.23. Note: Frequency is optional`,
+            operationInstructions: `To be listed on this map, put <u>NEWE XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "NEWE 14.230" if you are on 20 m at 14.230. Note: Frequency is optional`,
             commentFilter: /NEWE/,
             contestCalendarId: 10,
             kmlFile: [
