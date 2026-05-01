@@ -79,7 +79,7 @@
   </PolyStyle>
 </Style>
 <Placemark>
-  <name>Belknap=BEL 1</name>
+  <name>Belknap=NHBEL 1</name>
   <visibility>0</visibility>
   <styleUrl>#transRedPoly</styleUrl>
   <Polygon>
@@ -275,7 +275,7 @@
 </Placemark>
 
 <Placemark>
-  <name>Carroll=CAR 1</name>
+  <name>Carroll=NHCAR 1</name>
   <visibility>0</visibility>
   <styleUrl>#transBluePoly</styleUrl>
   <Polygon>
@@ -444,7 +444,7 @@
 </Placemark>
 
 <Placemark>
-  <name>Cheshire=CHE 1</name>
+  <name>Cheshire=NHCHE 1</name>
   <visibility>0</visibility>
   <styleUrl>#transGreenPoly</styleUrl>
   <Polygon>
@@ -727,7 +727,7 @@
 </Placemark>
 
 <Placemark>
-  <name>Coos=COO 1</name>
+  <name>Coos=NHCOO 1</name>
   <visibility>0</visibility>
   <styleUrl>#transYellowPoly</styleUrl>
   <Polygon>
@@ -1424,7 +1424,7 @@
 </Placemark>
 
 <Placemark>
-  <name>Grafton=GRN 1</name>
+  <name>Grafton=NHGRN 1</name>
   <visibility>0</visibility>
   <styleUrl>#transRedPoly</styleUrl>
   <Polygon>
@@ -2008,7 +2008,7 @@
 </Placemark>
 
 <Placemark>
-  <name>Hillsborough=HIL 1</name>
+  <name>Hillsborough=NHHIL 1</name>
   <visibility>0</visibility>
   <styleUrl>#transBluePoly</styleUrl>
   <Polygon>
@@ -2206,7 +2206,7 @@
 </Placemark>
 
 <Placemark>
-  <name>Merrimack=MER 1</name>
+  <name>Merrimack=NHMER 1</name>
   <visibility>0</visibility>
   <styleUrl>#transGreenPoly</styleUrl>
   <Polygon>
@@ -2443,7 +2443,7 @@
 </Placemark>
 
 <Placemark>
-  <name>Rockingham=ROC 1</name>
+  <name>Rockingham=NHROC 1</name>
   <visibility>0</visibility>
   <styleUrl>#transYellowPoly</styleUrl>
   <Polygon>
@@ -2729,7 +2729,7 @@
 </Placemark>
 
 <Placemark>
-  <name>Strafford=STR 1</name>
+  <name>Strafford=NHSTR 1</name>
   <visibility>0</visibility>
   <styleUrl>#transRedPoly</styleUrl>
   <Polygon>
@@ -3020,7 +3020,7 @@
 </Placemark>
 
 <Placemark>
-  <name>Sullivan=SUL 1</name>
+  <name>Sullivan=NHSUL 1</name>
   <visibility>0</visibility>
   <styleUrl>#transBluePoly</styleUrl>
   <Polygon>

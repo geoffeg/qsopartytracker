@@ -77,13 +77,13 @@ const connect = async () => {
                             return;
                         }
 
-                        // If the comment doesn't contain the commentFilter, skip the packet
-                        if (!packet?.data?.comment?.toUpperCase().includes(config.commentFilter)) {
+                        // If there's no comment, skip the packet
+                        if (!packet?.data?.comment) {
                             return;
                         }
 
                         // If the comment doesn't contain at least one character before the commentFilter, skip the packet
-                        const commentPrefix = packet.data.comment.match(new RegExp(`.*?(\\w+${config.commentFilter}).*`, 'i'));
+                        const commentPrefix = packet.data.comment.match(new RegExp(`.*?(\\w+${config.commentFilter.source}).*`, 'i'));
                         if (!commentPrefix || commentPrefix.length < 2) {
                             return;
                         }

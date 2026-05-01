@@ -79,7 +79,7 @@
   </PolyStyle>
 </Style>
 <Placemark>
-  <name>BristolRI=BRIRI 1</name>
+  <name>BristolRI=RIBRI 1</name>
   <visibility>0</visibility>
   <styleUrl>#transRedPoly</styleUrl>
   <Polygon>
@@ -179,7 +179,7 @@
 </Placemark>
 
 <Placemark>
-  <name>Kent=KENRI 1</name>
+  <name>Kent=RIKEN 1</name>
   <visibility>0</visibility>
   <styleUrl>#transGreenPoly</styleUrl>
   <Polygon>
@@ -644,7 +644,7 @@
 </Placemark>
 
 <Placemark>
-  <name>Newport=NEWRI 1</name>
+  <name>Newport=RINEW 1</name>
   <visibility>0</visibility>
   <styleUrl>#transBluePoly</styleUrl>
   <Polygon>
@@ -895,7 +895,7 @@
 </Placemark>
 
 <Placemark>
-  <name>Providence=PRORI 1</name>
+  <name>Providence=RIPRO 1</name>
   <visibility>0</visibility>
   <styleUrl>#transBluePoly</styleUrl>
   <Polygon>
@@ -1452,7 +1452,7 @@
 </Placemark>
 
 <Placemark>
-  <name>WashingtonRI=WASRI 1</name>
+  <name>WashingtonRI=RIWAS 1</name>
   <visibility>0</visibility>
   <styleUrl>#transRedPoly</styleUrl>
   <Polygon>
@@ -1932,7 +1932,7 @@
   </Polygon>
 </Placemark>
 <Placemark>
-  <name>WashingtonRI=WASRI 2</name>
+  <name>WashingtonRI=RIWAS 2</name>
   <visibility>0</visibility>
   <styleUrl>#transRedPoly</styleUrl>
   <Polygon>

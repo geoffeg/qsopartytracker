@@ -79,7 +79,7 @@
   </PolyStyle>
 </Style>
 <Placemark>
-  <name>Barnstable=BARMA 1</name>
+  <name>Barnstable=MABAR 1</name>
   <visibility>0</visibility>
   <styleUrl>#transYellowPoly</styleUrl>
   <Polygon>
@@ -502,7 +502,7 @@
 </Placemark>
 
 <Placemark>
-  <name>Berkshire=BERMA 1</name>
+  <name>Berkshire=MABER 1</name>
   <visibility>0</visibility>
   <styleUrl>#transGreenPoly</styleUrl>
   <Polygon>
@@ -677,7 +677,7 @@
 </Placemark>
 
 <Placemark>
-  <name>BristolMA=BRIMA 1</name>
+  <name>BristolMA=MABRI 1</name>
   <visibility>0</visibility>
   <styleUrl>#transYellowPoly</styleUrl>
   <Polygon>
@@ -999,7 +999,7 @@
   </Polygon>
 </Placemark>
 <Placemark>
-  <name>BristolMA=BRIMA 2</name>
+  <name>BristolMA=MABRI 2</name>
   <visibility>0</visibility>
   <styleUrl>#transYellowPoly</styleUrl>
   <Polygon>
@@ -1031,7 +1031,7 @@
 </Placemark>
 
 <Placemark>
-  <name>Dukes=DUKMA 1</name>
+  <name>Dukes=MADUK 1</name>
   <visibility>0</visibility>
   <styleUrl>#transYellowPoly</styleUrl>
   <Polygon>
@@ -1154,7 +1154,7 @@
   </Polygon>
 </Placemark>
 <Placemark>
-  <name>Dukes=DUKMA 2</name>
+  <name>Dukes=MADUK 2</name>
   <visibility>0</visibility>
   <styleUrl>#transYellowPoly</styleUrl>
   <Polygon>
@@ -1212,7 +1212,7 @@
 </Placemark>
 
 <Placemark>
-  <name>EssexMA=ESSMA 1</name>
+  <name>EssexMA=MAESS 1</name>
   <visibility>0</visibility>
   <styleUrl>#transRedPoly</styleUrl>
   <Polygon>
@@ -1559,7 +1559,7 @@
 </Placemark>
 
 <Placemark>
-  <name>FranklinMA=FRAMA 1</name>
+  <name>FranklinMA=MAFRA 1</name>
   <visibility>0</visibility>
   <styleUrl>#transYellowPoly</styleUrl>
   <Polygon>
@@ -1803,7 +1803,7 @@
 </Placemark>
 
 <Placemark>
-  <name>Hampden=HMDMA 1</name>
+  <name>Hampden=MAHMD 1</name>
   <visibility>0</visibility>
   <styleUrl>#transRedPoly</styleUrl>
   <Polygon>
@@ -2074,7 +2074,7 @@
 </Placemark>
 
 <Placemark>
-  <name>Hampshire=HMPMA 1</name>
+  <name>Hampshire=MAHMP 1</name>
   <visibility>0</visibility>
   <styleUrl>#transBluePoly</styleUrl>
   <Polygon>
@@ -2363,7 +2363,7 @@
 </Placemark>
 
 <Placemark>
-  <name>MiddlesexMA=MIDMA 1</name>
+  <name>MiddlesexMA=MAMID 1</name>
   <visibility>0</visibility>
   <styleUrl>#transBluePoly</styleUrl>
   <Polygon>
@@ -2880,7 +2880,7 @@
 </Placemark>
 
 <Placemark>
-  <name>Nantucket=NANMA 1</name>
+  <name>Nantucket=MANAN 1</name>
   <visibility>0</visibility>
   <styleUrl>#transGreenPoly</styleUrl>
   <Polygon>
@@ -2948,7 +2948,7 @@
 </Placemark>
 
 <Placemark>
-  <name>Norfolk=NORMA 1</name>
+  <name>Norfolk=MANOR 1</name>
   <visibility>0</visibility>
   <styleUrl>#transGreenPoly</styleUrl>
   <Polygon>
@@ -3299,7 +3299,7 @@
   </Polygon>
 </Placemark>
 <Placemark>
-  <name>Norfolk=NORMA 2</name>
+  <name>Norfolk=MANOR 2</name>
   <visibility>0</visibility>
   <styleUrl>#transGreenPoly</styleUrl>
   <Polygon>
@@ -3360,7 +3360,7 @@
   </Polygon>
 </Placemark>
 <Placemark>
-  <name>Norfolk=NORMA 3</name>
+  <name>Norfolk=MANOR 3</name>
   <visibility>0</visibility>
   <styleUrl>#transGreenPoly</styleUrl>
   <Polygon>
@@ -3448,7 +3448,7 @@
 </Placemark>
 
 <Placemark>
-  <name>Plymouth=PLYMA 1</name>
+  <name>Plymouth=MAPLY 1</name>
   <visibility>0</visibility>
   <styleUrl>#transRedPoly</styleUrl>
   <Polygon>
@@ -3844,7 +3844,7 @@
 </Placemark>
 
 <Placemark>
-  <name>Suffolk=SUFMA 1</name>
+  <name>Suffolk=MASUF 1</name>
   <visibility>0</visibility>
   <styleUrl>#transYellowPoly</styleUrl>
   <Polygon>
@@ -4213,7 +4213,7 @@
 </Placemark>
 
 <Placemark>
-  <name>Worcester=WORMA 1</name>
+  <name>Worcester=MAWOR 1</name>
   <visibility>0</visibility>
   <styleUrl>#transBluePoly</styleUrl>
   <Polygon>
