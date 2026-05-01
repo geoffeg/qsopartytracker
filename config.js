@@ -443,9 +443,10 @@ const config = {
         "7QP": {
             stateAbbr: "7QP",
             operationTitle: `7th Call Area QSO Party`,
-            operationInstructions: `To be listed on this map, put <u>7QP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "7QP 14.230" if you are on 20 m at 14.23. Note: Frequency is optional`,
+            operationInstructions: `To be listed on this map, put <u>7QP</u> in your APRS comment. Note: The 7th Call Area QSO Party does not allow self-spotting; frequencies will be redacted`,
             commentFilter: /7QP/,
             contestCalendarId: 404,
+            selfSpottingAllowed: false,
             kmlFile: [
                 'OverlayArizonaRev3_7QP.kml',
                 'OverlayIdahoRev4_7QP.kml',
