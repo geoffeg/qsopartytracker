@@ -79,7 +79,7 @@
   </PolyStyle>
 </Style>
 <Placemark>
-  <name>Kent=KEN 1</name>
+  <name>Kent=KDE 1</name>
   <visibility>0</visibility>
   <styleUrl>#transRedPoly</styleUrl>
   <Polygon>
@@ -365,7 +365,7 @@
 </Placemark>
 
 <Placemark>
-  <name>NewCastle=NEW 1</name>
+  <name>NewCastle=NDE 1</name>
   <visibility>0</visibility>
   <styleUrl>#transBluePoly</styleUrl>
   <Polygon>
@@ -675,7 +675,7 @@
   </Polygon>
 </Placemark>
 <Placemark>
-  <name>NewCastle=NEW 2</name>
+  <name>NewCastle=NDE 2</name>
   <visibility>0</visibility>
   <styleUrl>#transBluePoly</styleUrl>
   <Polygon>
@@ -705,7 +705,7 @@
   </Polygon>
 </Placemark>
 <Placemark>
-  <name>NewCastle=NEW 3</name>
+  <name>NewCastle=NDE 3</name>
   <visibility>0</visibility>
   <styleUrl>#transBluePoly</styleUrl>
   <Polygon>
@@ -727,7 +727,7 @@
 </Placemark>
 
 <Placemark>
-  <name>Sussex=SUS 1</name>
+  <name>Sussex=SDE 1</name>
   <visibility>0</visibility>
   <styleUrl>#transGreenPoly</styleUrl>
   <Polygon>

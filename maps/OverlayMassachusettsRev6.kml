@@ -677,7 +677,7 @@
 </Placemark>
 
 <Placemark>
-  <name>BristolMA=MABRI 1</name>
+  <name>Bristol=MABRI 1</name>
   <visibility>0</visibility>
   <styleUrl>#transYellowPoly</styleUrl>
   <Polygon>
@@ -999,7 +999,7 @@
   </Polygon>
 </Placemark>
 <Placemark>
-  <name>BristolMA=MABRI 2</name>
+  <name>Bristol=MABRI 2</name>
   <visibility>0</visibility>
   <styleUrl>#transYellowPoly</styleUrl>
   <Polygon>
@@ -1212,7 +1212,7 @@
 </Placemark>
 
 <Placemark>
-  <name>EssexMA=MAESS 1</name>
+  <name>Essex=MAESS 1</name>
   <visibility>0</visibility>
   <styleUrl>#transRedPoly</styleUrl>
   <Polygon>
@@ -1559,7 +1559,7 @@
 </Placemark>
 
 <Placemark>
-  <name>FranklinMA=MAFRA 1</name>
+  <name>Franklin=MAFRA 1</name>
   <visibility>0</visibility>
   <styleUrl>#transYellowPoly</styleUrl>
   <Polygon>
@@ -2363,7 +2363,7 @@
 </Placemark>
 
 <Placemark>
-  <name>MiddlesexMA=MAMID 1</name>
+  <name>Middlesex=MAMID 1</name>
   <visibility>0</visibility>
   <styleUrl>#transBluePoly</styleUrl>
   <Polygon>
