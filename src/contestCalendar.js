@@ -15,7 +15,7 @@ const parseDate = (dateStr) => {
         return [utcStartDate, utcEndDate];
     } else {
         const [startStr, endStr] = dateStr.replace("*", "").split(' to ').map((s) => {
-            return s.replace("2400", "2359").replace("and", "").trim();
+            return s.replace("2400", "2359").replace("and", "").replace("June", "Jun").trim();
         });
         const startDate = parseDateFns(`${startStr}`, dateFormat, new Date());
         const endDate = parseDateFns(`${endStr}`, `${dateFormat}, yyyy`, new Date());
