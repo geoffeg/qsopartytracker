@@ -7,7 +7,7 @@ import { memoize } from 'micro-memoize';
 const parseDate = (dateStr) => {
     const dateFormat = "HHmm'Z', MMM d";
     if (!dateStr.includes(" to ")) { // "1400Z-2400Z, Feb 7, 2026" format
-        const [_, startTimeStr, endTimeStr, endDateStr] = dateStr.replace("*", "").replace("and", "").replace("2400", "2359").match(/([0-9]+)Z-([0-9]+)Z, (.*)/);
+        const [_, startTimeStr, endTimeStr, endDateStr] = dateStr.replace("*", "").replace("and", "").replace("2400", "2359").replace("June", "Jun").match(/([0-9]+)Z-([0-9]+)Z, (.*)/);
         const startDate = parseDateFns(`${startTimeStr}Z, ${endDateStr}`, `${dateFormat}, yyyy`, new Date());
         const endDate = parseDateFns(`${endTimeStr}Z, ${endDateStr}`, `${dateFormat}, yyyy`, new Date());
         const utcStartDate = fromZonedTime(startDate, "UTC");
