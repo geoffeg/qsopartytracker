@@ -33,9 +33,10 @@ const config = {
         "CA": {
             stateAbbr: "CA",
             operationTitle: `California QSO Party`,
-            operationInstructions: `To be listed on this map, put <u>CAQP XX.XXX</u> in your APRS comment. (XX.XXX being your current frequency) Eg: "CAQP 14.230" if you are on 20 m at 14.230. Note: Frequency is optional`,
-            commentFilter: /CAQP/,
+            operationInstructions: `To be listed on this map, put <u>CQP</u> in your APRS comment. Note: California does not allow self-spotting; frequencies will be redacted`,
+            commentFilter: /CQP/,
             kmlFile: 'OverlayCaliforniaRev4.kml',
+            selfSpottingAllowed: false,
             contestCalendarId: 140,
         },
         "CO": {
