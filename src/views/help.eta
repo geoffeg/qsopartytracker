@@ -10,9 +10,9 @@
 </ol>
 <h2>For mobiles:</h2>
 <ol>
-  <li>Load an APRS client (we recommend APRS TX for the iPhone and APRS Droid for the Android). Note: Not all APRS clients populate the map properly, so always check to be sure yours is working. We will work to improve APRS client support over time.</li>
+  <li>Load an APRS client (we recommend APRSBeacon or APRS TX for the iPhone and APRS Droid for the Android). Note: Not all APRS clients populate the map properly, so always check to be sure yours is working.</li>
   <li>Set your call sign to the call you’re using on the air in the contest</li>
   <li>Set your APRS comment text to the contest name. The format is displayed at the top of the mobiletracker.stateqso.com page. NOTE: It varies from contest to contest.</li>
-  <li>Be sure to occasionally update your frequency in the comment field for state QSO parties that allow self-spotting.</li>
-  <li>For contests that do not permit self-spotting for mobiles, only the contest abbreviation (such as CQP) is required for the tracker to pick you up and track you on the map. In contests that do permit self-spotting for mobiles, such as NYQP, you may use either the contest name alone or the contest name and a frequency, so either NYQP or NYQP 7.230 will work.</li>
+  <li>Be sure to update your frequency in the comment field for state QSO parties that allow self-spotting.</li>
+  <li>For contests that do not permit self-spotting for mobiles, only the contest abbreviation (such as CQP) is required for the tracker to pick you up and track you on the map. In contests that do permit self-spotting for mobiles, such as NYQP, you may use either the contest name alone or the contest name and a frequency, so any of these formats will work: NYQP or NYQP 7.230 or NYQP 3.540 7.040 14.040.</li>
 </ol>
